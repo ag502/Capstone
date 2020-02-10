@@ -2,13 +2,13 @@ import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Container } from '@material-ui/core';
 import Page from 'src/components/Page';
-import Header from './Header';
-import Statistics from './Statistics';
-import Notifications from './Notifications';
-import Projects from './Projects';
-import Todos from './Todos';
+// import Header from './Header';
+// import Statistics from './Statistics';
+// import Notifications from './Notifications';
+// import Projects from './Projects';
+// import Todos from './Todos';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3)
@@ -31,16 +31,13 @@ function Overview() {
   const classes = useStyles();
 
   return (
-    <Page
-      className={classes.root}
-      title="Overview"
-    >
+    <Page className={classes.root} title="Overview">
       <Container maxWidth="lg">
-        <Header />
+        {/* <Header />
         <Statistics className={classes.statistics} />
         <Notifications className={classes.notifications} />
         <Projects className={classes.projects} />
-        <Todos className={classes.todos} />
+        <Todos className={classes.todos} /> */}
       </Container>
     </Page>
   );
