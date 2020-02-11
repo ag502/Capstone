@@ -8,7 +8,7 @@ import Page from 'src/components/Page';
 // import Projects from './Projects';
 // import Todos from './Todos';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3)

@@ -4,7 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { useDispatch } from 'react-redux';
+import { useDispatch} from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import {
   AppBar,
@@ -29,15 +29,16 @@ import PeopleIcon from '@material-ui/icons/PeopleOutline';
 import InputIcon from '@material-ui/icons/Input';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import axios from 'src/utils/axios';
+import {searchKeyword} from 'src/utils/axios';
+// import axios from 'axios';
 import NotificationsPopover from 'src/components/NotificationsPopover';
 import PricingModal from 'src/components/PricingModal';
-import { logout } from 'src/actions';
+import { getVideoData, logout } from 'src/actions';
 import ChatBar from './ChatBar';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    boxShadow: 'none',
+    boxShadow: 'none'
   },
   flexGrow: {
     flexGrow: 1
@@ -101,21 +102,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const popularSearches = [
-  'Devias React Dashboard',
-  'Devias',
-  'Admin Pannel',
-  'Project',
-  'Pages'
+  // 검색시 가장 많이 검색한 내용
+  '한달살기',
 ];
 
-function TopBar({
-  onOpenNavBarMobile,
-  className,
-  ...rest
-}) {
+function TopBar({ onOpenNavBarMobile, className, ...rest }) {
   const classes = useStyles();
   const history = useHistory();
   const searchRef = useRef(null);
+  const searchValueRef = useRef(null);
   const dispatch = useDispatch();
   const notificationsRef = useRef(null);
   const [openSearchPopover, setOpenSearchPopover] = useState(false);
@@ -166,27 +161,51 @@ function TopBar({
     }
   };
 
-  const handleSearchPopverClose = () => {
+  const clickSearchButton = async (event) => {
+    processVideoDate(searchValue)
+      .then(result => {
+        console.log(result);
+        dispatch(getVideoData(result));
+      })
+      .finally(() => setSearchValue(''))
+  };
+
+  const processVideoDate = async (keyword) => {
+    try {
+      const {data: {prevPageToken, nextPageToken, pageInfo: {totalResults}, items}} = await searchKeyword(keyword);
+      return {
+        searchKeyword: keyword,
+        nextPageToken: nextPageToken === undefined ? '' : nextPageToken,
+        prevPageToken: prevPageToken === undefined ? '' : prevPageToken,
+        totalResults: totalResults,
+        items: items
+      };
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSearchPopoverClose = () => {
     setOpenSearchPopover(false);
   };
 
-  useEffect(() => {
-    let mounted = true;
-
-    const fetchNotifications = () => {
-      axios.get('/api/account/notifications').then((response) => {
-        if (mounted) {
-          setNotifications(response.data.notifications);
-        }
-      });
-    };
-
-    fetchNotifications();
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
+  // useEffect(() => {
+  //   let mounted = true;
+  //
+  //   const fetchNotifications = () => {
+  //     axios.get('#').then((response) => {
+  //       if (mounted) {
+  //         setNotifications(response.data.notifications);
+  //       }
+  //     });
+  //   };
+  //
+  //   fetchNotifications();
+  //
+  //   return () => {
+  //     mounted = false;
+  //   };
+  // }, []);
 
   return (
     <AppBar
@@ -201,29 +220,30 @@ function TopBar({
             color="inherit"
             onClick={onOpenNavBarMobile}
           >
-            <MenuIcon />
+            <MenuIcon/>
           </IconButton>
         </Hidden>
-        <RouterLink to="/">
+        <RouterLink to="/overview">
           <img
             alt="Logo"
             src="/images/logos/logo--white.svg"
           />
         </RouterLink>
-        <div className={classes.flexGrow} />
+        <div className={classes.flexGrow}/>
         <Hidden smDown>
           <div
             className={classes.search}
-            ref={searchRef}
-          >
-            <SearchIcon className={classes.searchIcon} />
+            ref={searchRef}>
+            <SearchIcon
+              className={classes.searchIcon}
+              onClick={clickSearchButton}/>
             <Input
               className={classes.searchInput}
               disableUnderline
+              ref={searchValueRef}
               onChange={handleSearchChange}
-              placeholder="Search people &amp; places"
-              value={searchValue}
-            />
+              placeholder="Input Your KeyWord"
+              value={searchValue}/>
           </div>
           <Popper
             anchorEl={searchRef.current}
@@ -231,7 +251,7 @@ function TopBar({
             open={openSearchPopover}
             transition
           >
-            <ClickAwayListener onClickAway={handleSearchPopverClose}>
+            <ClickAwayListener onClickAway={handleSearchPopoverClose}>
               <Paper
                 className={classes.searchPopperContent}
                 elevation={3}
@@ -241,12 +261,12 @@ function TopBar({
                     <ListItem
                       button
                       key={search}
-                      onClick={handleSearchPopverClose}
+                      onClick={handleSearchPopoverClose}
                     >
                       <ListItemIcon>
-                        <SearchIcon />
+                        <SearchIcon/>
                       </ListItemIcon>
-                      <ListItemText primary={search} />
+                      <ListItemText primary={search}/>
                     </ListItem>
                   ))}
                 </List>
@@ -258,43 +278,43 @@ function TopBar({
             onClick={handlePricingModalOpen}
             variant="contained"
           >
-            <LockIcon className={classes.trialIcon} />
+            <LockIcon className={classes.trialIcon}/>
             Trial expired
           </Button>
         </Hidden>
-        <IconButton
-          className={classes.chatButton}
-          color="inherit"
-          onClick={handleChatBarOpen}
-        >
-          <Badge
-            badgeContent={6}
-            color="secondary"
-          >
-            <PeopleIcon />
-          </Badge>
-        </IconButton>
+        {/* <IconButton */}
+        {/*  className={classes.chatButton} */}
+        {/*  color="inherit" */}
+        {/*  onClick={handleChatBarOpen} */}
+        {/* > */}
+        {/*  <Badge */}
+        {/*    badgeContent={6} */}
+        {/*    color="secondary" */}
+        {/*  > */}
+        {/*    <PeopleIcon /> */}
+        {/*  </Badge> */}
+        {/* </IconButton> */}
         <Hidden mdDown>
-          <IconButton
-            className={classes.notificationsButton}
-            color="inherit"
-            onClick={handleNotificationsOpen}
-            ref={notificationsRef}
-          >
-            <Badge
-              badgeContent={notifications.length}
-              classes={{ badge: classes.notificationsBadge }}
-              variant="dot"
-            >
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
+          {/* <IconButton */}
+          {/*  className={classes.notificationsButton} */}
+          {/*  color="inherit" */}
+          {/*  onClick={handleNotificationsOpen} */}
+          {/*  ref={notificationsRef} */}
+          {/* > */}
+          {/*  <Badge */}
+          {/*    badgeContent={notifications.length} */}
+          {/*    classes={{ badge: classes.notificationsBadge }} */}
+          {/*    variant="dot" */}
+          {/*  > */}
+          {/*    <NotificationsIcon /> */}
+          {/*  </Badge> */}
+          {/* </IconButton> */}
           <Button
             className={classes.logoutButton}
             color="inherit"
             onClick={handleLogout}
           >
-            <InputIcon className={classes.logoutIcon} />
+            <InputIcon className={classes.logoutIcon}/>
             Sign out
           </Button>
         </Hidden>
