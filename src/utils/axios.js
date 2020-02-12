@@ -8,7 +8,7 @@ export const defaultInfo = {
 };
 
 export const searchKeyword = (keyword, page = '') => {
-  return axios.get(`${defaultInfo.baseURL}search?key=${defaultInfo.apiKey}&part=snippet&q=${keyword}&maxResults=20&pageToken=${page}`);
+  return axios.get(`${defaultInfo.baseURL}search?key=${defaultInfo.apiKey}&part=snippet&q=${keyword}&maxResults=20&pageToken=${page}&type=video`);
 };
 
 export default instance;
