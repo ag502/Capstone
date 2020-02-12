@@ -1,13 +1,9 @@
 import React from 'react';
+import {useDispatch} from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
-import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -15,8 +11,7 @@ import Link from '@material-ui/core/Link';
 import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { playVideo } from '../../actions';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -27,14 +22,12 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     verticalAlign: 'center',
     padding: '12px',
-    // '& Typography': {
-    //   cursor: 'pointer',
-    // }
     cursor: 'pointer'
   },
   media: {
     height: 0,
     paddingTop: '56.25%', // 16:9
+    cursor: 'pointer'
   },
   expand: {
     transform: 'rotate(0deg)',
@@ -51,17 +44,34 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function VideoThumbNail({publishDate,
-                        channelId,
-                        channelTitle,
-                        title,
-                        thumbnail}) {
+function VideoThumbNail({
+                          publishDate,
+                          channelID,
+                          channelTitle,
+                          videoID,
+                          title,
+                          thumbnail,
+                        }) {
+
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const showVideoPopUp = event => {
+    console.log(event.target);
+    console.log(title);
+    dispatch(playVideo(videoID));
+  };
+
+  const moveToChannel = event => {
+    // event.stopPropagation();
+    console.log('Move to Channel!!');
+  };
 
   return (
     <Card className={classes.root}>
       <div className={classes.title}>
         <Tooltip
+          onClick={showVideoPopUp}
           title={title}
           enterDelay={600}
         >
@@ -79,9 +89,10 @@ function VideoThumbNail({publishDate,
           variant={'subtitle1'}
         >
           <Link
-            href={`https://www.youtube.com/channel/${channelId}`}
+            href={`https://www.youtube.com/channel/${channelID}`}
             target={'_blank'}
             rel={'noreferrer'}
+            onClick={moveToChannel}
           >
             {channelTitle}
           </Link>
@@ -95,6 +106,7 @@ function VideoThumbNail({publishDate,
         </Typography>
       </div>
       <CardMedia
+        onClick={showVideoPopUp}
         className={classes.media}
         image={thumbnail}
       />

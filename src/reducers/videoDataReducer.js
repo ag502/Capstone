@@ -16,7 +16,7 @@ const videoDataReducer = (state = initialState, action) => {
         ...action.payload
       };
     default:
-      return initialState;
+      return state;
   }
 };
 

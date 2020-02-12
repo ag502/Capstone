@@ -1,2 +1,2 @@
 export * from './sessionActions';
-export * from './videoDataAction';
+export * from './videoAction';

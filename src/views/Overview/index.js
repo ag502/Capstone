@@ -5,12 +5,8 @@ import { Container } from '@material-ui/core';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import Page from 'src/components/Page';
-import VideoThumbNail from './VideoThumbNail';
-// import Header from './Header';
-// import Statistics from './Statistics';
-// import Notifications from './Notifications';
-// import Projects from './Projects';
-// import Todos from './Todos';
+import VideoThumbNail from '../../layouts/Video/VideoThumbNail';
+import VideoPopWindow from '../../layouts/Video/VideoPlayer';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,23 +43,29 @@ const useStyles = makeStyles((theme) => ({
 function Overview() {
   const classes = useStyles();
   const videoItems = useSelector(state => state.videoData.items);
+  const {isPlay, selectedVideoID} = useSelector(state => state.videoPlay);
 
-  console.log('main');
+  console.log(isPlay, selectedVideoID);
 
   return (
     <Page className={classes.root} title="Overview">
       <div className={classes.gridContainer}>
+        <VideoPopWindow
+          isPlay={isPlay}
+          videoID={selectedVideoID}
+        />
         <GridList cellHeight={'auto'} cols={4} className={classes.gridList}>
           {videoItems.map((cur, idx) => {
-            const { snippet: { publishedAt, channelId, channelTitle, title, thumbnails: { high: { url } } } } = cur;
+            const {id: {videoId} ,snippet: { publishedAt, channelId, channelTitle, title, thumbnails: { high: { url } } } } = cur;
             const publishDate = publishedAt.slice(0, 10);
             return (
               <GridListTile key={idx}>
                 <VideoThumbNail
                 key={idx}
                 publishDate={publishDate}
-                channelId={channelId}
+                channelID={channelId}
                 channelTitle={channelTitle}
+                videoID={videoId}
                 title={title}
                 thumbnail={url}/>
               </GridListTile>
