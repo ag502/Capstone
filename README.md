@@ -22,4 +22,14 @@
 
 ![2](https://user-images.githubusercontent.com/35404137/74447881-62b47300-4ebd-11ea-8691-84ad54d77965.JPG)
 
+##### Play Video
+
+![3](https://user-images.githubusercontent.com/35404137/74448044-a60ee180-4ebd-11ea-8f1a-529fd79f90ae.JPG)
+
+
+------------------
+
+src/util/axios 에서 api key값을 바꿔 사용하면 됩니다.
+
+src/layout/video 에서 clipping 요청을 server로 보냅니다.
 
