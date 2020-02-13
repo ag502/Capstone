@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 function Overview() {
   const classes = useStyles();
   const videoItems = useSelector(state => state.videoData.items);
-  const {isPlay, selectedVideoID} = useSelector(state => state.videoPlay);
+  const {isPlay, title, selectedVideoID} = useSelector(state => state.videoPlay);
 
   console.log(isPlay, selectedVideoID);
 
@@ -53,6 +53,7 @@ function Overview() {
         <VideoPopWindow
           isPlay={isPlay}
           videoID={selectedVideoID}
+          title={title}
         />
         <GridList cellHeight={'auto'} cols={4} className={classes.gridList}>
           {videoItems.map((cur, idx) => {

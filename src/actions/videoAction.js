@@ -9,10 +9,13 @@ export const getVideoData = data => {
   }
 };
 
-export const playVideo = videoId => {
+export const playVideo = (videoID, title) => {
   return {
     type: PLAY_VIDEO,
-    payload: videoId
+    payload: {
+      videoID: videoID,
+      title: title,
+    }
   }
 };
 

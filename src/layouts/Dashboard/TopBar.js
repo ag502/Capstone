@@ -172,6 +172,7 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
 
   const processVideoDate = async (keyword) => {
     try {
+      console.log('execute');
       const {data: {prevPageToken, nextPageToken, pageInfo: {totalResults}, items}} = await searchKeyword(keyword);
       return {
         searchKeyword: keyword,

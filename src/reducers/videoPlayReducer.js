@@ -2,6 +2,7 @@ import * as actionTypes from 'src/actions';
 
 const initialState = {
   isPlay: false,
+  title: '',
   selectedVideoID: ''
 };
 
@@ -11,12 +12,14 @@ const videoPlayReducer = (state = initialState, action) => {
       return {
         ...initialState,
         isPlay: true,
-        selectedVideoID: action.payload
+        title: action.payload.title,
+        selectedVideoID: action.payload.videoID,
       };
     case actionTypes.CLOSE_VIDEO:
       return {
         ...initialState,
         isPlay: false,
+        title: '',
         selectedVideoID: ''
       };
     default:

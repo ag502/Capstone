@@ -59,7 +59,7 @@ function VideoThumbNail({
   const showVideoPopUp = event => {
     console.log(event.target);
     console.log(title);
-    dispatch(playVideo(videoID));
+    dispatch(playVideo(videoID, title));
   };
 
   const moveToChannel = event => {
