@@ -13,3 +13,7 @@
 ------------------
 
 #### description
+
+##### Initial Screen
+
+![1](https://user-images.githubusercontent.com/35404137/74447544-e4f06780-4ebc-11ea-8e93-1b92aeac49b9.JPG)
