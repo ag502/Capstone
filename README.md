@@ -17,3 +17,9 @@
 ##### Initial Screen
 
 ![1](https://user-images.githubusercontent.com/35404137/74447544-e4f06780-4ebc-11ea-8e93-1b92aeac49b9.JPG)
+
+##### After Searching Keyword
+
+![2](https://user-images.githubusercontent.com/35404137/74447881-62b47300-4ebd-11ea-8691-84ad54d77965.JPG)
+
+
