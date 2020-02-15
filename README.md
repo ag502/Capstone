@@ -9,6 +9,7 @@
 - [ ] 비디오 재생 팝업 우측하단 cliping 클릭시 server에 post 요청
 - [ ] 유튜브 api nextPageToken 구현
 - [ ] react Hooks life cycle을 이용해 불필요 한 rendering 방지
+- [ ] react router 수정
 
 ------------------
 
