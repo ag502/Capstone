@@ -9,9 +9,9 @@
 - [ ] 비디오 재생 팝업 우측하단 cliping 클릭시 server에 post 요청
 - [ ] 유튜브 api nextPageToken 구현
 - [ ] react Hooks life cycle을 이용해 불필요 한 rendering 방지
-- [ ] react router 수정
+- [x] react router 수정
 
-------------------
+---
 
 #### description
 
@@ -27,10 +27,8 @@
 
 ![3](https://user-images.githubusercontent.com/35404137/74448044-a60ee180-4ebd-11ea-8f1a-529fd79f90ae.JPG)
 
-
-------------------
+---
 
 src/util/axios 에서 api key값을 바꿔 사용하면 됩니다.
 
 src/layout/video 에서 clipping 요청을 server로 보냅니다.
-
