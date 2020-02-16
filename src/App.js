@@ -29,7 +29,7 @@ function App() {
   const [direction, setDirection] = useState('ltr');
 
   const handleDirecitonToggle = () => {
-    setDirection((prevDirection) => (prevDirection === 'ltr' ? 'rtl' : 'ltr'));
+    setDirection(prevDirection => (prevDirection === 'ltr' ? 'rtl' : 'ltr'));
   };
 
   return (

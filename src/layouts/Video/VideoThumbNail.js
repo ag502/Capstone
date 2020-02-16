@@ -1,5 +1,5 @@
 import React from 'react';
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -15,7 +15,7 @@ import { playVideo } from '../../actions';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    maxWidth: 345,
+    maxWidth: 345
   },
   title: {
     height: '100%',
@@ -33,26 +33,25 @@ const useStyles = makeStyles(theme => ({
     transform: 'rotate(0deg)',
     marginLeft: 'auto',
     transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
+      duration: theme.transitions.duration.shortest
+    })
   },
   expandOpen: {
-    transform: 'rotate(180deg)',
+    transform: 'rotate(180deg)'
   },
   avatar: {
-    backgroundColor: red[500],
-  },
+    backgroundColor: red[500]
+  }
 }));
 
 function VideoThumbNail({
-                          publishDate,
-                          channelID,
-                          channelTitle,
-                          videoID,
-                          title,
-                          thumbnail,
-                        }) {
-
+  publishDate,
+  channelID,
+  channelTitle,
+  videoID,
+  title,
+  thumbnail
+}) {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -70,38 +69,22 @@ function VideoThumbNail({
   return (
     <Card className={classes.root}>
       <div className={classes.title}>
-        <Tooltip
-          onClick={showVideoPopUp}
-          title={title}
-          enterDelay={600}
-        >
-          <Typography
-            noWrap={true}
-            display={'block'}
-            variant={'h5'}
-          >
+        <Tooltip onClick={showVideoPopUp} title={title} enterDelay={600}>
+          <Typography noWrap display="block" variant="h5">
             {title}
           </Typography>
         </Tooltip>
-        <Typography
-          noWrap={true}
-          display={'block'}
-          variant={'subtitle1'}
-        >
+        <Typography noWrap display="block" variant="subtitle1">
           <Link
             href={`https://www.youtube.com/channel/${channelID}`}
-            target={'_blank'}
-            rel={'noreferrer'}
+            target="_blank"
+            rel="noreferrer"
             onClick={moveToChannel}
           >
             {channelTitle}
           </Link>
         </Typography>
-        <Typography
-          noWrap={true}
-          display={'block'}
-          variant={'subtitle2'}
-        >
+        <Typography noWrap display="block" variant="subtitle2">
           {publishDate}
         </Typography>
       </div>

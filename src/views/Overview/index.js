@@ -8,7 +8,7 @@ import Page from 'src/components/Page';
 import VideoThumbNail from '../../layouts/Video/VideoThumbNail';
 import VideoPopWindow from '../../layouts/Video/VideoPlayer';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3)
@@ -43,7 +43,9 @@ const useStyles = makeStyles((theme) => ({
 function Overview() {
   const classes = useStyles();
   const videoItems = useSelector(state => state.videoData.items);
-  const {isPlay, title, selectedVideoID} = useSelector(state => state.videoPlay);
+  const { isPlay, title, selectedVideoID } = useSelector(
+    state => state.videoPlay
+  );
 
   console.log(isPlay, selectedVideoID);
 
@@ -55,24 +57,35 @@ function Overview() {
           videoID={selectedVideoID}
           title={title}
         />
-        <GridList cellHeight={'auto'} cols={4} className={classes.gridList}>
+        <GridList cellHeight="auto" cols={4} className={classes.gridList}>
           {videoItems.map((cur, idx) => {
-            const {id: {videoId} ,snippet: { publishedAt, channelId, channelTitle, title, thumbnails: { high: { url } } } } = cur;
+            const {
+              id: { videoId },
+              snippet: {
+                publishedAt,
+                channelId,
+                channelTitle,
+                title,
+                thumbnails: {
+                  high: { url }
+                }
+              }
+            } = cur;
             const publishDate = publishedAt.slice(0, 10);
             return (
               <GridListTile key={idx}>
                 <VideoThumbNail
-                key={idx}
-                publishDate={publishDate}
-                channelID={channelId}
-                channelTitle={channelTitle}
-                videoID={videoId}
-                title={title}
-                thumbnail={url}/>
+                  key={idx}
+                  publishDate={publishDate}
+                  channelID={channelId}
+                  channelTitle={channelTitle}
+                  videoID={videoId}
+                  title={title}
+                  thumbnail={url}
+                />
               </GridListTile>
             );
-          })
-          }
+          })}
         </GridList>
       </div>
     </Page>

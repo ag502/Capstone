@@ -87,13 +87,19 @@ function renderNavItems({
   key,
   ...rest
 }) {
+  console.log(rest);
   return (
     <List key={key}>
       {subheader && <ListSubheader disableSticky>{subheader}</ListSubheader>}
       {/* eslint-disable-next-line react/prop-types */}
       {items.reduce(
         // eslint-disable-next-line no-use-before-define
-        (acc, item) => reduceChildRoutes({ acc, item, ...rest }),
+        (acc, item) =>
+          reduceChildRoutes({
+            acc,
+            item,
+            ...rest
+          }),
         []
       )}
     </List>

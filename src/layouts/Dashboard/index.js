@@ -6,7 +6,7 @@ import { LinearProgress } from '@material-ui/core';
 import NavBar from './NavBar';
 import TopBar from './TopBar';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   container: {
     minHeight: '100vh',
     display: 'flex',
@@ -19,16 +19,13 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     maxWidth: '100%',
     overflowX: 'hidden',
-    [theme.breakpoints.up('lg')]: {
-      paddingLeft: 256
-    },
-    [theme.breakpoints.down('xs')]: {
-      paddingTop: 56
-    }
+    [theme.breakpoints.up('lg')]: { paddingLeft: 256 },
+    [theme.breakpoints.down('xs')]: { paddingTop: 56 }
   }
 }));
 
 function Dashboard({ route }) {
+  console.log(route);
   const classes = useStyles();
   const [openNavBarMobile, setOpenNavBarMobile] = useState(false);
 
@@ -50,8 +47,6 @@ function Dashboard({ route }) {
   );
 }
 
-Dashboard.propTypes = {
-  route: PropTypes.object
-};
+Dashboard.propTypes = { route: PropTypes.object };
 
 export default Dashboard;

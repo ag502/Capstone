@@ -4,7 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import {
   AppBar,
@@ -29,14 +29,14 @@ import PeopleIcon from '@material-ui/icons/PeopleOutline';
 import InputIcon from '@material-ui/icons/Input';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import {searchKeyword} from 'src/utils/axios';
+import { searchKeyword } from 'src/utils/axios';
 // import axios from 'axios';
 import NotificationsPopover from 'src/components/NotificationsPopover';
 import PricingModal from 'src/components/PricingModal';
 import { getVideoData, logout } from 'src/actions';
 import ChatBar from './ChatBar';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     boxShadow: 'none'
   },
@@ -103,7 +103,7 @@ const useStyles = makeStyles((theme) => ({
 
 const popularSearches = [
   // 검색시 가장 많이 검색한 내용
-  '한달살기',
+  '한달살기'
 ];
 
 function TopBar({ onOpenNavBarMobile, className, ...rest }) {
@@ -149,7 +149,7 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
     setOpenNotifications(false);
   };
 
-  const handleSearchChange = (event) => {
+  const handleSearchChange = event => {
     setSearchValue(event.target.value);
 
     if (event.target.value) {
@@ -161,25 +161,32 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
     }
   };
 
-  const clickSearchButton = async (event) => {
+  const clickSearchButton = async event => {
     processVideoDate(searchValue)
       .then(result => {
         console.log(result);
         dispatch(getVideoData(result));
       })
-      .finally(() => setSearchValue(''))
+      .finally(() => setSearchValue(''));
   };
 
-  const processVideoDate = async (keyword) => {
+  const processVideoDate = async keyword => {
     try {
       console.log('execute');
-      const {data: {prevPageToken, nextPageToken, pageInfo: {totalResults}, items}} = await searchKeyword(keyword);
+      const {
+        data: {
+          prevPageToken,
+          nextPageToken,
+          pageInfo: { totalResults },
+          items
+        }
+      } = await searchKeyword(keyword);
       return {
         searchKeyword: keyword,
         nextPageToken: nextPageToken === undefined ? '' : nextPageToken,
         prevPageToken: prevPageToken === undefined ? '' : prevPageToken,
-        totalResults: totalResults,
-        items: items
+        totalResults,
+        items
       };
     } catch (error) {
       console.log(error);
@@ -209,11 +216,7 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
   // }, []);
 
   return (
-    <AppBar
-      {...rest}
-      className={clsx(classes.root, className)}
-      color="primary"
-    >
+    <AppBar {...rest} className={clsx(classes.root, className)} color="primary">
       <Toolbar>
         <Hidden lgUp>
           <IconButton
@@ -221,30 +224,27 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
             color="inherit"
             onClick={onOpenNavBarMobile}
           >
-            <MenuIcon/>
+            <MenuIcon />
           </IconButton>
         </Hidden>
         <RouterLink to="/overview">
-          <img
-            alt="Logo"
-            src="/images/logos/logo--white.svg"
-          />
+          <img alt="Logo" src="/images/logos/logo--white.svg" />
         </RouterLink>
-        <div className={classes.flexGrow}/>
+        <div className={classes.flexGrow} />
         <Hidden smDown>
-          <div
-            className={classes.search}
-            ref={searchRef}>
+          <div className={classes.search} ref={searchRef}>
             <SearchIcon
               className={classes.searchIcon}
-              onClick={clickSearchButton}/>
+              onClick={clickSearchButton}
+            />
             <Input
               className={classes.searchInput}
               disableUnderline
               ref={searchValueRef}
               onChange={handleSearchChange}
               placeholder="Input Your KeyWord"
-              value={searchValue}/>
+              value={searchValue}
+            />
           </div>
           <Popper
             anchorEl={searchRef.current}
@@ -253,21 +253,18 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
             transition
           >
             <ClickAwayListener onClickAway={handleSearchPopoverClose}>
-              <Paper
-                className={classes.searchPopperContent}
-                elevation={3}
-              >
+              <Paper className={classes.searchPopperContent} elevation={3}>
                 <List>
-                  {popularSearches.map((search) => (
+                  {popularSearches.map(search => (
                     <ListItem
                       button
                       key={search}
                       onClick={handleSearchPopoverClose}
                     >
                       <ListItemIcon>
-                        <SearchIcon/>
+                        <SearchIcon />
                       </ListItemIcon>
-                      <ListItemText primary={search}/>
+                      <ListItemText primary={search} />
                     </ListItem>
                   ))}
                 </List>
@@ -279,7 +276,7 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
             onClick={handlePricingModalOpen}
             variant="contained"
           >
-            <LockIcon className={classes.trialIcon}/>
+            <LockIcon className={classes.trialIcon} />
             Trial expired
           </Button>
         </Hidden>
@@ -315,7 +312,7 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
             color="inherit"
             onClick={handleLogout}
           >
-            <InputIcon className={classes.logoutIcon}/>
+            <InputIcon className={classes.logoutIcon} />
             Sign out
           </Button>
         </Hidden>
@@ -326,14 +323,8 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
         onClose={handleNotificationsClose}
         open={openNotifications}
       />
-      <PricingModal
-        onClose={handlePricingModalClose}
-        open={pricingModalOpen}
-      />
-      <ChatBar
-        onClose={handleChatBarClose}
-        open={openChatBar}
-      />
+      <PricingModal onClose={handlePricingModalClose} open={pricingModalOpen} />
+      <ChatBar onClose={handleChatBarClose} open={openChatBar} />
     </AppBar>
   );
 }
