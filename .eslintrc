@@ -10,15 +10,13 @@
     "airbnb",
     "airbnb/hooks"
   ],
-  "plugins": [
-    "react-hooks"
-  ],
+  "plugins": ["react-hooks"],
   "settings": {
     "import/resolver": {
-        "node": {
-          "paths": ["src"],
-          "extensions": [".js", ".jsx", ".ts", ".tsx"]
-        }
+      "node": {
+        "paths": ["src"],
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
     }
   },
   "rules": {
@@ -39,5 +37,6 @@
     "linebreak-style": 0,
     "arrow-parens": ["error", "as-needed"],
     "no-console": "off"
+    // "object-curly-newline": ["error", "never"]
   }
 }
