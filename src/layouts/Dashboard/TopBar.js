@@ -161,13 +161,26 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
     }
   };
 
-  const clickSearchButton = async event => {
+  const clickSearchButton = event => {
     processVideoDate(searchValue)
       .then(result => {
         console.log(result);
+        window.scrollTo(0, 0);
         dispatch(getVideoData(result));
       })
       .finally(() => setSearchValue(''));
+  };
+
+  const enterSearchButton = event => {
+    if (event.key === 'Enter' && searchValue) {
+      processVideoDate(searchValue)
+        .then(result => {
+          console.log(result);
+          window.scrollTo(0, 0);
+          dispatch(getVideoData(result));
+        })
+        .finally(() => setSearchValue(''));
+    }
   };
 
   const processVideoDate = async keyword => {
@@ -242,6 +255,7 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
               disableUnderline
               ref={searchValueRef}
               onChange={handleSearchChange}
+              onKeyDown={enterSearchButton}
               placeholder="Input Your KeyWord"
               value={searchValue}
             />
