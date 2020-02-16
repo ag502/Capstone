@@ -14,7 +14,7 @@ export default [
   {
     path: '/',
     exact: true,
-    component: () => <Redirect to="/presentation" />
+    component: () => <Redirect to="/overview" />
   },
   {
     path: '/auth',
@@ -59,10 +59,23 @@ export default [
       }
     ]
   },
+  /**
+   * Page which has Navbar and Topbar
+   */
   {
     route: '*',
     component: DashboardLayout,
     routes: [
+      {
+        path: '/data-process',
+        exact: true,
+        component: lazy(() => import('src/views/DataProcess'))
+      },
+      {
+        path: '/data-management',
+        exact: true,
+        component: lazy(() => import('src/views/DataManagement'))
+      },
       {
         path: '/calendar',
         exact: true,
