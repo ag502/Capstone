@@ -87,7 +87,6 @@ function renderNavItems({
   key,
   ...rest
 }) {
-  console.log(rest);
   return (
     <List key={key}>
       {subheader && <ListSubheader disableSticky>{subheader}</ListSubheader>}

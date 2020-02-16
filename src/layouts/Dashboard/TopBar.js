@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useRef, useEffect } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -21,7 +21,8 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  ClickAwayListener
+  ClickAwayListener,
+  Fade
 } from '@material-ui/core';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
@@ -119,6 +120,8 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
   const [openNotifications, setOpenNotifications] = useState(false);
   const [openChatBar, setOpenChatBar] = useState(false);
   const [pricingModalOpen, setPricingModalOpen] = useState(false);
+  const [searchInputOpen, setSearchInputOpen] = useState(false);
+  const { pathname } = useLocation();
 
   const handleLogout = () => {
     history.push('/auth/login');
@@ -162,17 +165,19 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
   };
 
   const clickSearchButton = event => {
-    processVideoDate(searchValue)
-      .then(result => {
-        console.log(result);
-        window.scrollTo(0, 0);
-        dispatch(getVideoData(result));
-      })
-      .finally(() => setSearchValue(''));
+    if (searchInputOpen) {
+      processVideoDate(searchValue)
+        .then(result => {
+          console.log(result);
+          window.scrollTo(0, 0);
+          dispatch(getVideoData(result));
+        })
+        .finally(() => setSearchValue(''));
+    }
   };
 
   const enterSearchButton = event => {
-    if (event.key === 'Enter' && searchValue) {
+    if (searchInputOpen && event.key === 'Enter' && searchValue) {
       processVideoDate(searchValue)
         .then(result => {
           console.log(result);
@@ -228,6 +233,7 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
   //   };
   // }, []);
 
+  console.log('Render TopBar');
   return (
     <AppBar {...rest} className={clsx(classes.root, className)} color="primary">
       <Toolbar>
@@ -245,21 +251,23 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
         </RouterLink>
         <div className={classes.flexGrow} />
         <Hidden smDown>
-          <div className={classes.search} ref={searchRef}>
-            <SearchIcon
-              className={classes.searchIcon}
-              onClick={clickSearchButton}
-            />
-            <Input
-              className={classes.searchInput}
-              disableUnderline
-              ref={searchValueRef}
-              onChange={handleSearchChange}
-              onKeyDown={enterSearchButton}
-              placeholder="Input Your KeyWord"
-              value={searchValue}
-            />
-          </div>
+          {pathname === '/overview' && (
+            <div className={classes.search} ref={searchRef}>
+              <SearchIcon
+                className={classes.searchIcon}
+                onClick={clickSearchButton}
+              />
+              <Input
+                className={classes.searchInput}
+                disableUnderline
+                ref={searchValueRef}
+                onChange={handleSearchChange}
+                onKeyDown={enterSearchButton}
+                placeholder="Input Your KeyWord"
+                value={searchValue}
+              />
+            </div>
+          )}
           <Popper
             anchorEl={searchRef.current}
             className={classes.searchPopper}
