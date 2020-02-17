@@ -1,10 +1,13 @@
 /* eslint-disable no-undef */
-import React, { useEffect } from 'react';
+import React, { useEffect, fowardRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { useLocation } from 'react-router';
 import PropTypes from 'prop-types';
 
-const { NODE_ENV, REACT_APP_GA_MEASUREMENT_ID: GA_MEASUREMENT_ID } = process.env;
+const {
+  NODE_ENV,
+  REACT_APP_GA_MEASUREMENT_ID: GA_MEASUREMENT_ID
+} = process.env;
 
 function Page({ title, children, ...rest }) {
   const location = useLocation();

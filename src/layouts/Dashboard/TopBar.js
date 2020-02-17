@@ -120,7 +120,6 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
   const [openNotifications, setOpenNotifications] = useState(false);
   const [openChatBar, setOpenChatBar] = useState(false);
   const [pricingModalOpen, setPricingModalOpen] = useState(false);
-  const [searchInputOpen, setSearchInputOpen] = useState(false);
   const { pathname } = useLocation();
 
   const handleLogout = () => {
@@ -165,19 +164,17 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
   };
 
   const clickSearchButton = event => {
-    if (searchInputOpen) {
-      processVideoDate(searchValue)
-        .then(result => {
-          console.log(result);
-          window.scrollTo(0, 0);
-          dispatch(getVideoData(result));
-        })
-        .finally(() => setSearchValue(''));
-    }
+    processVideoDate(searchValue)
+      .then(result => {
+        console.log(result);
+        window.scrollTo(0, 0);
+        dispatch(getVideoData(result));
+      })
+      .finally(() => setSearchValue(''));
   };
 
   const enterSearchButton = event => {
-    if (searchInputOpen && event.key === 'Enter' && searchValue) {
+    if (event.key === 'Enter' && searchValue) {
       processVideoDate(searchValue)
         .then(result => {
           console.log(result);
@@ -188,6 +185,7 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
     }
   };
 
+  // Redux Thunk로 바꾸기 !!!!
   const processVideoDate = async keyword => {
     try {
       console.log('execute');

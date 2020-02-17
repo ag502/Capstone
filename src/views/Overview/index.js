@@ -1,12 +1,16 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Container } from '@material-ui/core';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import Page from 'src/components/Page';
+import CircularIndeterminate from 'src/components/Progress';
+import { searchKeyword } from 'src/utils/axios';
+import { getMoreVideoData, loading } from 'src/actions';
 import VideoThumbNail from '../../layouts/Video/VideoThumbNail';
 import VideoPopWindow from '../../layouts/Video/VideoPlayer';
+import InfiniteScroll from 'react-infinite-scroller';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -42,52 +46,97 @@ const useStyles = makeStyles(theme => ({
 
 function Overview() {
   const classes = useStyles();
-  const videoItems = useSelector(state => state.videoData.items);
+  const {
+    isLoading,
+    items: videoItems,
+    searchKeyword: keyword,
+    nextPageToken: nextPage
+  } = useSelector(state => state.videoData);
   const { isPlay, title, selectedVideoID } = useSelector(
     state => state.videoPlay
   );
+  const dispatch = useDispatch();
 
-  console.log(isPlay, selectedVideoID);
+  const processVidoeData = async () => {
+    try {
+      const {
+        data: {
+          prevPageToken,
+          nextPageToken,
+          pageInfo: { totalResults },
+          items
+        }
+      } = await searchKeyword(keyword, nextPage);
+      return {
+        searchKeyword: keyword,
+        nextPageToken: nextPageToken === undefined ? '' : nextPageToken,
+        prevPageToken: prevPageToken === undefined ? '' : prevPageToken,
+        totalResults,
+        items
+      };
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  const loadNextVideoData = event => {
+    processVidoeData()
+      .then(result => {
+        console.log(result);
+        dispatch(getMoreVideoData(result));
+      })
+      .finally(() => {});
+  };
+
+  console.log('Overview Rendering');
   return (
     <Page className={classes.root} title="Overview">
-      <div className={classes.gridContainer}>
-        <VideoPopWindow
-          isPlay={isPlay}
-          videoID={selectedVideoID}
-          title={title}
-        />
-        <GridList cellHeight="auto" cols={4} className={classes.gridList}>
-          {videoItems.map((cur, idx) => {
-            const {
-              id: { videoId },
-              snippet: {
-                publishedAt,
-                channelId,
-                channelTitle,
-                title,
-                thumbnails: {
-                  high: { url }
+      <InfiniteScroll
+        pageStart={0}
+        loadMore={loadNextVideoData}
+        hasMore={true}
+        initialLoad={false}
+        loader={<CircularIndeterminate />}
+      >
+        <div className={classes.gridContainer}>
+          <VideoPopWindow
+            isPlay={isPlay}
+            videoID={selectedVideoID}
+            title={title}
+          />
+
+          <GridList cellHeight="auto" cols={4} className={classes.gridList}>
+            {videoItems.map((cur, idx) => {
+              const {
+                id: { videoId },
+                snippet: {
+                  publishedAt,
+                  channelId,
+                  channelTitle,
+                  title,
+                  thumbnails: {
+                    high: { url }
+                  }
                 }
-              }
-            } = cur;
-            const publishDate = publishedAt.slice(0, 10);
-            return (
-              <GridListTile key={idx}>
-                <VideoThumbNail
-                  key={idx}
-                  publishDate={publishDate}
-                  channelID={channelId}
-                  channelTitle={channelTitle}
-                  videoID={videoId}
-                  title={title}
-                  thumbnail={url}
-                />
-              </GridListTile>
-            );
-          })}
-        </GridList>
-      </div>
+              } = cur;
+              const publishDate = publishedAt.slice(0, 10);
+              return (
+                <GridListTile key={idx}>
+                  <VideoThumbNail
+                    key={idx}
+                    publishDate={publishDate}
+                    channelID={channelId}
+                    channelTitle={channelTitle}
+                    videoID={videoId}
+                    title={title}
+                    thumbnail={url}
+                  />
+                </GridListTile>
+              );
+            })}
+          </GridList>
+        </div>
+      </InfiniteScroll>
     </Page>
   );
 }
