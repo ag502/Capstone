@@ -8,9 +8,9 @@ import Page from 'src/components/Page';
 import CircularIndeterminate from 'src/components/Progress';
 import { searchVideos } from 'src/utils/axios';
 import { getMoreVideoData, loading, getVideoData } from 'src/actions';
+import InfiniteScroll from 'react-infinite-scroller';
 import VideoThumbNail from '../../layouts/Video/VideoThumbNail';
 import VideoPopWindow from '../../layouts/Video/VideoPlayer';
-import InfiniteScroll from 'react-infinite-scroller';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -56,7 +56,6 @@ function Overview() {
     state => state.videoPlay
   );
   const dispatch = useDispatch();
-  console.log(keyword);
 
   useEffect(() => {
     if (!keyword) {
@@ -64,6 +63,7 @@ function Overview() {
     }
   }, []);
 
+  // Redux Thunk로 바꾸기
   const processVidoeData = async () => {
     try {
       const {
@@ -103,13 +103,14 @@ function Overview() {
       <InfiniteScroll
         pageStart={0}
         loadMore={loadNextVideoData}
-        hasMore={true}
-        useWindow={true}
+        hasMore
+        useWindow
         loader={<CircularIndeterminate key={0} />}
       >
         <div className={classes.gridContainer}>
           <VideoPopWindow
             isPlay={isPlay}
+            keyword={keyword}
             videoID={selectedVideoID}
             title={title}
           />

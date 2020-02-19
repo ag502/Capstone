@@ -147,7 +147,7 @@ function TrimSlider({ duration, getTrimmingPoint }) {
   );
 }
 
-function VideoPopWindow({ isPlay, videoID, title }) {
+function VideoPopWindow({ isPlay, videoID, title, keyword }) {
   const dispatch = useDispatch();
   let trimmingPoint = [0, 0];
 
@@ -157,6 +157,13 @@ function VideoPopWindow({ isPlay, videoID, title }) {
 
   const handleClipping = event => {
     console.log('Trimming');
+    // trim 시작, 끝 구간
+    console.log(trimmingPoint[0], trimmingPoint[1]);
+    // videoID
+    console.log(videoID);
+    // keyword
+    console.log(keyword);
+
     // 클리핑 요청 보낼 부분
     // trimmingPoint는 cliping할 처음과 끝 부분, slider를 움직이지 않으면 0, 0을 가르킴
     // axios.post("#");
