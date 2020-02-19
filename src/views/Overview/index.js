@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Container } from '@material-ui/core';
@@ -6,8 +6,8 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import Page from 'src/components/Page';
 import CircularIndeterminate from 'src/components/Progress';
-import { searchKeyword } from 'src/utils/axios';
-import { getMoreVideoData, loading } from 'src/actions';
+import { searchVideos } from 'src/utils/axios';
+import { getMoreVideoData, loading, getVideoData } from 'src/actions';
 import VideoThumbNail from '../../layouts/Video/VideoThumbNail';
 import VideoPopWindow from '../../layouts/Video/VideoPlayer';
 import InfiniteScroll from 'react-infinite-scroller';
@@ -56,6 +56,13 @@ function Overview() {
     state => state.videoPlay
   );
   const dispatch = useDispatch();
+  console.log(keyword);
+
+  useEffect(() => {
+    if (!keyword) {
+      dispatch(getVideoData({ searchKeyword: '한달살기' }));
+    }
+  }, []);
 
   const processVidoeData = async () => {
     try {
@@ -66,7 +73,7 @@ function Overview() {
           pageInfo: { totalResults },
           items
         }
-      } = await searchKeyword(keyword, nextPage);
+      } = await searchVideos(keyword, nextPage);
       return {
         searchKeyword: keyword,
         nextPageToken: nextPageToken === undefined ? '' : nextPageToken,
@@ -79,13 +86,15 @@ function Overview() {
     }
   };
 
-  const loadNextVideoData = event => {
-    processVidoeData()
-      .then(result => {
-        console.log(result);
-        dispatch(getMoreVideoData(result));
-      })
-      .finally(() => {});
+  const loadNextVideoData = page => {
+    if (keyword) {
+      processVidoeData()
+        .then(result => {
+          console.log(result);
+          dispatch(getMoreVideoData(result));
+        })
+        .finally(() => {});
+    }
   };
 
   console.log('Overview Rendering');
@@ -95,8 +104,8 @@ function Overview() {
         pageStart={0}
         loadMore={loadNextVideoData}
         hasMore={true}
-        initialLoad={false}
-        loader={<CircularIndeterminate />}
+        useWindow={true}
+        loader={<CircularIndeterminate key={0} />}
       >
         <div className={classes.gridContainer}>
           <VideoPopWindow
