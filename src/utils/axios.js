@@ -7,8 +7,8 @@ export const defaultInfo = {
   apiKey: 'AIzaSyAuJEXPVw4ZiQjESoErRngyIDNzj3nKD2g'
 };
 
-export const searchKeyword = (keyword, page = '') => {
-  console.log('Send request to Youtube');
+export const searchVideos = (keyword, page = '') => {
+  console.log('Send request to Youtube' + keyword);
   return axios.get(
     `${defaultInfo.baseURL}search?key=${defaultInfo.apiKey}&part=snippet&q=${keyword}&maxResults=20&pageToken=${page}&type=video`
   );

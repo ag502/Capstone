@@ -30,7 +30,7 @@ import PeopleIcon from '@material-ui/icons/PeopleOutline';
 import InputIcon from '@material-ui/icons/Input';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import { searchKeyword } from 'src/utils/axios';
+import { searchVideos } from 'src/utils/axios';
 // import axios from 'axios';
 import NotificationsPopover from 'src/components/NotificationsPopover';
 import PricingModal from 'src/components/PricingModal';
@@ -196,7 +196,7 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
           pageInfo: { totalResults },
           items
         }
-      } = await searchKeyword(keyword);
+      } = await searchVideos(keyword);
       return {
         searchKeyword: keyword,
         nextPageToken: nextPageToken === undefined ? '' : nextPageToken,
