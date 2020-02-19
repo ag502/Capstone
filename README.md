@@ -7,7 +7,7 @@
 - [x] 채널을 제외한 부분 클릭시 비디오 재생 팝업 실행
 - [x] 클리핑할 구간 지정하는 slider 구현
 - [ ] 비디오 재생 팝업 우측하단 cliping 클릭시 server에 post 요청
-- [x] 유튜브 api nextPageToken 구현 (Progress bar 추가했으나 버그 수정해야됨)
+- [x] 유튜브 api nextPageToken 구현
 - [ ] react Hooks life cycle을 이용해 불필요 한 rendering 방지
 - [x] react router 수정
 - [ ] `layouts/Dashboard/Topbar.js' 에서 processVideoData redux thunk로 변환
