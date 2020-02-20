@@ -2,6 +2,7 @@ import * as actionTypes from 'src/actions';
 
 const initialState = {
   isLoading: false,
+  searchType: 1,
   searchKeyword: '',
   nextPageToken: '',
   prevPageToken: '',

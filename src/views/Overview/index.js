@@ -6,7 +6,7 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import Page from 'src/components/Page';
 import CircularIndeterminate from 'src/components/Progress';
-import { searchVideos } from 'src/utils/axios';
+import { searchVideosKeyword, searchVideosChanID } from 'src/utils/axios';
 import { getMoreVideoData, loading, getVideoData } from 'src/actions';
 import InfiniteScroll from 'react-infinite-scroller';
 import VideoThumbNail from '../../layouts/Video/VideoThumbNail';
@@ -48,6 +48,7 @@ function Overview() {
   const classes = useStyles();
   const {
     isLoading,
+    searchType,
     items: videoItems,
     searchKeyword: keyword,
     nextPageToken: nextPage
@@ -58,6 +59,7 @@ function Overview() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log('mount');
     if (!keyword) {
       dispatch(getVideoData({ searchKeyword: '한달살기' }));
     }
@@ -66,6 +68,15 @@ function Overview() {
   // Redux Thunk로 바꾸기
   const processVidoeData = async () => {
     try {
+      let receivedData = null;
+      if (searchType === 1) {
+        receivedData = await searchVideosKeyword(keyword, nextPage);
+      } else if (searchType === 2) {
+        console.log('pass');
+      } else if (searchType === 3) {
+        receivedData = await searchVideosChanID(keyword, nextPage);
+      }
+
       const {
         data: {
           prevPageToken,
@@ -73,8 +84,10 @@ function Overview() {
           pageInfo: { totalResults },
           items
         }
-      } = await searchVideos(keyword, nextPage);
+      } = receivedData;
+
       return {
+        searchType,
         searchKeyword: keyword,
         nextPageToken: nextPageToken === undefined ? '' : nextPageToken,
         prevPageToken: prevPageToken === undefined ? '' : prevPageToken,
@@ -103,7 +116,7 @@ function Overview() {
       <InfiniteScroll
         pageStart={0}
         loadMore={loadNextVideoData}
-        hasMore
+        hasMore={nextPage}
         useWindow
         loader={<CircularIndeterminate key={0} />}
       >

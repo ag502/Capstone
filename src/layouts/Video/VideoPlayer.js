@@ -10,20 +10,10 @@ import Slider from '@material-ui/core/Slider';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import Fade from '@material-ui/core/Fade';
-import {
-  Close,
-  PlayArrow,
-  Pause,
-  VolumeDown,
-  VolumeMute,
-  VolumeOff,
-  VolumeUp
-} from '@material-ui/icons';
+import { Close } from '@material-ui/icons';
 import Typography from '@material-ui/core/Typography';
 import ReactPlayer from 'react-player';
-import { VideoSeekSlider } from 'react-video-seek-slider';
 import { closeVideo } from '../../actions';
-import '../../../node_modules/react-video-seek-slider/lib/ui-video-seek-slider.css';
 
 const styles = theme => ({
   root: {

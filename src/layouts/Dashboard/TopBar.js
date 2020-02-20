@@ -5,7 +5,7 @@ import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles, withStyles } from '@material-ui/styles';
 import {
   AppBar,
   Badge,
@@ -22,7 +22,12 @@ import {
   ListItemIcon,
   ListItemText,
   ClickAwayListener,
-  Fade
+  Fade,
+  InputBase,
+  Select,
+  InputLabel,
+  FormControl,
+  MenuItem
 } from '@material-ui/core';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
@@ -30,7 +35,7 @@ import PeopleIcon from '@material-ui/icons/PeopleOutline';
 import InputIcon from '@material-ui/icons/Input';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import { searchVideos } from 'src/utils/axios';
+import { searchVideosKeyword, searchVideosChanID } from 'src/utils/axios';
 // import axios from 'axios';
 import NotificationsPopover from 'src/components/NotificationsPopover';
 import PricingModal from 'src/components/PricingModal';
@@ -47,18 +52,19 @@ const useStyles = makeStyles(theme => ({
   search: {
     backgroundColor: 'rgba(255,255,255, 0.1)',
     borderRadius: 4,
-    flexBasis: 300,
+    flexBasis: 480,
     height: 36,
     padding: theme.spacing(0, 2),
     display: 'flex',
     alignItems: 'center'
   },
   searchIcon: {
-    marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(2),
     color: 'inherit'
   },
   searchInput: {
     flexGrow: 1,
+    marginLeft: '10px',
     color: 'inherit',
     '& input::placeholder': {
       opacity: 1,
@@ -102,10 +108,52 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const BootstrapInput = withStyles(theme => ({
+  input: {
+    height: '20px',
+    borderRadius: 4,
+    backgroundColor: 'inherit',
+    color: 'white',
+    border: '1px solid #3F51B5',
+    fontSize: 16,
+    padding: '1px 26px 1px 12px',
+    transition: theme.transitions.create(['border-color', 'box-shadow']),
+    '&:focus': {
+      borderRadius: 4,
+      borderColor: '#80bdff',
+      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)'
+    }
+  }
+}))(InputBase);
+
 const popularSearches = [
   // 검색시 가장 많이 검색한 내용
   '한달살기'
 ];
+
+function SearchTypeSelector({ searchType, setSearchType }) {
+  const classes = useStyles();
+
+  const handleChange = event => {
+    setSearchType(event.target.value);
+    console.log(searchType);
+  };
+
+  return (
+    <div>
+      <Select
+        onChange={handleChange}
+        input={<BootstrapInput />}
+        value={searchType}
+        displayEmpty
+      >
+        <MenuItem value={1}>Key Word</MenuItem>
+        <MenuItem value={2}>Video ID</MenuItem>
+        <MenuItem value={3}>Channel ID</MenuItem>
+      </Select>
+    </div>
+  );
+}
 
 function TopBar({ onOpenNavBarMobile, className, ...rest }) {
   const classes = useStyles();
@@ -120,6 +168,7 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
   const [openNotifications, setOpenNotifications] = useState(false);
   const [openChatBar, setOpenChatBar] = useState(false);
   const [pricingModalOpen, setPricingModalOpen] = useState(false);
+  const [searchType, setSearchType] = useState(1);
   const { pathname } = useLocation();
 
   const handleLogout = () => {
@@ -163,6 +212,39 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
     }
   };
 
+  // Redux Thunk로 바꾸기 !!!!
+  const processVideoDate = async inputValue => {
+    try {
+      console.log('execute');
+      let receivedData = null;
+      if (searchType === 1) {
+        receivedData = await searchVideosKeyword(inputValue);
+      } else if (searchType === 2) {
+        console.log('pass');
+      } else if (searchType === 3) {
+        receivedData = await searchVideosChanID(inputValue);
+      }
+      const {
+        data: {
+          prevPageToken,
+          nextPageToken,
+          pageInfo: { totalResults },
+          items
+        }
+      } = receivedData;
+      return {
+        searchType,
+        searchKeyword: inputValue,
+        nextPageToken: nextPageToken === undefined ? '' : nextPageToken,
+        prevPageToken: prevPageToken === undefined ? '' : prevPageToken,
+        totalResults,
+        items
+      };
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const clickSearchButton = event => {
     processVideoDate(searchValue)
       .then(result => {
@@ -181,31 +263,9 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
           window.scrollTo(0, 0);
           dispatch(getVideoData(result));
         })
-        .finally(() => setSearchValue(''));
-    }
-  };
-
-  // Redux Thunk로 바꾸기 !!!!
-  const processVideoDate = async keyword => {
-    try {
-      console.log('execute');
-      const {
-        data: {
-          prevPageToken,
-          nextPageToken,
-          pageInfo: { totalResults },
-          items
-        }
-      } = await searchVideos(keyword);
-      return {
-        searchKeyword: keyword,
-        nextPageToken: nextPageToken === undefined ? '' : nextPageToken,
-        prevPageToken: prevPageToken === undefined ? '' : prevPageToken,
-        totalResults,
-        items
-      };
-    } catch (error) {
-      console.log(error);
+        .finally(() => {
+          setSearchValue('');
+        });
     }
   };
 
@@ -231,6 +291,14 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
   //   };
   // }, []);
 
+  let inputMessage = 'Input your Key Word';
+
+  if (searchType === 2) {
+    inputMessage = 'Input your Video ID';
+  } else if (searchType === 3) {
+    inputMessage = 'Input your Channel ID';
+  }
+
   console.log('Render TopBar');
   return (
     <AppBar {...rest} className={clsx(classes.root, className)} color="primary">
@@ -251,9 +319,9 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
         <Hidden smDown>
           {pathname === '/overview' && (
             <div className={classes.search} ref={searchRef}>
-              <SearchIcon
-                className={classes.searchIcon}
-                onClick={clickSearchButton}
+              <SearchTypeSelector
+                searchType={searchType}
+                setSearchType={setSearchType}
               />
               <Input
                 className={classes.searchInput}
@@ -261,8 +329,12 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
                 ref={searchValueRef}
                 onChange={handleSearchChange}
                 onKeyDown={enterSearchButton}
-                placeholder="Input Your KeyWord"
+                placeholder={inputMessage}
                 value={searchValue}
+              />
+              <SearchIcon
+                className={classes.searchIcon}
+                onClick={clickSearchButton}
               />
             </div>
           )}
