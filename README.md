@@ -12,6 +12,7 @@
 - [ ] react Hooks life cycle을 이용해 불필요 한 rendering 방지
 - [x] react router 수정
 - [ ] `layouts/Dashboard/Topbar.js' 에서 processVideoData redux thunk로 변환
+- [x] 채널 아이디 별 검색 기능 추가 (마지막 Page에서 loading 안되게 막아야 함)
 
 ---
 
