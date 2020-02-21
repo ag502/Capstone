@@ -4,7 +4,7 @@ const instance = axios.create();
 
 export const defaultInfo = {
   baseURL: 'https://www.googleapis.com/youtube/v3/',
-  apiKey: 'AIzaSyAuJEXPVw4ZiQjESoErRngyIDNzj3nKD2g'
+  apiKey: 'AIzaSyDOA7d2cH7InnpkA2sDJ_hGJesmNrH_AWc'
 };
 
 export const searchVideosKeyword = (keyword, page = '') => {
@@ -20,7 +20,5 @@ export const searchVideosChanID = (id, page = '') => {
     `${defaultInfo.baseURL}search?key=${defaultInfo.apiKey}&part=snippet&channelId=${id}&maxResults=20&pageToken=${page}&type=video`
   );
 };
-
-export
 
 export default instance;

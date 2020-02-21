@@ -4,8 +4,8 @@ const initialState = {
   isLoading: false,
   searchType: 1,
   searchKeyword: '',
-  nextPageToken: '',
-  prevPageToken: '',
+  nextPageToken: 'init',
+  prevPageToken: 'init',
   totalResults: '',
   items: []
 };

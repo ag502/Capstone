@@ -9,8 +9,8 @@ import CircularIndeterminate from 'src/components/Progress';
 import { searchVideosKeyword, searchVideosChanID } from 'src/utils/axios';
 import { getMoreVideoData, loading, getVideoData } from 'src/actions';
 import InfiniteScroll from 'react-infinite-scroller';
-import VideoThumbNail from '../../layouts/Video/VideoThumbNail';
-import VideoPopWindow from '../../layouts/Video/VideoPlayer';
+import VideoThumbNail from '../../components/Video/VideoThumbNail';
+import VideoPopWindow from '../../components/Video/VideoPlayer';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -61,7 +61,12 @@ function Overview() {
   useEffect(() => {
     console.log('mount');
     if (!keyword) {
-      dispatch(getVideoData({ searchKeyword: '한달살기' }));
+      dispatch(
+        getVideoData({
+          searchKeyword: 'UCJyYNroojKZMaHGnmKRHuHg',
+          searchType: 3
+        })
+      );
     }
   }, []);
 
@@ -69,12 +74,13 @@ function Overview() {
   const processVidoeData = async () => {
     try {
       let receivedData = null;
+      const page = nextPage === 'init' ? '' : nextPage;
       if (searchType === 1) {
-        receivedData = await searchVideosKeyword(keyword, nextPage);
+        receivedData = await searchVideosKeyword(keyword, page);
       } else if (searchType === 2) {
         console.log('pass');
       } else if (searchType === 3) {
-        receivedData = await searchVideosChanID(keyword, nextPage);
+        receivedData = await searchVideosChanID(keyword, page);
       }
 
       const {
@@ -110,16 +116,17 @@ function Overview() {
     }
   };
 
-  console.log('Overview Rendering');
+  console.log(`Overview Rendering${nextPage}`);
   return (
     <Page className={classes.root} title="Overview">
       <InfiniteScroll
         pageStart={0}
         loadMore={loadNextVideoData}
-        hasMore={nextPage}
+        hasMore={nextPage !== ''}
         useWindow
         loader={<CircularIndeterminate key={0} />}
       >
+        {`${nextPage} ${keyword} ${nextPage === ''}`}
         <div className={classes.gridContainer}>
           <VideoPopWindow
             isPlay={isPlay}
