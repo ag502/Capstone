@@ -8,7 +8,8 @@ import Page from 'src/components/Page';
 import CircularIndeterminate from 'src/components/Progress';
 import { searchVideosKeyword, searchVideosChanID } from 'src/utils/axios';
 import { getMoreVideoData, loading, getVideoData } from 'src/actions';
-import InfiniteScroll from 'react-infinite-scroller';
+// import InfiniteScroll from 'react-infinite-scroller';
+import InfiniteScroll from '../../components/InfiniteScroll';
 import VideoThumbNail from '../../components/Video/VideoThumbNail';
 import VideoPopWindow from '../../components/Video/VideoPlayer';
 
@@ -63,8 +64,7 @@ function Overview() {
     if (!keyword) {
       dispatch(
         getVideoData({
-          searchKeyword: 'UCJyYNroojKZMaHGnmKRHuHg',
-          searchType: 3
+          searchKeyword: '한달살기'
         })
       );
     }
@@ -106,35 +106,32 @@ function Overview() {
   };
 
   const loadNextVideoData = page => {
-    if (keyword) {
-      processVidoeData()
-        .then(result => {
-          console.log(result);
-          dispatch(getMoreVideoData(result));
-        })
-        .finally(() => {});
-    }
+    processVidoeData()
+      .then(result => {
+        console.log(result);
+        dispatch(getMoreVideoData(result));
+      })
+      .finally(() => {});
   };
 
   console.log(`Overview Rendering${nextPage}`);
   return (
     <Page className={classes.root} title="Overview">
+      <VideoPopWindow
+        isPlay={isPlay}
+        keyword={keyword}
+        videoID={selectedVideoID}
+        title={title}
+      />
       <InfiniteScroll
+        hasMore={!!nextPage && !!keyword}
         pageStart={0}
         loadMore={loadNextVideoData}
-        hasMore={nextPage !== ''}
+        initialLoad
         useWindow
         loader={<CircularIndeterminate key={0} />}
       >
-        {`${nextPage} ${keyword} ${nextPage === ''}`}
         <div className={classes.gridContainer}>
-          <VideoPopWindow
-            isPlay={isPlay}
-            keyword={keyword}
-            videoID={selectedVideoID}
-            title={title}
-          />
-
           <GridList cellHeight="auto" cols={4} className={classes.gridList}>
             {videoItems.map((cur, idx) => {
               const {
