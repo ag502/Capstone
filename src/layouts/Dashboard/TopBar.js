@@ -35,7 +35,11 @@ import PeopleIcon from '@material-ui/icons/PeopleOutline';
 import InputIcon from '@material-ui/icons/Input';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import { searchVideosKeyword, searchVideosChanID } from 'src/utils/axios';
+import {
+  searchVideosKeyword,
+  searchVideosChanID,
+  searchVideosID
+} from 'src/utils/axios';
 // import axios from 'axios';
 import NotificationsPopover from 'src/components/NotificationsPopover';
 import PricingModal from 'src/components/PricingModal';
@@ -220,7 +224,7 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
       if (searchType === 1) {
         receivedData = await searchVideosKeyword(inputValue);
       } else if (searchType === 2) {
-        console.log('pass');
+        receivedData = await searchVideosID(inputValue);
       } else if (searchType === 3) {
         receivedData = await searchVideosChanID(inputValue);
       }
@@ -294,7 +298,7 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
   let inputMessage = 'Input your Key Word';
 
   if (searchType === 2) {
-    inputMessage = 'Input your Video ID';
+    inputMessage = 'Input your Video ID1, Video ID2, ...';
   } else if (searchType === 3) {
     inputMessage = 'Input your Channel ID';
   }
