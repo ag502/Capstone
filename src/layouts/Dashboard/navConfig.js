@@ -50,15 +50,15 @@ export default [
         items: [
           {
             title: '1.',
-            href: '/'
+            href: '/1'
           },
           {
             title: '2.',
-            href: '/'
+            href: '/2'
           },
           {
             title: '3.',
-            href: '/'
+            href: '/3'
           }
         ]
       }
