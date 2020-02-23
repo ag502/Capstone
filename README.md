@@ -6,13 +6,14 @@
 - [x] 채널 클릭시 유튜브 사이트 채널로 이동
 - [x] 채널을 제외한 부분 클릭시 비디오 재생 팝업 실행
 - [x] 클리핑할 구간 지정하는 slider 구현
-- [ ] ## 비디오 재생 팝업 우측하단 cliping 클릭시 server에 post 요청
+- [ ] 비디오 재생 팝업 우측하단 cliping 클릭시 server에 post 요청
   - [x] cliping 요청시 post 할 정보에 videoid, keyword 추가
 - [x] 유튜브 api nextPageToken 구현
 - [ ] react Hooks life cycle을 이용해 불필요 한 rendering 방지
 - [x] react router 수정
 - [ ] `layouts/Dashboard/Topbar.js' 에서 processVideoData redux thunk로 변환
-- [x] 채널 아이디 별 검색 기능 추가 (마지막 Page에서 loading 안되게 막아야 함)
+- [x] 채널 아이디 별 검색 기능 추가
+- [x] 비디오 아이디 별 검색 기능 추가
 
 ---
 
