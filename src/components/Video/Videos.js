@@ -47,7 +47,7 @@ const Videos = ({ nextPage, keyword, loadNextVideoData, videoItems }) => {
     state => state.videoPlay
   );
 
-  console.log(`Overview Rendering${nextPage}`);
+  console.log(`Videos Rendering ${nextPage}`);
   return (
     <Page className={classes.root} title="Overview">
       <VideoPopWindow

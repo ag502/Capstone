@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { searchVideosChanID } from 'src/utils/axios';
-import { setChannelVideoData } from 'src/actions';
-import { useLocation } from 'react-router';
+import { setChannelVideoData, setChannleMoreVidoeData } from 'src/actions';
 import Videos from '../../components/Video/Videos';
 
 const processData = (data, keyword) => {
@@ -27,8 +26,8 @@ const processData = (data, keyword) => {
 const ChannelPage = ({ match }) => {
   const {
     channelSearch: {
-      searchKeword: keyword,
-      nexPageToken: nextPage,
+      searchKeyword: keyword,
+      nextPageToken: nextPage,
       items: videoItems
     }
   } = useSelector(state => state.videoData);
@@ -51,11 +50,18 @@ const ChannelPage = ({ match }) => {
       );
   }, []);
 
+  const loadNextVideoData = page => {
+    searchVideosChanID(id, nextPage)
+      .then(data => processData(data, id))
+      .then(res => dispatch(setChannleMoreVidoeData(res)));
+  };
+
+  console.log(`Channel View Render ${nextPage} ${keyword}`);
   return (
     <Videos
       nextPage={nextPage}
       keyword={keyword}
-      loadNextVideoData={() => {}}
+      loadNextVideoData={loadNextVideoData}
       videoItems={videoItems}
     />
   );

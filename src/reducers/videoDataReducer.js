@@ -41,6 +41,15 @@ const videoDataReducer = (state = initialState, action) => {
         ...state,
         channelSearch: { ...state.channelSearch, ...action.payload }
       };
+    case actionTypes.SET_CHANNEL_MORE_VIDEO_DATA:
+      return {
+        ...state,
+        channelSearch: {
+          ...state.channelSearch,
+          ...action.payload,
+          items: [...state.channelSearch.items, ...action.payload.items]
+        }
+      };
     default:
       return state;
   }
