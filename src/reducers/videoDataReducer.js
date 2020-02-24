@@ -7,17 +7,25 @@ const initialState = {
   nextPageToken: 'init',
   prevPageToken: 'init',
   totalResults: '',
-  items: []
+  items: [],
+  channelSearch: {
+    searchType: 3,
+    searchKeyword: '',
+    nextPageToken: 'init',
+    prevPageToken: 'init',
+    totalResults: '',
+    items: []
+  }
 };
 
 const videoDataReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.GET_VIDEO_DATA:
+    case actionTypes.SET_VIDEO_DATA:
       return {
         ...state,
         ...action.payload
       };
-    case actionTypes.GET_MORE_VIDEO_DATA:
+    case actionTypes.SET_MORE_VIDEO_DATA:
       return {
         ...state,
         ...action.payload,
@@ -27,6 +35,11 @@ const videoDataReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: !state.isLoading
+      };
+    case actionTypes.SET_CHANNEL_VIDEO_DATA:
+      return {
+        ...state,
+        channelSearch: { ...state.channelSearch, ...action.payload }
       };
     default:
       return state;

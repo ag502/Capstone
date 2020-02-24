@@ -43,7 +43,7 @@ import {
 // import axios from 'axios';
 import NotificationsPopover from 'src/components/NotificationsPopover';
 import PricingModal from 'src/components/PricingModal';
-import { getVideoData, logout } from 'src/actions';
+import { setVideoData, logout } from 'src/actions';
 import ChatBar from './ChatBar';
 
 const useStyles = makeStyles(theme => ({
@@ -254,7 +254,7 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
       .then(result => {
         console.log(result);
         window.scrollTo(0, 0);
-        dispatch(getVideoData(result));
+        dispatch(setVideoData(result));
       })
       .finally(() => setSearchValue(''));
   };
@@ -265,7 +265,7 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
         .then(result => {
           console.log(result);
           window.scrollTo(0, 0);
-          dispatch(getVideoData(result));
+          dispatch(setVideoData(result));
         })
         .finally(() => {
           setSearchValue('');

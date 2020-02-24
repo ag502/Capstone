@@ -20,7 +20,7 @@ export const searchVideosChanID = (id, page = '') => {
     `${defaultInfo.baseURL}search?key=${defaultInfo.apiKey}&part=snippet&channelId=${id}&maxResults=20&pageToken=${page}&type=video`
   );
 };
-// https://www.googleapis.com/youtube/v3/videos?key=AIzaSyAdQ6rATxPvzElZFkGWP_3oSvonJfkBxw8&id=W5VCsb8hj1I,W5VCsb8hj1I&part=snippet
+
 export const searchVideosID = (id, page = '') => {
   console.log(`Send request to Youtube${id}`);
   return axios.get(

@@ -11,6 +11,7 @@ import Link from '@material-ui/core/Link';
 import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
+import { Link as RouterLink } from 'react-router-dom';
 import { playVideo } from '../../actions';
 
 const useStyles = makeStyles(theme => ({
@@ -76,8 +77,10 @@ function VideoThumbNail({
         </Tooltip>
         <Typography noWrap display="block" variant="subtitle1">
           <Link
-            href={`https://www.youtube.com/channel/${channelID}`}
-            target="_blank"
+            component={RouterLink}
+            // href={`https://www.youtube.com/channel/${channelID}`}
+            to={`/channel/${channelID}`}
+            // target="_blank"
             rel="noreferrer"
             onClick={moveToChannel}
           >

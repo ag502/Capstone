@@ -80,19 +80,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function renderNavItems({
-  // eslint-disable-next-line react/prop-types
-  items,
-  subheader,
-  key,
-  ...rest
-}) {
+function renderNavItems({ items, subheader, key, ...rest }) {
   return (
     <List key={key}>
       {subheader && <ListSubheader disableSticky>{subheader}</ListSubheader>}
-      {/* eslint-disable-next-line react/prop-types */}
       {items.reduce(
-        // eslint-disable-next-line no-use-before-define
         (acc, item) =>
           reduceChildRoutes({
             acc,

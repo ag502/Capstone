@@ -1,72 +1,23 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { makeStyles } from '@material-ui/styles';
-import { Container } from '@material-ui/core';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import Page from 'src/components/Page';
-import CircularIndeterminate from 'src/components/Progress';
+import { setVideoData, setMoreVideoData } from 'src/actions';
 import { searchVideosKeyword, searchVideosChanID } from 'src/utils/axios';
-import { getMoreVideoData, loading, getVideoData } from 'src/actions';
-// import InfiniteScroll from 'react-infinite-scroller';
-import InfiniteScroll from '../../components/InfiniteScroll';
-import VideoThumbNail from '../../components/Video/VideoThumbNail';
-import VideoPopWindow from '../../components/Video/VideoPlayer';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    paddingTop: theme.spacing(3),
-    paddingBottom: theme.spacing(3)
-  },
-  gridContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    overflow: 'hidden'
-  },
-  gridList: {
-    width: '100%',
-    height: '100%'
-  },
-  icon: {
-    color: 'rgba(255, 255, 255, 0.54)'
-  },
-  statistics: {
-    marginTop: theme.spacing(3)
-  },
-  notifications: {
-    marginTop: theme.spacing(6)
-  },
-  projects: {
-    marginTop: theme.spacing(6)
-  },
-  todos: {
-    marginTop: theme.spacing(6)
-  }
-}));
+import Videos from '../../components/Video/Videos';
 
 function Overview() {
-  const classes = useStyles();
   const {
-    isLoading,
     searchType,
     items: videoItems,
     searchKeyword: keyword,
     nextPageToken: nextPage
   } = useSelector(state => state.videoData);
-  const { isPlay, title, selectedVideoID } = useSelector(
-    state => state.videoPlay
-  );
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('mount');
+    console.log('Overview mount');
     if (!keyword) {
-      dispatch(
-        getVideoData({
-          searchKeyword: '한달살기'
-        })
-      );
+      dispatch(setVideoData({ searchKeyword: '한달살기' }));
     }
   }, []);
 
@@ -109,62 +60,18 @@ function Overview() {
     processVidoeData()
       .then(result => {
         console.log(result);
-        dispatch(getMoreVideoData(result));
+        dispatch(setMoreVideoData(result));
       })
       .finally(() => {});
   };
 
-  console.log(`Overview Rendering${nextPage}`);
   return (
-    <Page className={classes.root} title="Overview">
-      <VideoPopWindow
-        isPlay={isPlay}
-        keyword={keyword}
-        videoID={selectedVideoID}
-        title={title}
-      />
-      <InfiniteScroll
-        hasMore={!!nextPage && !!keyword}
-        pageStart={0}
-        loadMore={loadNextVideoData}
-        initialLoad
-        useWindow
-        loader={<CircularIndeterminate key={0} />}
-      >
-        <div className={classes.gridContainer}>
-          <GridList cellHeight="auto" cols={4} className={classes.gridList}>
-            {videoItems.map((cur, idx) => {
-              const {
-                id: { videoId },
-                snippet: {
-                  publishedAt,
-                  channelId,
-                  channelTitle,
-                  title,
-                  thumbnails: {
-                    high: { url }
-                  }
-                }
-              } = cur;
-              const publishDate = publishedAt.slice(0, 10);
-              return (
-                <GridListTile key={idx}>
-                  <VideoThumbNail
-                    key={idx}
-                    publishDate={publishDate}
-                    channelID={channelId}
-                    channelTitle={channelTitle}
-                    videoID={videoId}
-                    title={title}
-                    thumbnail={url}
-                  />
-                </GridListTile>
-              );
-            })}
-          </GridList>
-        </div>
-      </InfiniteScroll>
-    </Page>
+    <Videos
+      nextPage={nextPage}
+      keyword={keyword}
+      loadNextVideoData={loadNextVideoData}
+      videoItems={videoItems}
+    />
   );
 }
 
