@@ -9,6 +9,7 @@ import DashboardAnalyticsView from './views/DashboardAnalytics';
 import DashboardDefaultView from './views/DashboardDefault';
 import OverviewView from './views/Overview';
 import PresentationView from './views/Presentation';
+import Test from './views/Channel';
 
 export default [
   {
@@ -59,6 +60,7 @@ export default [
       }
     ]
   },
+
   /**
    * Page which has Navbar and Topbar
    */
@@ -66,6 +68,11 @@ export default [
     route: '*',
     component: DashboardLayout,
     routes: [
+      {
+        path: '/channel/:id',
+        exact: true,
+        component: lazy(() => import('src/views/Channel'))
+      },
       {
         path: '/data-process',
         exact: true,

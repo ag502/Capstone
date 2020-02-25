@@ -20,6 +20,7 @@
     }
   },
   "rules": {
+    "object-curly-newline": 0,
     "comma-dangle": "off",
     "no-plusplus": "off",
     "import/no-unresolved": "off", // Temporary fix
@@ -32,13 +33,13 @@
     "jsx-a11y/control-has-associated-label": "off",
     "jsx-a11y/anchor-is-valid": "off",
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
     "react/prop-types": "off",
     "linebreak-style": 0,
     "arrow-parens": ["error", "as-needed"],
     "no-console": "off",
     "operator-linebreak": ["error", "after"],
-    "react-hooks/exhaustive-deps": 0
-    // "object-curly-newline": ["error", "never"]
+    "react-hooks/exhaustive-deps": 0,
+    "no-unneeded-ternary": 0,
+    "class-methods-use-this": 0
   }
 }
