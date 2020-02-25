@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders', ## react 연결
 ]
 
 MIDDLEWARE = [
@@ -47,7 +48,17 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware', ## react 연결
 ]
+
+### react 연결
+CORS_ORIGIN_ALLOW_ALL = False
+
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000', # react
+    'http://localhost:8000', # django
+)
+###
 
 ROOT_URLCONF = 'config.urls'
 
@@ -75,8 +86,16 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'capstone',
+        'USER': 'Animo',
+        'PASSWORD': 'Animo3015',
+        'HOST': 'capstone.cuxnxn5wstp6.ap-northeast-2.rds.amazonaws.com', #공백으로 냅두면 default localhost
+        'PORT': '3306',
+
     }
 }
 
