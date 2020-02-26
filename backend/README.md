@@ -4,11 +4,13 @@
 
 - [ ] 초기환경 셋팅
   - [ ] requirements.txt 만들기
-- [x] aws db 연결
+- [ ] aws 연결
+  - [x] rds 연결
+  - [ ] s3 연결
 - [x] react django 연결
 - [ ] clipping App 
-  - [x]  - VideoInfo model 생성
-  - [ ]  - view 만들기
+  - [x]  VideoInfo model 생성
+  - [ ]  view 만들기
 
 
 
