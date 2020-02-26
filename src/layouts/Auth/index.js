@@ -34,7 +34,7 @@ function Auth({ route }) {
       <div className={classes.container}>
         <div className={classes.content}>
           <Suspense fallback={<LinearProgress />}>
-            {/* {renderRoutes(route.routes)} */}
+            {renderRoutes(route.routes)}
           </Suspense>
         </div>
       </div>

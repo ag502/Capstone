@@ -26,6 +26,7 @@ const processData = (data, keyword) => {
 const ChannelPage = ({ match }) => {
   const {
     channelSearch: {
+      searchType,
       searchKeyword: keyword,
       nextPageToken: nextPage,
       items: videoItems
@@ -63,6 +64,7 @@ const ChannelPage = ({ match }) => {
       keyword={keyword}
       loadNextVideoData={loadNextVideoData}
       videoItems={videoItems}
+      searchType={searchType}
     />
   );
 };
