@@ -137,7 +137,7 @@ function TrimSlider({ duration, getTrimmingPoint }) {
   );
 }
 
-function VideoPopWindow({ isPlay, videoID, title, keyword }) {
+function VideoPopWindow({ isPlay, videoID, title, keyword, searchType }) {
   const dispatch = useDispatch();
   let trimmingPoint = [0, 0];
 
@@ -152,6 +152,9 @@ function VideoPopWindow({ isPlay, videoID, title, keyword }) {
     // videoID
     console.log(videoID);
     // keyword
+    if (searchType === 2 || searchType === 3) {
+      keyword = '';
+    }
     console.log(keyword);
 
     // 클리핑 요청 보낼 부분

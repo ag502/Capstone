@@ -71,6 +71,7 @@ function Overview() {
       keyword={keyword}
       loadNextVideoData={loadNextVideoData}
       videoItems={videoItems}
+      searchType={searchType}
     />
   );
 }
