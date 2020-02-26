@@ -4,7 +4,6 @@ const instance = axios.create();
 
 export const defaultInfo = {
   baseURL: 'https://www.googleapis.com/youtube/v3/',
-  // apiKey: 'AIzaSyAuJEXPVw4ZiQjESoErRngyIDNzj3nKD2g'
   apiKey: 'AIzaSyAwto5LXP7NT5sloIpmkd6DRiyb7XMTjc4'
 };
 
