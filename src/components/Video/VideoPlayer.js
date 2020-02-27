@@ -14,6 +14,7 @@ import { Close } from '@material-ui/icons';
 import Typography from '@material-ui/core/Typography';
 import ReactPlayer from 'react-player';
 import { closeVideo } from '../../actions';
+import axios from 'axios'; //axios
 
 const styles = theme => ({
   root: {
@@ -153,13 +154,15 @@ function VideoPopWindow({ isPlay, videoID, title, keyword, searchType }) {
     console.log(videoID);
     // keyword
     if (searchType === 2 || searchType === 3) {
-      keyword = '';
+      keyword = null; // null??
     }
     console.log(keyword);
 
     // 클리핑 요청 보낼 부분
     // trimmingPoint는 cliping할 처음과 끝 부분, slider를 움직이지 않으면 0, 0을 가르킴
     // axios.post("#");
+    axios.post('http://127.0.0.1:8000/clipping/', 
+      {videoId : `${videoID}`, keyword:`${keyword}`, startTime:`${trimmingPoint[0]}`, endTime:`${trimmingPoint[1]}`});
   };
 
   const getTrimmingPoint = value => {

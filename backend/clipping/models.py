@@ -19,4 +19,4 @@ class VideoInfo(models.Model):
         return self.created_at.astimezone(korean_timezone)
 
     def __str__(self):
-        return self.video_id + '_' + (self.endTime-self.startTime)
+        return "{}_{}".format(self.videoId, self.created_at)
