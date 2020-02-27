@@ -2,8 +2,8 @@
 
 #### todo
 
-- [ ] 초기환경 셋팅
-  - [ ] requirements.txt 만들기
+- [x] 초기환경 셋팅
+  - [x] requirements.txt 만들기
 - [ ] aws 연결
   - [x] rds 연결
   - [ ] s3 연결
