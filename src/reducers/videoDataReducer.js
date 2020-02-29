@@ -2,12 +2,14 @@ import * as actionTypes from 'src/actions';
 
 const initialState = {
   error: '',
-  searchType: 1,
-  searchKeyword: '',
-  nextPageToken: 'init',
-  prevPageToken: 'init',
-  totalResults: '',
-  items: [],
+  generalSearch: {
+    searchType: 1,
+    searchKeyword: '',
+    nextPageToken: 'init',
+    prevPageToken: 'init',
+    totalResults: '',
+    items: []
+  },
   channelSearch: {
     searchType: 3,
     searchKeyword: '',
@@ -24,13 +26,18 @@ const videoDataReducer = (state = initialState, action) => {
       return {
         ...state,
         error: '',
-        ...action.payload
+        generalSearch: { ...state.generalSearch, ...action.payload }
       };
     case actionTypes.SET_MORE_VIDEO_DATA:
       return {
         ...state,
-        ...action.payload,
-        items: [...state.items, ...action.payload.items]
+        generalSearch: {
+          ...state.generalSearch,
+          ...action.payload,
+          items: [...state.generalSearch.items, ...action.payload.items]
+        }
+        // ...action.payload,
+        // items: [...state.items, ...action.payload.items]
       };
     case actionTypes.VIDEO_DATA_LOAD:
       return {

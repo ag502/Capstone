@@ -1,6 +1,6 @@
 import React, { useEffect, Suspense, lazy } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setVideoData, setMoreVideoData } from 'src/actions';
+import { setVideoData, setMoreVideoData, setLoadError } from 'src/actions';
 import {
   searchVideosKeyword,
   searchVideosChanID,
@@ -12,10 +12,12 @@ import Videos from '../../components/Video/Videos';
 function Overview() {
   const {
     error,
-    searchType,
-    items: videoItems,
-    searchKeyword: keyword,
-    nextPageToken: nextPage
+    generalSearch: {
+      searchType,
+      items: videoItems,
+      searchKeyword: keyword,
+      nextPageToken: nextPage
+    }
   } = useSelector(state => state.videoData);
   const dispatch = useDispatch();
 
@@ -23,9 +25,13 @@ function Overview() {
     console.log('Overview mount');
     if (!keyword) {
       // dispatch(setVideoData({ searchKeyword: '한달살기' }));
-      searchVideosKeyword('한달살기').then(res => {
-        dispatch(setVideoData(res));
-      });
+      searchVideosKeyword('한달살기')
+        .then(res => {
+          dispatch(setVideoData(res));
+        })
+        .catch(err => {
+          dispatch(setLoadError(err.response.status));
+        });
     }
   }, []);
 
@@ -61,7 +67,8 @@ function Overview() {
 
   return (
     <>
-      {(!error && keyword && videoItems.length !== 0) || nextPage === 'init' ? (
+      {(!error && keyword && videoItems.length !== 0) ||
+      (!error && nextPage === 'init') ? (
         <Videos
           nextPage={nextPage}
           keyword={keyword}

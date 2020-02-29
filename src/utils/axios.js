@@ -4,18 +4,13 @@ const instance = axios.create();
 
 const defaultInfo = {
   baseURL: 'https://www.googleapis.com/youtube/v3/',
-  apiKey: 'AIzaSyAwto5LXP7NT5sloIpmkd6DRiyb7XMTjc4'
+  apiKey: 'AIzaSyDOA7d2cH7InnpkA2sDJ_hGJesmNrH_AWc'
 };
-axios.interceptors.response.use(
-  res => {
-    console.log(res);
-    return res;
-  }
-  // err => {
-  //   console.log(err);
-  //   return err;
-  // }
-);
+axios.interceptors.response.use(res => {
+  console.log(res);
+  return res;
+});
+
 const processVideoData = (data, keyword) => {
   const {
     data: {
