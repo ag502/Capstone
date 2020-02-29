@@ -10,6 +10,7 @@
 - [x] 채널 아이디 별 검색 기능 추가
 - [x] 비디오 아이디 별 검색 기능 추가
 - [x] react router 수정
+- [x] 검색 결과 없거나 error response 받을 시 검색결과 없음 페이지 렌더링
 - [ ] 비디오 재생 팝업 우측하단 cliping 클릭시 server에 post 요청
   - [x] cliping 요청시 post 할 정보에 videoid, keyword 추가
 - [ ] react Hooks life cycle을 이용해 불필요 한 rendering 방지

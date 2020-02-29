@@ -1,7 +1,7 @@
 import * as actionTypes from 'src/actions';
 
 const initialState = {
-  isLoading: false,
+  error: '',
   searchType: 1,
   searchKeyword: '',
   nextPageToken: 'init',
@@ -23,6 +23,7 @@ const videoDataReducer = (state = initialState, action) => {
     case actionTypes.SET_VIDEO_DATA:
       return {
         ...state,
+        error: '',
         ...action.payload
       };
     case actionTypes.SET_MORE_VIDEO_DATA:
@@ -39,7 +40,13 @@ const videoDataReducer = (state = initialState, action) => {
     case actionTypes.SET_CHANNEL_VIDEO_DATA:
       return {
         ...state,
+        error: '',
         channelSearch: { ...state.channelSearch, ...action.payload }
+      };
+    case actionTypes.SET_LOAD_ERROR:
+      return {
+        ...state,
+        error: action.payload
       };
     case actionTypes.SET_CHANNEL_MORE_VIDEO_DATA:
       return {

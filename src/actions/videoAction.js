@@ -2,6 +2,7 @@ export const SET_VIDEO_DATA = 'SET_VIDEO_DATA';
 export const SET_MORE_VIDEO_DATA = 'SET_MORE_VIDEO_DATA';
 export const SET_CHANNEL_VIDEO_DATA = 'SET_CHANNEL_VIDEO_DATA';
 export const SET_CHANNEL_MORE_VIDEO_DATA = 'SET_CHANNEL_MORE_VIDEO_DATA';
+export const SET_LOAD_ERROR = 'SET_LOAD_ERROR';
 export const PLAY_VIDEO = 'PLAY_VIDEO';
 export const CLOSE_VIDEO = 'CLOSE_VIDEO';
 export const VIDEO_DATA_LOAD = 'VIDEO_DATA_LOAD';
@@ -23,6 +24,11 @@ export const setMoreVideoData = data => ({
 
 export const setChannleMoreVidoeData = data => ({
   type: SET_CHANNEL_MORE_VIDEO_DATA,
+  payload: data
+});
+
+export const setLoadError = data => ({
+  type: SET_LOAD_ERROR,
   payload: data
 });
 

@@ -6,7 +6,16 @@ const defaultInfo = {
   baseURL: 'https://www.googleapis.com/youtube/v3/',
   apiKey: 'AIzaSyAwto5LXP7NT5sloIpmkd6DRiyb7XMTjc4'
 };
-
+axios.interceptors.response.use(
+  res => {
+    console.log(res);
+    return res;
+  }
+  // err => {
+  //   console.log(err);
+  //   return err;
+  // }
+);
 const processVideoData = (data, keyword) => {
   const {
     data: {

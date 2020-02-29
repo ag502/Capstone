@@ -43,7 +43,7 @@ import {
 // import axios from 'axios';
 import NotificationsPopover from 'src/components/NotificationsPopover';
 import PricingModal from 'src/components/PricingModal';
-import { setVideoData, logout } from 'src/actions';
+import { setVideoData, logout, setLoadError } from 'src/actions';
 import ChatBar from './ChatBar';
 
 const useStyles = makeStyles(theme => ({
@@ -230,27 +230,35 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
       }
       return receivedData;
     } catch (error) {
-      console.log(error);
+      return Promise.reject(error);
     }
   };
 
-  const clickSearchButton = event => {
+  const clickSearchHandler = event => {
     loadVideoData(searchValue)
       .then(result => {
         console.log(result);
         window.scrollTo(0, 0);
         dispatch(setVideoData(result));
       })
+      .catch(err => {
+        console.log(err.response.status);
+        dispatch(setLoadError(err.response.status));
+      })
       .finally(() => setSearchValue(''));
   };
 
-  const enterSearchButton = event => {
+  const enterSearchHandler = event => {
     if (event.key === 'Enter' && searchValue) {
       loadVideoData(searchValue)
         .then(result => {
           console.log(result);
           window.scrollTo(0, 0);
           dispatch(setVideoData(result));
+        })
+        .catch(err => {
+          console.log(err.response.status);
+          dispatch(setLoadError(err.response.status));
         })
         .finally(() => {
           setSearchValue('');
@@ -318,13 +326,13 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
                 disableUnderline
                 ref={searchValueRef}
                 onChange={handleSearchChange}
-                onKeyDown={enterSearchButton}
+                onKeyDown={enterSearchHandler}
                 placeholder={inputMessage}
                 value={searchValue}
               />
               <SearchIcon
                 className={classes.searchIcon}
-                onClick={clickSearchButton}
+                onClick={clickSearchHandler}
               />
             </div>
           )}

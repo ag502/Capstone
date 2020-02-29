@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense, lazy } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setVideoData, setMoreVideoData } from 'src/actions';
 import {
@@ -11,6 +11,7 @@ import Videos from '../../components/Video/Videos';
 
 function Overview() {
   const {
+    error,
     searchType,
     items: videoItems,
     searchKeyword: keyword,
@@ -21,7 +22,10 @@ function Overview() {
   useEffect(() => {
     console.log('Overview mount');
     if (!keyword) {
-      dispatch(setVideoData({ searchKeyword: '한달살기' }));
+      // dispatch(setVideoData({ searchKeyword: '한달살기' }));
+      searchVideosKeyword('한달살기').then(res => {
+        dispatch(setVideoData(res));
+      });
     }
   }, []);
 
@@ -39,8 +43,8 @@ function Overview() {
       }
 
       return receivedData;
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -53,14 +57,24 @@ function Overview() {
       .finally(() => {});
   };
 
+  const ErrorNotFound = lazy(() => import('../ErrorNotFound'));
+
   return (
-    <Videos
-      nextPage={nextPage}
-      keyword={keyword}
-      loadNextVideoData={loadNextVideoData}
-      videoItems={videoItems}
-      searchType={searchType}
-    />
+    <>
+      {(!error && keyword && videoItems.length !== 0) || nextPage === 'init' ? (
+        <Videos
+          nextPage={nextPage}
+          keyword={keyword}
+          loadNextVideoData={loadNextVideoData}
+          videoItems={videoItems}
+          searchType={searchType}
+        />
+      ) : (
+        <Suspense>
+          <ErrorNotFound />
+        </Suspense>
+      )}
+    </>
   );
 }
 
