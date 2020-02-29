@@ -1,7 +1,11 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setVideoData, setMoreVideoData } from 'src/actions';
-import { searchVideosKeyword, searchVideosChanID } from 'src/utils/axios';
+import {
+  searchVideosKeyword,
+  searchVideosChanID,
+  searchVideosID
+} from 'src/utils/axios';
 
 import Videos from '../../components/Video/Videos';
 
@@ -22,42 +26,26 @@ function Overview() {
   }, []);
 
   // Redux Thunk로 바꾸기
-  const processVidoeData = async () => {
+  const loadVideoData = async () => {
     try {
       let receivedData = null;
       const page = nextPage === 'init' ? '' : nextPage;
       if (searchType === 1) {
         receivedData = await searchVideosKeyword(keyword, page);
       } else if (searchType === 2) {
-        console.log('pass');
+        receivedData = await searchVideosID(keyword, page);
       } else if (searchType === 3) {
         receivedData = await searchVideosChanID(keyword, page);
       }
 
-      const {
-        data: {
-          prevPageToken,
-          nextPageToken,
-          pageInfo: { totalResults },
-          items
-        }
-      } = receivedData;
-
-      return {
-        searchType,
-        searchKeyword: keyword,
-        nextPageToken: nextPageToken === undefined ? '' : nextPageToken,
-        prevPageToken: prevPageToken === undefined ? '' : prevPageToken,
-        totalResults,
-        items
-      };
+      return receivedData;
     } catch (error) {
       console.log(error);
     }
   };
 
   const loadNextVideoData = page => {
-    processVidoeData()
+    loadVideoData()
       .then(result => {
         console.log(result);
         dispatch(setMoreVideoData(result));

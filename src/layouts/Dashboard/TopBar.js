@@ -217,7 +217,7 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
   };
 
   // Redux Thunk로 바꾸기 !!!!
-  const processVideoDate = async inputValue => {
+  const loadVideoData = async inputValue => {
     try {
       console.log('execute');
       let receivedData = null;
@@ -228,29 +228,14 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
       } else if (searchType === 3) {
         receivedData = await searchVideosChanID(inputValue);
       }
-      const {
-        data: {
-          prevPageToken,
-          nextPageToken,
-          pageInfo: { totalResults },
-          items
-        }
-      } = receivedData;
-      return {
-        searchType,
-        searchKeyword: inputValue,
-        nextPageToken: nextPageToken === undefined ? '' : nextPageToken,
-        prevPageToken: prevPageToken === undefined ? '' : prevPageToken,
-        totalResults,
-        items
-      };
+      return receivedData;
     } catch (error) {
       console.log(error);
     }
   };
 
   const clickSearchButton = event => {
-    processVideoDate(searchValue)
+    loadVideoData(searchValue)
       .then(result => {
         console.log(result);
         window.scrollTo(0, 0);
@@ -261,7 +246,7 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
 
   const enterSearchButton = event => {
     if (event.key === 'Enter' && searchValue) {
-      processVideoDate(searchValue)
+      loadVideoData(searchValue)
         .then(result => {
           console.log(result);
           window.scrollTo(0, 0);
