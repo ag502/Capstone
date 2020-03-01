@@ -14,7 +14,6 @@
 - [ ] 비디오 재생 팝업 우측하단 cliping 클릭시 server에 post 요청
   - [x] cliping 요청시 post 할 정보에 videoid, keyword 추가
 - [ ] react Hooks life cycle을 이용해 불필요 한 rendering 방지
-- [ ] `layouts/Dashboard/Topbar.js` 에서 `processVideoData` redux saga로 변환
 
 ---
 
