@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -8,8 +8,6 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import Slider from '@material-ui/core/Slider';
 import IconButton from '@material-ui/core/IconButton';
-import Paper from '@material-ui/core/Paper';
-import Fade from '@material-ui/core/Fade';
 import { Close } from '@material-ui/icons';
 import Typography from '@material-ui/core/Typography';
 import ReactPlayer from 'react-player';

@@ -4,25 +4,6 @@ import { searchVideosChanID } from 'src/utils/axios';
 import { setChannelVideoData, setChannleMoreVidoeData } from 'src/actions';
 import Videos from '../../components/Video/Videos';
 
-const processData = (data, keyword) => {
-  const {
-    data: {
-      prevPageToken,
-      nextPageToken,
-      pageInfo: { totalResults },
-      items
-    }
-  } = data;
-
-  return {
-    searchKeyword: keyword,
-    nextPageToken: nextPageToken === undefined ? '' : nextPageToken,
-    prevPageToken: prevPageToken === undefined ? '' : prevPageToken,
-    totalResults,
-    items
-  };
-};
-
 const ChannelPage = ({ match }) => {
   const {
     channelSearch: {
@@ -36,9 +17,7 @@ const ChannelPage = ({ match }) => {
   const { id } = match.params;
 
   useEffect(() => {
-    searchVideosChanID(id)
-      .then(data => processData(data, id))
-      .then(res => dispatch(setChannelVideoData(res)));
+    searchVideosChanID(id).then(res => dispatch(setChannelVideoData(res)));
     return () =>
       dispatch(
         setChannelVideoData({
@@ -52,9 +31,9 @@ const ChannelPage = ({ match }) => {
   }, []);
 
   const loadNextVideoData = page => {
-    searchVideosChanID(id, nextPage)
-      .then(data => processData(data, id))
-      .then(res => dispatch(setChannleMoreVidoeData(res)));
+    searchVideosChanID(id, nextPage).then(res =>
+      dispatch(setChannleMoreVidoeData(res))
+    );
   };
 
   console.log(`Channel View Render ${nextPage} ${keyword}`);

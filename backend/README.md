@@ -11,6 +11,8 @@
 - [ ] clipping App 
   - [x]  VideoInfo model 생성
   - [ ]  view 만들기
+    - [x] Cliping 영상 다운로드 만들기
+    - [ ] Cliping 영상 편집 만들기
 
 
 

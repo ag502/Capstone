@@ -1,63 +1,61 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense, lazy } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setVideoData, setMoreVideoData } from 'src/actions';
-import { searchVideosKeyword, searchVideosChanID } from 'src/utils/axios';
+import { setVideoData, setMoreVideoData, setLoadError } from 'src/actions';
+import {
+  searchVideosKeyword,
+  searchVideosChanID,
+  searchVideosID
+} from 'src/utils/axios';
 
 import Videos from '../../components/Video/Videos';
 
 function Overview() {
   const {
-    searchType,
-    items: videoItems,
-    searchKeyword: keyword,
-    nextPageToken: nextPage
+    error,
+    generalSearch: {
+      searchType,
+      items: videoItems,
+      searchKeyword: keyword,
+      nextPageToken: nextPage
+    }
   } = useSelector(state => state.videoData);
   const dispatch = useDispatch();
 
   useEffect(() => {
     console.log('Overview mount');
     if (!keyword) {
-      dispatch(setVideoData({ searchKeyword: '한달살기' }));
+      // dispatch(setVideoData({ searchKeyword: '한달살기' }));
+      searchVideosKeyword('한달살기')
+        .then(res => {
+          dispatch(setVideoData(res));
+        })
+        .catch(err => {
+          dispatch(setLoadError(err.response.status));
+        });
     }
   }, []);
 
   // Redux Thunk로 바꾸기
-  const processVidoeData = async () => {
+  const loadVideoData = async () => {
     try {
       let receivedData = null;
       const page = nextPage === 'init' ? '' : nextPage;
       if (searchType === 1) {
         receivedData = await searchVideosKeyword(keyword, page);
       } else if (searchType === 2) {
-        console.log('pass');
+        receivedData = await searchVideosID(keyword, page);
       } else if (searchType === 3) {
         receivedData = await searchVideosChanID(keyword, page);
       }
 
-      const {
-        data: {
-          prevPageToken,
-          nextPageToken,
-          pageInfo: { totalResults },
-          items
-        }
-      } = receivedData;
-
-      return {
-        searchType,
-        searchKeyword: keyword,
-        nextPageToken: nextPageToken === undefined ? '' : nextPageToken,
-        prevPageToken: prevPageToken === undefined ? '' : prevPageToken,
-        totalResults,
-        items
-      };
-    } catch (error) {
-      console.log(error);
+      return receivedData;
+    } catch (err) {
+      console.log(err);
     }
   };
 
   const loadNextVideoData = page => {
-    processVidoeData()
+    loadVideoData()
       .then(result => {
         console.log(result);
         dispatch(setMoreVideoData(result));
@@ -65,14 +63,25 @@ function Overview() {
       .finally(() => {});
   };
 
+  const ErrorNotFound = lazy(() => import('../ErrorNotFound'));
+
   return (
-    <Videos
-      nextPage={nextPage}
-      keyword={keyword}
-      loadNextVideoData={loadNextVideoData}
-      videoItems={videoItems}
-      searchType={searchType}
-    />
+    <>
+      {(!error && keyword && videoItems.length !== 0) ||
+      (!error && nextPage === 'init') ? (
+        <Videos
+          nextPage={nextPage}
+          keyword={keyword}
+          loadNextVideoData={loadNextVideoData}
+          videoItems={videoItems}
+          searchType={searchType}
+        />
+      ) : (
+        <Suspense>
+          <ErrorNotFound />
+        </Suspense>
+      )}
+    </>
   );
 }
 
