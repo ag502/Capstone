@@ -6,4 +6,7 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 router.register('clipping',views.VideoInfoViewSet)
 
-urlpatterns = router.urls
+# urlpatterns = router.urls  # 라우터 기능 상실.. 해결해야함
+
+urlpatterns = [path('clipping/', views.ClipVideoDownloader.as_view())]
+
