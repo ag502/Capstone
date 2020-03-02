@@ -45,22 +45,8 @@ export default [
       },
       {
         title: 'Model',
-        href: '/social-feed',
-        icon: Models,
-        items: [
-          {
-            title: '1.',
-            href: '/1'
-          },
-          {
-            title: '2.',
-            href: '/2'
-          },
-          {
-            title: '3.',
-            href: '/3'
-          }
-        ]
+        href: '/projects/subscribers/subscribers',
+        icon: Models
       }
     ]
   }

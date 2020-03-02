@@ -49,7 +49,7 @@ function SubscriberCard({ subscriber, className, ...rest }) {
     >
       <CardMedia
         className={classes.media}
-        image={subscriber.cover}
+        //image={subscriber.cover}// 모델 이미지 가져오기
       />
       <CardContent className={classes.content}>
         <div className={classes.avatarContainer}>
@@ -61,7 +61,7 @@ function SubscriberCard({ subscriber, className, ...rest }) {
             to="/profile/1/timeline"
           />
         </div>
-        <Typography
+        <Typography //// 모델 이름
           align="center"
           component={RouterLink}
           display="block"
@@ -70,27 +70,27 @@ function SubscriberCard({ subscriber, className, ...rest }) {
         >
           {subscriber.name}
         </Typography>
-        <Typography
+        {/* <Typography
           align="center"
           variant="body2"
         >
           {subscriber.common_connections}
           {' '}
           connections in common
-        </Typography>
+        </Typography> */}
         <Divider className={classes.divider} />
         <Grid
           container
           spacing={1}
         >
-          {subscriber.labels.map((label) => (
+          {/* {subscriber.labels.map((label) => (
             <Grid
               item
               key={label}
             >
               <Label variant="outlined">{label}</Label>
             </Grid>
-          ))}
+          ))} */}
         </Grid>
       </CardContent>
     </Card>

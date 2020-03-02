@@ -46,7 +46,7 @@ function ProjectDetails({ match, history }) {
     { value: 'overview', label: 'Overview' },
     { value: 'files', label: 'Files' },
     { value: 'activity', label: 'Activity' },
-    { value: 'subscribers', label: 'Subscribers' }
+    { value: 'subscribers', label: 'Models' }
   ];
 
   const handleAlertClose = () => {
@@ -110,13 +110,13 @@ function ProjectDetails({ match, history }) {
           ))}
         </Tabs>
         <Divider className={classes.divider} />
-        {openAlert && (
+        {/* {openAlert && (
           <Alert
             className={classes.alert}
-            message="The content holder has extended the deadline! Good luck"
+            message="Model Test!!"
             onClose={handleAlertClose}
           />
-        )}
+        )} */}
         <div className={classes.content}>
           {tab === 'overview' && <Overview project={project} />}
           {tab === 'files' && <Files files={project.files} />}
