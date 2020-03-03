@@ -16,7 +16,10 @@
 - [ ] react Hooks life cycle을 이용해 불필요 한 rendering 방지
 
 * * *
-###### 모델 부분
+###### 모델 기능
+- [ ] Overview 작성
+- [ ] 원하는 모델 선택해서 TEST 가능하도록
+- [ ] Add Model 기능
 
 ---
 
