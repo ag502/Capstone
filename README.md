@@ -15,6 +15,9 @@
   - [x] cliping 요청시 post 할 정보에 videoid, keyword 추가
 - [ ] react Hooks life cycle을 이용해 불필요 한 rendering 방지
 
+* * *
+###### 모델 부분
+
 ---
 
 #### description
