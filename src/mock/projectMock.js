@@ -3,6 +3,8 @@ import moment from 'moment';
 import { colors } from '@material-ui/core';
 import mock from 'src/utils/mock';
 
+import FaceIcon from '@material-ui/icons/Face';
+
 mock.onGet('/api/projects').reply(200, {
   projects: [
     {
@@ -270,38 +272,39 @@ I have attached a chat with our users most used devices.
     subscribers: [
       {
         id: uuid(),
-        name: 'Ekaterina Tankova',
-        avatar: '/images/avatars/avatar_2.png',
-        cover: '/images/covers/cover_1.jpg',
-        common_connections: 12,
-        labels: [
-          'User Experience',
-          'FrontEnd development',
-          'HTML5',
-          'VueJS',
-          'ReactJS'
-        ]
+        name: 'Emotion Detection',
+        icon: FaceIcon,
+        // avatar: '/images/avatars/avatar_2.png',
+        // cover: '/images/covers/cover_1.jpg',
+        // common_connections: 12,
+        // labels: [
+        //   'User Experience',
+        //   'FrontEnd development',
+        //   'HTML5',
+        //   'VueJS',
+        //   'ReactJS'
+        // ]
       },
       {
         id: uuid(),
-        name: 'Cao Yu',
-        avatar: '/images/avatars/avatar_3.png',
-        cover: '/images/covers/cover_2.jpg',
-        common_connections: 5,
-        labels: [
-          'User Interface',
-          'FullStack development',
-          'Angular',
-          'ExpressJS'
-        ]
+        name: 'Shadowing',
+        // avatar: '/images/avatars/avatar_3.png',
+        // cover: '/images/covers/cover_2.jpg',
+        // common_connections: 5,
+        // labels: [
+          // 'User Interface',
+          // 'FullStack development',
+          // 'Angular',
+          // 'ExpressJS'
+        // ]
       },
       {
         id: uuid(),
-        name: 'Clarke Gillebert',
-        avatar: '/images/avatars/avatar_6.png',
-        cover: '/images/covers/cover_2.jpg',
-        common_connections: 17,
-        labels: ['BackEnd development', 'Firebase', 'MongoDB', 'ExpressJS']
+        name: 'Face API',
+        // avatar: '/images/avatars/avatar_6.png',
+        // cover: '/images/covers/cover_2.jpg',
+        // common_connections: 17,
+        // labels: ['BackEnd development', 'Firebase', 'MongoDB', 'ExpressJS']
       }
     ],
     deadline: moment().add(7, 'days'),

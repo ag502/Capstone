@@ -48,8 +48,10 @@ import ChatBar from './ChatBar';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    boxShadow: 'none'
+    boxShadow: 'none',
+    backgroundColor: colors.blueGrey[900],
   },
+
   flexGrow: {
     flexGrow: 1
   },
@@ -311,7 +313,7 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
         </Hidden>
         <RouterLink to="/overview">
           {/* <img alt="Logo" src="/images/logos/logo--white.svg" /> */}
-          <div>Jenesis</div>
+          <div >Jenesis</div>
         </RouterLink>
         <div className={classes.flexGrow} />
         <Hidden smDown>
