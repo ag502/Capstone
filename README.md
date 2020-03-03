@@ -35,4 +35,3 @@
 
 `src/util/axios` 에서 api key값을 바꿔 사용하면 됩니다.
 
-`src/compoents/Video/` 에서 clipping 요청을 server로 보냅니다.
