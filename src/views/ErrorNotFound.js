@@ -1,7 +1,6 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
-import { Typography, Button, useTheme, useMediaQuery } from '@material-ui/core';
+import { Typography, useTheme, useMediaQuery } from '@material-ui/core';
 import Page from 'src/components/Page';
 
 const useStyles = makeStyles(theme => ({
