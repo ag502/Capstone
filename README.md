@@ -41,3 +41,11 @@
 
 `src/util/axios` 에서 api key값을 바꿔 사용하면 됩니다.
 
+***
+#### Clip Video Download (backend)
+
+1. backend/clipping/views.py 에서 output_dir = '' 부분의 경로를 로컬 저장소로 변경합니다.
+
+2. output_dir 디렉토리 안에 ffmpeg 실행 파일을 다운받아 저장합니다.
+
+3. 클리핑할 영상의 시간을 지정하고 Clipping 버튼을 누르면 저장 됩니다.
