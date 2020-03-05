@@ -48,10 +48,13 @@
 <div>
   <img width="602" alt="스크린샷 2020-03-05 오후 4 18 46" src="https://user-images.githubusercontent.com/46099115/75957289-0e6d4380-5efd-11ea-9e66-3744cc087aa0.png">
 <div/>
+  
 2. output_dir 디렉토리 안에 ffmpeg 실행 파일을 다운받아 저장합니다.
 <div>
   <img width="851" alt="스크린샷 2020-03-05 오후 4 11 34" src="https://user-images.githubusercontent.com/46099115/75957142-bafaf580-5efc-11ea-871b-38c1ee6a2312.png">
 <div/>
 
 3. 클리핑할 영상의 시간을 지정하고 Clipping 버튼을 누르면 저장 됩니다.
+- Clipping 된 영상의 이름은 videoId.startTime-endTime.mp4 로 저장 됩니다.
+  ex)iR_dSg7T-fA.49-97.mp4
 ###
