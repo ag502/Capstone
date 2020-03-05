@@ -57,4 +57,14 @@
 3. 클리핑할 영상의 시간을 지정하고 Clipping 버튼을 누르면 저장 됩니다.
 - Clipping 된 영상의 이름은 videoId.startTime-endTime.mp4 로 저장 됩니다.
   ex)iR_dSg7T-fA.49-97.mp4
-###
+  
+#### backend DB 확인
+1. 장고서버를 실행합니다.
+
+2. http://127.0.0.1:8000/admin/ 으로 접속합니다.
+- ID : Animo
+- Password : Animo3015
+
+3. 확인 하고싶은 APP으로 접속해 DB를 확인합니다.
+
+***
