@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Container } from '@material-ui/core';
-import axios from 'src/utils/axios';
+// import axios from 'src/utils/axios';
+import axios from 'axios';
 import Page from 'src/components/Page';
-import SearchBar from 'src/components/SearchBar';
 import Results from './Results';
 
 const useStyles = makeStyles(theme => ({
@@ -18,21 +18,22 @@ const useStyles = makeStyles(theme => ({
 
 function DataProcess() {
   const classes = useStyles();
-  const [customers, setCustomers] = useState([]);
-
-  const handleFilter = () => {};
-
-  const handleSearch = () => {};
+  const [clippedVideos, setClippedVideos] = useState([]);
 
   useEffect(() => {
     let mounted = true;
 
     const fetchCustomers = () => {
-      axios.get('/api/management/customers').then(response => {
-        if (mounted) {
-          setCustomers(response.data.customers);
-        }
-      });
+      // /api/management/customers
+      // https://capstone-react-ea4ac.firebaseio.com/clippingVideos.json
+      axios
+        .get(' https://capstone-react-ea4ac.firebaseio.com/clippingVideos.json')
+        .then(response => {
+          if (mounted) {
+            console.log(response);
+            setClippedVideos(response.data);
+          }
+        });
     };
 
     fetchCustomers();
@@ -45,9 +46,8 @@ function DataProcess() {
   return (
     <Page className={classes.root} title="Customer Management List">
       <Container maxWidth={false}>
-        <SearchBar onFilter={handleFilter} onSearch={handleSearch} />
-        {customers && (
-          <Results className={classes.results} customers={customers} />
+        {clippedVideos && (
+          <Results className={classes.results} clippedVideos={clippedVideos} />
         )}
       </Container>
     </Page>

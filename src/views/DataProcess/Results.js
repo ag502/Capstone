@@ -27,7 +27,7 @@ import ReviewStars from 'src/components/ReviewStars';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import TableEditBar from 'src/components/TableEditBar';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {},
   content: {
     padding: 0
@@ -50,15 +50,15 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function Results({ className, customers, ...rest }) {
+function Results({ className, clippedVideos, ...rest }) {
   const classes = useStyles();
   const [selectedCustomers, setSelectedCustomers] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const handleSelectAll = (event) => {
+  const handleSelectAll = event => {
     const selectedCustomers = event.target.checked
-      ? customers.map((customer) => customer.id)
+      ? clippedVideos.map(customer => customer.id)
       : [];
 
     setSelectedCustomers(selectedCustomers);
@@ -92,35 +92,18 @@ function Results({ className, customers, ...rest }) {
     setPage(page);
   };
 
-  const handleChangeRowsPerPage = (event) => {
+  const handleChangeRowsPerPage = event => {
     setRowsPerPage(event.target.value);
   };
 
   return (
-    <div
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
-      <Typography
-        color="textSecondary"
-        gutterBottom
-        variant="body2"
-      >
-        {customers.length}
-        {' '}
-        Records found. Page
-        {' '}
-        {page + 1}
-        {' '}
-        of
-        {' '}
-        {Math.ceil(customers.length / rowsPerPage)}
+    <div {...rest} className={clsx(classes.root, className)}>
+      <Typography color="textSecondary" gutterBottom variant="body2">
+        {clippedVideos.length} Records found. Page {page + 1} of{' '}
+        {Math.ceil(clippedVideos.length / rowsPerPage)}
       </Typography>
       <Card>
-        <CardHeader
-          action={<GenericMoreButton />}
-          title="All customers"
-        />
+        <CardHeader action={<GenericMoreButton />} title="All Videos" />
         <Divider />
         <CardContent className={classes.content}>
           <PerfectScrollbar>
@@ -130,49 +113,47 @@ function Results({ className, customers, ...rest }) {
                   <TableRow>
                     <TableCell padding="checkbox">
                       <Checkbox
-                        checked={selectedCustomers.length === customers.length}
+                        checked={
+                          selectedCustomers.length === clippedVideos.length
+                        }
                         color="primary"
                         indeterminate={
-                          selectedCustomers.length > 0
-                          && selectedCustomers.length < customers.length
+                          selectedCustomers.length > 0 &&
+                          selectedCustomers.length < clippedVideos.length
                         }
                         onChange={handleSelectAll}
                       />
                     </TableCell>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Location</TableCell>
-                    <TableCell>Money spent</TableCell>
-                    <TableCell>Type</TableCell>
-                    <TableCell>Projects held</TableCell>
-                    <TableCell>Reviews</TableCell>
+                    <TableCell>Video Id</TableCell>
+                    <TableCell>Keyword</TableCell>
                     <TableCell align="right">Actions</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {customers.slice(0, rowsPerPage).map((customer) => (
+                  {clippedVideos.slice(0, rowsPerPage).map(customer => (
                     <TableRow
                       hover
-                      key={customer.id}
-                      selected={selectedCustomers.indexOf(customer.id) !== -1}
+                      key={customer.videoId}
+                      selected={
+                        selectedCustomers.indexOf(customer.videoId) !== -1
+                      }
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
                           checked={
-                            selectedCustomers.indexOf(customer.id) !== -1
+                            selectedCustomers.indexOf(customer.videoId) !== -1
                           }
                           color="primary"
-                          onChange={(event) => handleSelectOne(event, customer.id)}
-                          value={selectedCustomers.indexOf(customer.id) !== -1}
+                          onChange={event =>
+                            handleSelectOne(event, customer.videoId)
+                          }
+                          value={
+                            selectedCustomers.indexOf(customer.videoId) !== -1
+                          }
                         />
                       </TableCell>
                       <TableCell>
                         <div className={classes.nameCell}>
-                          <Avatar
-                            className={classes.avatar}
-                            src={customer.avatar}
-                          >
-                            {getInitials(customer.name)}
-                          </Avatar>
                           <div>
                             <Link
                               color="inherit"
@@ -180,22 +161,12 @@ function Results({ className, customers, ...rest }) {
                               to="/management/customers/1"
                               variant="h6"
                             >
-                              {customer.name}
+                              {customer.videoId}
                             </Link>
-                            <div>{customer.email}</div>
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell>{customer.location}</TableCell>
-                      <TableCell>
-                        {customer.currency}
-                        {customer.spent}
-                      </TableCell>
-                      <TableCell>{customer.type}</TableCell>
-                      <TableCell>{customer.projects}</TableCell>
-                      <TableCell>
-                        <ReviewStars value={customer.rating} />
-                      </TableCell>
+                      <TableCell>{customer.keyword}</TableCell>
                       <TableCell align="right">
                         <Button
                           color="primary"
@@ -217,7 +188,7 @@ function Results({ className, customers, ...rest }) {
         <CardActions className={classes.actions}>
           <TablePagination
             component="div"
-            count={customers.length}
+            count={clippedVideos.length}
             onChangePage={handleChangePage}
             onChangeRowsPerPage={handleChangeRowsPerPage}
             page={page}
