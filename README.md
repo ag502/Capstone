@@ -14,9 +14,12 @@
 - [ ] 비디오 재생 팝업 우측하단 cliping 클릭시 server에 post 요청
   - [x] cliping 요청시 post 할 정보에 videoid, keyword 추가
 - [ ] react Hooks life cycle을 이용해 불필요 한 rendering 방지
+- [x] 비디오 전처리 화면 관리 페이지
 
-* * *
+---
+
 ###### 모델 기능
+
 - [ ] Overview 작성
 - [ ] 원하는 모델 선택해서 TEST 가능하도록
 - [ ] Add Model 기능
@@ -40,4 +43,3 @@
 ---
 
 `src/util/axios` 에서 api key값을 바꿔 사용하면 됩니다.
-
