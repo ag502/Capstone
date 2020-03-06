@@ -12,6 +12,8 @@
   - [x]  VideoInfo model 생성
   - [x]  view 만들기
     - [x]  Cliping 영상 다운로드 만들기
+    - [ ]  ffmpeg 썸네일 만들기
+    - [ ]  Clipping 완료되면 알림보내기
 - [ ] preprocesser App
   - [ ]  VideoInfo model 불러오기
   - [ ]  view 만들기
