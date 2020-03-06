@@ -40,6 +40,7 @@
     "operator-linebreak": ["error", "after"],
     "react-hooks/exhaustive-deps": 0,
     "no-unneeded-ternary": 0,
-    "class-methods-use-this": 0
+    "class-methods-use-this": 0,
+    "indent": 0
   }
 }

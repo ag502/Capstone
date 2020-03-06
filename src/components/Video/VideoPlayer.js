@@ -11,8 +11,9 @@ import IconButton from '@material-ui/core/IconButton';
 import { Close } from '@material-ui/icons';
 import Typography from '@material-ui/core/Typography';
 import ReactPlayer from 'react-player';
+import axios from 'axios'; // axios
+import * as firebase from 'firebase';
 import { closeVideo } from '../../actions';
-import axios from 'axios'; //axios
 
 const styles = theme => ({
   root: {
@@ -68,7 +69,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-function VideoPlay({ videoID, getTrimmingPoint }) {
+function VideoPlay({ videoID, getTrimmingPoint, mode }) {
   const [duration, setDuration] = useState(0);
   const playerRef = useRef(null);
 
@@ -79,18 +80,27 @@ function VideoPlay({ videoID, getTrimmingPoint }) {
     setDuration(duration);
   };
 
+  let url = null;
+
+  if (mode === 'clipping') {
+    url = `https://www.youtube.com/watch?v=${videoID}`;
+  } else if (mode === 'general') {
+    url = `https://firebasestorage.googleapis.com/v0/b/capstone-react-ea4ac.appspot.com/o/${videoID}.mp4?alt=media`;
+  }
+
   return (
     <>
       <ReactPlayer
-        url={`https://www.youtube.com/watch?v=${videoID}`}
+        url={url}
         ref={playerRef}
         controls
         onDuration={handleDuration}
-        onSeek={second => console.log(second)}
       />
-      <div className={classes.sliderContainer}>
-        <TrimSlider duration={duration} getTrimmingPoint={getTrimmingPoint} />
-      </div>
+      {mode === 'clipping' ? (
+        <div className={classes.sliderContainer}>
+          <TrimSlider duration={duration} getTrimmingPoint={getTrimmingPoint} />
+        </div>
+      ) : null}
     </>
   );
 }
@@ -136,7 +146,7 @@ function TrimSlider({ duration, getTrimmingPoint }) {
   );
 }
 
-function VideoPopWindow({ isPlay, videoID, title, keyword, searchType }) {
+function VideoPopWindow({ isPlay, videoID, title, keyword, searchType, mode }) {
   const dispatch = useDispatch();
   let trimmingPoint = [0, 0];
 
@@ -159,8 +169,12 @@ function VideoPopWindow({ isPlay, videoID, title, keyword, searchType }) {
     // 클리핑 요청 보낼 부분
     // trimmingPoint는 cliping할 처음과 끝 부분, slider를 움직이지 않으면 0, 0을 가르킴
     // axios.post("#");
-    axios.post('http://127.0.0.1:8000/clipping/', 
-      {videoId : `${videoID}`, keyword:`${keyword}`, startTime:`${trimmingPoint[0]}`, endTime:`${trimmingPoint[1]}`});
+    axios.post('http://127.0.0.1:8000/clipping/', {
+      videoId: `${videoID}`,
+      keyword: `${keyword}`,
+      startTime: `${trimmingPoint[0]}`,
+      endTime: `${trimmingPoint[1]}`
+    });
   };
 
   const getTrimmingPoint = value => {
@@ -180,12 +194,18 @@ function VideoPopWindow({ isPlay, videoID, title, keyword, searchType }) {
           {title}
         </DialogTitle>
         <DialogContent dividers>
-          <VideoPlay videoID={videoID} getTrimmingPoint={getTrimmingPoint} />
+          <VideoPlay
+            videoID={videoID}
+            getTrimmingPoint={getTrimmingPoint}
+            mode={mode}
+          />
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClipping} color="primary">
-            Clipping
-          </Button>
+          {mode === 'clipping' ? (
+            <Button autoFocus onClick={handleClipping} color="primary">
+              Clipping
+            </Button>
+          ) : null}
         </DialogActions>
       </Dialog>
     </div>

@@ -75,6 +75,7 @@ function Overview() {
           loadNextVideoData={loadNextVideoData}
           videoItems={videoItems}
           searchType={searchType}
+          mode="clipping"
         />
       ) : (
         <Suspense>

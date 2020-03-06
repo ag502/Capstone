@@ -46,7 +46,8 @@ const Videos = ({
   keyword,
   loadNextVideoData,
   videoItems,
-  searchType
+  searchType,
+  mode
 }) => {
   const classes = useStyles();
   const { isPlay, title, selectedVideoID } = useSelector(
@@ -62,6 +63,7 @@ const Videos = ({
         videoID={selectedVideoID}
         title={title}
         searchType={searchType}
+        mode={mode}
       />
       <InfiniteScroll
         hasMore={!!nextPage && !!keyword}

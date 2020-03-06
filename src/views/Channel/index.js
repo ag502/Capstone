@@ -44,6 +44,7 @@ const ChannelPage = ({ match }) => {
       loadNextVideoData={loadNextVideoData}
       videoItems={videoItems}
       searchType={searchType}
+      mode="clipping"
     />
   );
 };

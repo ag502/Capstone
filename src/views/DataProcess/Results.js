@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { makeStyles } from '@material-ui/styles';
 import {
-  Avatar,
   Card,
   CardActions,
   CardContent,
@@ -13,7 +12,6 @@ import {
   Checkbox,
   Divider,
   Button,
-  Link,
   Table,
   TableBody,
   TableCell,
@@ -22,10 +20,13 @@ import {
   TableRow,
   Typography
 } from '@material-ui/core';
+import { useSelector, useDispatch } from 'react-redux';
 import getInitials from 'src/utils/getInitials';
 import ReviewStars from 'src/components/ReviewStars';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import TableEditBar from 'src/components/TableEditBar';
+import { playVideo } from '../../actions';
+import VideoPlayer from '../../components/Video/VideoPlayer';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -55,10 +56,14 @@ function Results({ className, clippedVideos, ...rest }) {
   const [selectedCustomers, setSelectedCustomers] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const { isPlay, title, selectedVideoID } = useSelector(
+    state => state.videoPlay
+  );
+  const dispatch = useDispatch();
 
   const handleSelectAll = event => {
     const selectedCustomers = event.target.checked
-      ? clippedVideos.map(customer => customer.id)
+      ? clippedVideos.map(customer => customer.videoId)
       : [];
 
     setSelectedCustomers(selectedCustomers);
@@ -96,8 +101,18 @@ function Results({ className, clippedVideos, ...rest }) {
     setRowsPerPage(event.target.value);
   };
 
+  const videoIdClickHandler = videoId => {
+    dispatch(playVideo(videoId, videoId));
+  };
+
   return (
     <div {...rest} className={clsx(classes.root, className)}>
+      <VideoPlayer
+        isPlay={isPlay}
+        videoID={selectedVideoID}
+        title={title}
+        mode="general"
+      />
       <Typography color="textSecondary" gutterBottom variant="body2">
         {clippedVideos.length} Records found. Page {page + 1} of{' '}
         {Math.ceil(clippedVideos.length / rowsPerPage)}
@@ -153,17 +168,10 @@ function Results({ className, clippedVideos, ...rest }) {
                         />
                       </TableCell>
                       <TableCell>
-                        <div className={classes.nameCell}>
-                          <div>
-                            <Link
-                              color="inherit"
-                              component={RouterLink}
-                              to="/management/customers/1"
-                              variant="h6"
-                            >
-                              {customer.videoId}
-                            </Link>
-                          </div>
+                        <div
+                          onClick={() => videoIdClickHandler(customer.videoId)}
+                        >
+                          {customer.videoId}
                         </div>
                       </TableCell>
                       <TableCell>{customer.keyword}</TableCell>
@@ -204,11 +212,11 @@ function Results({ className, clippedVideos, ...rest }) {
 
 Results.propTypes = {
   className: PropTypes.string,
-  customers: PropTypes.array
+  clippedVideos: PropTypes.array
 };
 
 Results.defaultProps = {
-  customers: []
+  clippedVideos: []
 };
 
 export default Results;
