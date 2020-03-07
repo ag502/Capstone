@@ -46,13 +46,7 @@ INSTALLED_APPS = [
     'corsheaders', ## react 연결
     'clipping', ## 영상 클리핑
     'rest_framework',
-    'storages',## django_storages
 ]
-
-## S3 Storage
-DEFAULT_FILE_STORAGE = 'config.storages.ClippingVideoStorage'
-CLIPPINGVIDEO_LOCATION = 'clippingVideo'
-THUMNAIL_LOCATION = 'thumnails'
 
 ## AWS Access
 AWS_ACCESS_KEY_ID = config_secret['aws']['access_key_id']

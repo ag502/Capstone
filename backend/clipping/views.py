@@ -23,4 +23,5 @@ class ClipVideoDownloader(APIView):
         Cliper.clip_section(output_dir, video_id, start_time, end_time)  # 시작시간,끝시간으로 영상처리
         Cliper.createThumnail(output_dir, thumnail_dir, video_id, start_time, end_time) # thumnail 생성
 
+        Cliper.removeFile(output_dir, thumnail_dir, video_id, start_time, end_time)
         return HttpResponse("hi")
