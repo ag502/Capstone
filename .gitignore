@@ -33,6 +33,7 @@ yarn-error.log*
 # Edit at https://www.gitignore.io/?templates=django
 
 ### Django ###
+
 *.log
 *.pot
 *.pyc
@@ -150,5 +151,8 @@ dmypy.json
 .pyre/
 
 venv/
+clippingVideo/
+thumnails/
+config_secret/
 
 # End of https://www.gitignore.io/api/django
