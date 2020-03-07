@@ -11,9 +11,15 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import json
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+##secret
+ROOT_DIR = os.path.dirname(BASE_DIR)
+CONFIG_SECRET_DIR = os.path.join(ROOT_DIR, 'backend/config_secret')
+CONFIG_SETTINGS_COMMON_FILE = os.path.join(CONFIG_SECRET_DIR, 'setting_common.json')
+config_secret = json.loads(open(CONFIG_SETTINGS_COMMON_FILE).read())
 
 
 # Quick-start development settings - unsuitable for production
@@ -40,7 +46,19 @@ INSTALLED_APPS = [
     'corsheaders', ## react 연결
     'clipping', ## 영상 클리핑
     'rest_framework',
+    'storages',## django_storages
 ]
+
+## S3 Storage
+DEFAULT_FILE_STORAGE = 'config.storages.ClippingVideoStorage'
+CLIPPINGVIDEO_LOCATION = 'clippingVideo'
+THUMNAIL_LOCATION = 'thumnails'
+
+## AWS Access
+AWS_ACCESS_KEY_ID = config_secret['aws']['access_key_id']
+AWS_SECRET_ACCESS_KEY = config_secret['aws']['secret_access_key']
+AWS_STORAGE_BUCKET_NAME = config_secret['aws']['s3_bucket_name']
+
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -99,9 +117,9 @@ DATABASES = {
 
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'capstone',
-        'USER': 'Animo',
-        'PASSWORD': 'Animo3015',
-        'HOST': 'capstone.cuxnxn5wstp6.ap-northeast-2.rds.amazonaws.com', #공백으로 냅두면 default localhost
+        'USER': config_secret['aws']['USER'],
+        'PASSWORD': config_secret['aws']['PASSWORD'],
+        'HOST': config_secret['aws']['HOST'],
         'PORT': '3306',
 
     }
