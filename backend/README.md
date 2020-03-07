@@ -4,15 +4,15 @@
 
 - [x] 초기환경 셋팅
   - [x] requirements.txt 만들기
-- [ ] aws 연결
+- [x] aws 연결
   - [x] rds 연결
-  - [ ] s3 연결
+  - [x] s3 연결
 - [x] react django 연결
 - [x] clipping App 
   - [x]  VideoInfo model 생성
   - [x]  view 만들기
     - [x]  Cliping 영상 다운로드 만들기
-    - [ ]  ffmpeg 썸네일 만들기
+    - [x]  ffmpeg 썸네일 만들기
     - [ ]  Clipping 완료되면 알림보내기
 - [ ] preprocesser App
   - [ ]  VideoInfo model 불러오기
