@@ -29,7 +29,15 @@ def clip_section(output_dir, videoId, startTime, endTime):  # 클리핑 영상�
 
     # if startTime == endTime .. 프론트에서 예외처리
 
-    ffmpeg_command = "./ffmpeg -i %s_.mp4 -ss %d -t %d %s.%d-%d.mp4" % (videoId, startTime, endTime, videoId, startTime, endTime)
+    ffmpeg_command = "ffmpeg -i %s_.mp4 -ss %d -t %d %s_%d-%d.mp4" % (videoId, startTime, endTime-startTime, videoId, startTime, endTime)
     os.system(ffmpeg_command)
+
     os.remove('%s_.mp4' % videoId)  # 변환되면 기존영상은 삭제
     return print("클 리 핑 완 료")
+
+##썸네일 생성
+def createThumnail(output_dir, thumnail_dir, videoId, startTime, endTime):
+    os.chdir(thumnail_dir)
+    print(output_dir+videoId)
+    ffmpegThumbnail = "ffmpeg -i %s_%d-%d.mp4 -ss 00:00:01 -vcodec png -vframes 1 %s_Thumnail.png" % (output_dir+videoId, startTime, endTime, videoId)
+    os.system(ffmpegThumbnail)
