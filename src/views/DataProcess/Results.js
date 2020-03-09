@@ -26,7 +26,7 @@ import ReviewStars from 'src/components/ReviewStars';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import TableEditBar from 'src/components/TableEditBar';
 import { playVideo } from '../../actions';
-import VideoPlayer from '../../components/Video/VideoPlayer';
+import VideoPlayerPopUp from '../../components/Video/VideoPlayerPopup';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -107,7 +107,7 @@ function Results({ className, clippedVideos, ...rest }) {
 
   return (
     <div {...rest} className={clsx(classes.root, className)}>
-      <VideoPlayer
+      <VideoPlayerPopUp
         isPlay={isPlay}
         videoID={selectedVideoID}
         title={title}
