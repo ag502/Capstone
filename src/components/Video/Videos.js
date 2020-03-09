@@ -7,7 +7,7 @@ import Page from 'src/components/Page';
 import CircularIndeterminate from 'src/components/Progress';
 import InfiniteScroll from '../InfiniteScroll';
 import VideoThumbNail from './VideoThumbNail';
-import VideoPopWindow from './VideoPlayer';
+import VideoPopWindow from './VideoPlayerPopup';
 
 const useStyles = makeStyles(theme => ({
   root: {
