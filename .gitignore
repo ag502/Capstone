@@ -154,5 +154,6 @@ venv/
 clippingVideo/
 thumnails/
 config_secret/
+venv library root/
 
 # End of https://www.gitignore.io/api/django
