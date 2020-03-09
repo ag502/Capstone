@@ -26,7 +26,7 @@
       - [ ]  모델 선택 영상 저장 기능 만들기
       - [ ]  클리핑된 영상 삭제 기능 만들기
       
--  [ ] data App
+- [ ] data App
   - [ ]  preprocesser model 불러오기
   - [ ]  view 만들기
       - [ ]  로컬에 저장 기능 만들기
