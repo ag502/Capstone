@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
@@ -123,11 +122,6 @@ function VideoPopWindow({ isPlay, videoID, title, keyword, searchType, mode }) {
 
   return (
     <div>
-      <Snackbar open={alertOpen}>
-        <Alert elevation={6} variant="filled" severity="warning">
-          구간을 설정 해주세요.
-        </Alert>
-      </Snackbar>
       <Dialog
         onClose={closeClickHandler}
         aria-labelledby="customized-dialog-title"
