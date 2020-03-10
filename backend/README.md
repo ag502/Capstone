@@ -16,7 +16,7 @@
   - [x]  view 만들기
     - [x]  Clipping 영상 다운로드 만들기
     - [x]  ffmpeg 썸네일 만들기
-    - [ ]  Clipping 완료여부 모델 필드 만들기
+    - [ ]  Clip 완료여부 데이터베이스 만들기
     
 - [ ] preprocesser App
   - [ ]  VideoInfo model 불러오기
@@ -31,6 +31,10 @@
   - [ ]  view 만들기
       - [ ]  로컬에 저장 기능 만들기
       - [ ]  모델 선택 영상 삭제 기능 만들기
+      
+- [ ] model App
+  - [ ]view 만들기
+  - [ ]add model 기능
       
 
 ***

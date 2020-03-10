@@ -16,13 +16,11 @@
 - [ ] react Hooks life cycle을 이용해 불필요 한 rendering 방지
 - [x] 비디오 전처리 화면 관리 페이지
 
----
-
-###### 모델 기능
-
-- [ ] Overview 작성
-- [ ] 원하는 모델 선택해서 TEST 가능하도록
-- [ ] Add Model 기능
+- [ ] 모델 기능
+  - [ ] 원하는 모델 선택해서 TEST 가능하도록
+  - [ ] Add Model 기능
+  - [ ] 각 모델별 화면 구성
+  
 
 ---
 
