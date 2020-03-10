@@ -32,6 +32,10 @@
       - [ ]  로컬에 저장 기능 만들기
       - [ ]  모델 선택 영상 삭제 기능 만들기
       
+- [ ] model App
+  - view 만들기
+  - add model 기능
+      
 
 ***
 #### Clip Video Download (backend)
