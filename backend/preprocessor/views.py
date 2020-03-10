@@ -13,7 +13,7 @@ class VideoPreprocessor(APIView):
         if serializer.is_valid():
             serializer.save()
 
-        clip_info = request.data
+        clip_info = request.dataf
         video_id = str((clip_info['videoId']))
         key_word = str((clip_info['keyword']))
         start_time = int(clip_info['startTime'])

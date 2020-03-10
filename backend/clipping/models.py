@@ -21,3 +21,4 @@ class VideoInfo(models.Model):
 
     def __str__(self):
         return "{}_{}".format(self.videoId, self.created_at)
+

@@ -4,20 +4,38 @@
 
 - [x] 초기환경 셋팅
   - [x] requirements.txt 만들기
+  
 - [x] aws 연결
   - [x] rds 연결
   - [x] s3 연결
+  
 - [x] react django 연결
+
 - [x] clipping App 
   - [x]  VideoInfo model 생성
   - [x]  view 만들기
-    - [x]  Cliping 영상 다운로드 만들기
+    - [x]  Clipping 영상 다운로드 만들기
     - [x]  ffmpeg 썸네일 만들기
-    - [ ]  Clipping 완료되면 알림보내기
-- [ ] preprocesser App
-  - [ ]  VideoInfo model 불러오기
+    - [x]  Clip 완료여부 데이터베이스 만들기
+    
+- [x] preprocesser App
+  - [x]  VideoInfo model 불러오기
+  - [x]  preprocesser model 만들기
   - [ ]  view 만들기
-      - [ ]  영상 선택시 전처리 작업 
+      - [x]  영상 선택시 모델 태그 설정
+      - [ ]  모델 선택 영상 저장 기능 만들기
+      - [ ]  클리핑된 영상 삭제 기능 만들기
+      
+- [ ] data App
+  - [ ]  preprocesser model 불러오기
+  - [ ]  view 만들기
+      - [ ]  로컬에 저장 기능 만들기
+      - [ ]  모델 선택 영상 삭제 기능 만들기
+      
+- [ ] model App
+  - [ ]view 만들기
+  - [ ]add model 기능
+      
 
 ***
 #### Clip Video Download (backend)

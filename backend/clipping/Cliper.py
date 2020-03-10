@@ -39,11 +39,14 @@ def clip_section(output_dir, videoId, startTime, endTime):  # 클리핑 영상�
         os.system(ffmpeg_command)
         os.remove('%s_.mp4' % videoId)  # 변환되면 기존영상은 삭제
 
+
     # # s3에 올리기
+
     # s3_Path = 'clippingVideo/%s_%d-%d.mp4' % (videoId, startTime, endTime)
     # s3.Object(bucket.name, s3_Path).upload_file('%s_%d-%d.mp4' % (videoId, startTime, endTime))
 
     return print("클 리 핑 완 료")
+
 
 # 썸네일 생성
 def createThumnail(output_dir, thumnail_dir, videoId, startTime, endTime):
@@ -62,3 +65,9 @@ def removeFile(output_dir, thumnail_dir, videoId, startTime, endTime):  # s3에 
 
     os.chdir(thumnail_dir)
     os.remove('%s_%d-%d.png' % (videoId, startTime, endTime))
+
+    # # s3에 올리기
+    # s3_Path = 'thumnails/%s_%d-%d.png' % (videoId, startTime, endTime)
+    # s3.Object(bucket.name, s3_Path).upload_file('%s_%d-%d.png' % (videoId, startTime, endTime))
+
+

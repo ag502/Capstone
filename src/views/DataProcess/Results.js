@@ -18,7 +18,8 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Typography
+  Typography,
+  Avatar
 } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import getInitials from 'src/utils/getInitials';
@@ -26,7 +27,8 @@ import ReviewStars from 'src/components/ReviewStars';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import TableEditBar from 'src/components/TableEditBar';
 import { playVideo } from '../../actions';
-import VideoPlayer from '../../components/Video/VideoPlayer';
+import VideoPlayerPopUp from '../../components/Video/VideoPlayerPopup';
+import TableRows from './TableRows';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -43,54 +45,57 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     height: 42,
     width: 42,
-    marginRight: theme.spacing(1)
+    marginRight: theme.spacing(3)
   },
   actions: {
     padding: theme.spacing(1),
     justifyContent: 'flex-end'
+  },
+  videoIDContainer: {
+    display: 'flex',
+    alignItems: 'center'
   }
 }));
 
 function Results({ className, clippedVideos, ...rest }) {
   const classes = useStyles();
-  const [selectedCustomers, setSelectedCustomers] = useState([]);
+  const [selectedClippedV, setSelectedClippedV] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { isPlay, title, selectedVideoID } = useSelector(
     state => state.videoPlay
   );
-  const dispatch = useDispatch();
 
   const handleSelectAll = event => {
-    const selectedCustomers = event.target.checked
-      ? clippedVideos.map(customer => customer.videoId)
-      : [];
+    const selectedClippedVs = event.target.checked ?
+      clippedVideos.map(customer => customer.videoId) :
+      [];
 
-    setSelectedCustomers(selectedCustomers);
+    setSelectedClippedV(selectedClippedVs);
   };
 
   const handleSelectOne = (event, id) => {
-    const selectedIndex = selectedCustomers.indexOf(id);
+    const selectedIndex = selectedClippedV.indexOf(id);
     let newSelectedCustomers = [];
 
     if (selectedIndex === -1) {
-      newSelectedCustomers = newSelectedCustomers.concat(selectedCustomers, id);
+      newSelectedCustomers = newSelectedCustomers.concat(selectedClippedV, id);
     } else if (selectedIndex === 0) {
       newSelectedCustomers = newSelectedCustomers.concat(
-        selectedCustomers.slice(1)
+        selectedClippedV.slice(1)
       );
-    } else if (selectedIndex === selectedCustomers.length - 1) {
+    } else if (selectedIndex === selectedClippedV.length - 1) {
       newSelectedCustomers = newSelectedCustomers.concat(
-        selectedCustomers.slice(0, -1)
+        selectedClippedV.slice(0, -1)
       );
     } else if (selectedIndex > 0) {
       newSelectedCustomers = newSelectedCustomers.concat(
-        selectedCustomers.slice(0, selectedIndex),
-        selectedCustomers.slice(selectedIndex + 1)
+        selectedClippedV.slice(0, selectedIndex),
+        selectedClippedV.slice(selectedIndex + 1)
       );
     }
 
-    setSelectedCustomers(newSelectedCustomers);
+    setSelectedClippedV(newSelectedCustomers);
   };
 
   const handleChangePage = (event, page) => {
@@ -101,20 +106,22 @@ function Results({ className, clippedVideos, ...rest }) {
     setRowsPerPage(event.target.value);
   };
 
-  const videoIdClickHandler = videoId => {
-    dispatch(playVideo(videoId, videoId));
-  };
-
   return (
     <div {...rest} className={clsx(classes.root, className)}>
-      <VideoPlayer
+      <VideoPlayerPopUp
         isPlay={isPlay}
         videoID={selectedVideoID}
         title={title}
         mode="general"
       />
       <Typography color="textSecondary" gutterBottom variant="body2">
-        {clippedVideos.length} Records found. Page {page + 1} of{' '}
+        {clippedVideos.length}
+        {' '}
+Records found. Page
+        {page + 1}
+        {' '}
+of
+        {' '}
         {Math.ceil(clippedVideos.length / rowsPerPage)}
       </Typography>
       <Card>
@@ -129,64 +136,31 @@ function Results({ className, clippedVideos, ...rest }) {
                     <TableCell padding="checkbox">
                       <Checkbox
                         checked={
-                          selectedCustomers.length === clippedVideos.length
+                          selectedClippedV.length === clippedVideos.length
                         }
                         color="primary"
                         indeterminate={
-                          selectedCustomers.length > 0 &&
-                          selectedCustomers.length < clippedVideos.length
+                          selectedClippedV.length > 0 &&
+                          selectedClippedV.length < clippedVideos.length
                         }
                         onChange={handleSelectAll}
                       />
                     </TableCell>
-                    <TableCell>Video Id</TableCell>
+                    <TableCell align="center">Video ID</TableCell>
                     <TableCell>Keyword</TableCell>
-                    <TableCell align="right">Actions</TableCell>
+                    <TableCell align="center">Start Time</TableCell>
+                    <TableCell align="center">End Time</TableCell>
+                    <TableCell align="center">Actions</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {clippedVideos.slice(0, rowsPerPage).map(customer => (
-                    <TableRow
-                      hover
-                      key={customer.videoId}
-                      selected={
-                        selectedCustomers.indexOf(customer.videoId) !== -1
-                      }
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={
-                            selectedCustomers.indexOf(customer.videoId) !== -1
-                          }
-                          color="primary"
-                          onChange={event =>
-                            handleSelectOne(event, customer.videoId)
-                          }
-                          value={
-                            selectedCustomers.indexOf(customer.videoId) !== -1
-                          }
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <div
-                          onClick={() => videoIdClickHandler(customer.videoId)}
-                        >
-                          {customer.videoId}
-                        </div>
-                      </TableCell>
-                      <TableCell>{customer.keyword}</TableCell>
-                      <TableCell align="right">
-                        <Button
-                          color="primary"
-                          component={RouterLink}
-                          size="small"
-                          to="/management/customers/1"
-                          variant="outlined"
-                        >
-                          View
-                        </Button>
-                      </TableCell>
-                    </TableRow>
+                  {clippedVideos.slice(0, rowsPerPage).map(video => (
+                    <TableRows
+                      classes={classes}
+                      videoInfo={video}
+                      selectedClippedV={selectedClippedV}
+                      handleSelectOne={handleSelectOne}
+                    />
                   ))}
                 </TableBody>
               </Table>
@@ -205,7 +179,7 @@ function Results({ className, clippedVideos, ...rest }) {
           />
         </CardActions>
       </Card>
-      <TableEditBar selected={selectedCustomers} />
+      <TableEditBar selected={selectedClippedV} />
     </div>
   );
 }
