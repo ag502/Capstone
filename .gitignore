@@ -153,6 +153,7 @@ dmypy.json
 venv/
 clippingVideo/
 thumnails/
+thumbnails/
 config_secret/
 venv library root/
 
