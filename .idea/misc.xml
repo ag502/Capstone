@@ -3,9 +3,5 @@
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="JSX" />
   </component>
-<<<<<<< HEAD
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.7 (jenesis)" project-jdk-type="Python SDK" />
-=======
   <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.7 (Material_Ui_Capstone)" project-jdk-type="Python SDK" />
->>>>>>> dc8aeb359a09daf02d7607a030b289a5d238e9f5
 </project>
