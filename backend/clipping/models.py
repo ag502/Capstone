@@ -12,6 +12,7 @@ class VideoInfo(models.Model):
     startTime = models.IntegerField()
     endTime = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
+    clip_complete = models.BooleanField(default=False)
 
     @property
     def created_at_korean_time(self):
@@ -20,3 +21,4 @@ class VideoInfo(models.Model):
 
     def __str__(self):
         return "{}_{}".format(self.videoId, self.created_at)
+

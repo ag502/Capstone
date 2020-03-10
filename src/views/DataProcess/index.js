@@ -26,8 +26,9 @@ function DataProcess() {
     const fetchCustomers = () => {
       // /api/management/customers
       // https://capstone-react-ea4ac.firebaseio.com/clippingVideos.json
+      // http://localhost:8000/clipping/
       axios
-        .get(' https://capstone-react-ea4ac.firebaseio.com/clippingVideos.json')
+        .get('http://localhost:8000/clipping/')
         .then(response => {
           if (mounted) {
             console.log(response);
