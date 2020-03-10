@@ -4,15 +4,17 @@ from pytz import timezone
 
 # Create your models here.
 
-## 비디오 정보 (비디오아이디, 키워드, 구간, 생성날짜)
-class VideoInfo(models.Model):
+# 모델 선택된 비디오 데이터
+
+
+class VideoData(models.Model):
     id = models.AutoField(primary_key=True)
     videoId = models.CharField(max_length=11)
-    keyword = models.CharField(max_length=300,null=True)
-    startTime = models.IntegerField()
-    endTime = models.IntegerField()
+    keyword = models.CharField(max_length=300, null=True)
+    startTime = models.IntegerField(null=True)
+    endTime = models.IntegerField(null=True)
+    model_tag = models.CharField(max_length=300, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    clip_complete = models.BooleanField(default=False)
 
     @property
     def created_at_korean_time(self):
