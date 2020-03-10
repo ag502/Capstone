@@ -16,13 +16,13 @@
   - [x]  view 만들기
     - [x]  Clipping 영상 다운로드 만들기
     - [x]  ffmpeg 썸네일 만들기
-    - [ ]  Clip 완료여부 데이터베이스 만들기
+    - [x]  Clip 완료여부 데이터베이스 만들기
     
-- [ ] preprocesser App
-  - [ ]  VideoInfo model 불러오기
-  - [ ]  preprocesser model 만들기
+- [x] preprocesser App
+  - [x]  VideoInfo model 불러오기
+  - [x]  preprocesser model 만들기
   - [ ]  view 만들기
-      - [ ]  영상 선택시 모델 태그 설정
+      - [x]  영상 선택시 모델 태그 설정
       - [ ]  모델 선택 영상 저장 기능 만들기
       - [ ]  클리핑된 영상 삭제 기능 만들기
       
