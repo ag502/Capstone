@@ -68,7 +68,7 @@ function Header({ project, className, ...rest }) {
             gutterBottom
             variant="h3"
           >
-            Test your model
+            Select your model
           </Typography>
         </Grid>
         <Grid item>

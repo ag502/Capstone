@@ -68,7 +68,7 @@ function ModelCard({ model, className, ...rest }) {
             className={classes.avatar}
             component={RouterLink}
             src={model.avatar}
-            to="/profile/1/timeline"
+            to="/Testing-Model"
           >
           </Avatar>
         </div>
@@ -76,7 +76,7 @@ function ModelCard({ model, className, ...rest }) {
           align="center"
           component={RouterLink}
           display="block"
-          to="/profile/1/timeline"
+          to="/Testing-Model"
           variant="h6"
         >
           {model.name}

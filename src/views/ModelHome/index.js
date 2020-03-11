@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import axios from 'src/utils/axios';
 import Header from './Header';
-import Subscribers from './Model';
+import Model from './Model';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(3)
   },
   tabs: {
-    marginTop: theme.spacing(3)
+    marginTop: theme.spacing(3),
   },
   divider: {
     backgroundColor: colors.grey[300]
@@ -30,9 +30,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-
-
-function Models() {
+function ModelHome() {
   const classes = useStyles();
   const [model, setModel] = useState(null);
   const tabs = [
@@ -76,16 +74,17 @@ function Models() {
               key={tab.value}
               label={tab.label}
               value={tab.value}
+              disabled
             />
           ))}
         </Tabs>
         <Divider className={classes.divider} />
         <div className={classes.content}>
-          <Subscribers models={model.models}/>
+          <Model models={model.models} />
         </div>
       </Container>
     </Page>
   );
 }
 
-export default Models;
+export default ModelHome;

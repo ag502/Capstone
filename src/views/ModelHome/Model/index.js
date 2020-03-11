@@ -9,7 +9,7 @@ const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-function Models({ models, className, ...rest }) {
+function Model({ models, className, ...rest }) {
   const classes = useStyles();
 
   return (
@@ -33,9 +33,9 @@ function Models({ models, className, ...rest }) {
   );
 }
 
-Models.propTypes = {
+Model.propTypes = {
   className: PropTypes.string,
   models: PropTypes.array.isRequired
 };
 
-export default Models;
+export default Model;

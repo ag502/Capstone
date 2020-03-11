@@ -83,9 +83,14 @@ export default [
         component: lazy(() => import('src/views/DataManagement'))
       },
       {//models
-        path: '/models',
+        path: '/models-home',
         exact: true,
-        component: lazy(() => import('src/views/Models'))
+        component: lazy(() => import('src/views/ModelHome'))
+      },
+      {//TESTING models
+        path: '/Testing-model',
+        exact: true,
+        component: lazy(() => import('src/views/TestingModel'))
       },
       {
         path: '/calendar',
