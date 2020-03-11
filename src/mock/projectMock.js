@@ -311,25 +311,3 @@ I have attached a chat with our users most used devices.
     updated_at: moment().subtract(23, 'minutes')
   }
 });
-//models
-mock.onGet('/api/models').reply(200, {
-  model: {
-  models: [
-      {
-        id: uuid(),
-        name: 'Emotion Detection',
-        avatar: '/images/models/emotions.png',
-      },
-      {
-        id: uuid(),
-        name: 'Shadowing',
-        avatar: '/images/models/monaLisa.png',
-      },
-      {
-        id: uuid(),
-        name: 'Face API',
-        avatar: '/images/models/faceApi.png',
-      }
-    ]
-  }
-});
