@@ -14,15 +14,13 @@ import {
 } from '@material-ui/core';
 import Label from 'src/components/Label';
 
-import FaceIcon from '@material-ui/icons/Face';
 import blueGrey from '@material-ui/core/colors/blueGrey';
 import grey from '@material-ui/core/colors/grey';
-import Icon from '@material-ui/core/Icon';
 
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: grey[100]
+    backgroundColor: blueGrey[50]
   },
   media: {
     height: 125
@@ -70,13 +68,9 @@ function SubscriberCard({ subscriber, className, ...rest }) {
             alt="Subscriber"
             className={classes.avatar}
             component={RouterLink}
-            // src={subscriber.icon}
+            src={subscriber.avatar}
             to="/profile/1/timeline"
           >
-          <Icon style={{ fontSize: 100, color: blueGrey[900] }} >
-            {/* {subscriber.icon} */}
-          </Icon>
-          {/* <FaceIcon style={{ fontSize: 130, color: blueGrey[400] }}/> */}
           </Avatar>
         </div>
         <Typography //// 모델 이름

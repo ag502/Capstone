@@ -69,7 +69,7 @@ function Header({ project, className, ...rest }) {
             gutterBottom
             variant="h3"
           >
-            Select your model
+            Test your model
           </Typography>
           {/* <Label
             className={classes.label}

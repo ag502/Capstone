@@ -3,7 +3,6 @@ import moment from 'moment';
 import { colors } from '@material-ui/core';
 import mock from 'src/utils/mock';
 
-import FaceIcon from '@material-ui/icons/Face';
 
 mock.onGet('/api/projects').reply(200, {
   projects: [
@@ -273,8 +272,9 @@ I have attached a chat with our users most used devices.
       {
         id: uuid(),
         name: 'Emotion Detection',
-        icon: FaceIcon,
-        // avatar: '/images/avatars/avatar_2.png',
+        // icon: FaceIcon,
+        avatar: '/images/models/emotions.png',
+        // avatar: '/images/covers/cover_1.jpg',
         // cover: '/images/covers/cover_1.jpg',
         // common_connections: 12,
         // labels: [
@@ -288,7 +288,7 @@ I have attached a chat with our users most used devices.
       {
         id: uuid(),
         name: 'Shadowing',
-        // avatar: '/images/avatars/avatar_3.png',
+        avatar: '/images/models/monaLisa.png',
         // cover: '/images/covers/cover_2.jpg',
         // common_connections: 5,
         // labels: [
@@ -301,7 +301,7 @@ I have attached a chat with our users most used devices.
       {
         id: uuid(),
         name: 'Face API',
-        // avatar: '/images/avatars/avatar_6.png',
+        avatar: '/images/models/faceApi.png',
         // cover: '/images/covers/cover_2.jpg',
         // common_connections: 17,
         // labels: ['BackEnd development', 'Firebase', 'MongoDB', 'ExpressJS']

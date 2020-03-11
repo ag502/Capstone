@@ -43,9 +43,9 @@ function ProjectDetails({ match, history }) {
   const [openAlert, setOpenAlert] = useState(true);
   const [project, setProject] = useState(null);
   const tabs = [
-    { value: 'overview', label: 'Overview' },
-    { value: 'files', label: 'Files' },
-    { value: 'activity', label: 'Activity' },
+    // { value: 'overview', label: 'Overview' },
+    // { value: 'files', label: 'Files' },
+    // { value: 'activity', label: 'Activity' },
     { value: 'subscribers', label: 'Models' }
   ];
 
@@ -90,7 +90,7 @@ function ProjectDetails({ match, history }) {
   return (
     <Page
       className={classes.root}
-      title="Project Details"
+      title="Models"
     >
       <Container maxWidth="lg">
         <Header project={project} />
