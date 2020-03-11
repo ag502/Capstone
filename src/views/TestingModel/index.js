@@ -7,11 +7,13 @@ import {
   Tabs,
   Tab,
   Divider,
+  Card, CardContent,
   Grid,
   colors
 } from '@material-ui/core';
 import axios from 'src/utils/axios';
 import Header from './Header';
+import FilesDropzone from 'src/components/FilesDropzone';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,9 +24,13 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
   },
   divider: {
-    backgroundColor: colors.grey[300]
+    backgroundColor: colors.grey[300],
   },
   container: {
+    maxWidth:"lg"
+  },
+  videoContainer: {
+    paddingTop: theme.spacing(3),
     maxWidth:"lg"
   }
 }));
@@ -62,13 +68,26 @@ function TestingModel() {
           className={classes.tabs}
         >
             <Tab
-            label="abc"
+            label="모델이름 어떻게 가져오나?"
+            disabled
             />
         </Tabs>
         <Divider className={classes.divider} />
       </Container>
-      
-      <div>This is Data ModelTesting Page</div>
+      <Container 
+        className={classes.videoContainer} 
+      >
+        <Header />
+        <Tabs
+          className={classes.tabs}
+        >
+            <Tab
+            label="비디오 컨테이너"
+            disabled
+            />
+        </Tabs>
+        <Divider className={classes.divider} />
+      </Container>
     </Page>
   );
 }
