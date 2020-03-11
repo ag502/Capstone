@@ -59,12 +59,12 @@ def createThumnail(output_dir, thumnail_dir, videoId, startTime, endTime):
     # s3.Object(bucket.name, s3_Path).upload_file('%s_%d-%d.png' % (videoId, startTime, endTime))
 
 
-def removeFile(output_dir, thumnail_dir, videoId, startTime, endTime):  # s3에 올린후 파일 제거
-    os.chdir(output_dir)
-    os.remove('%s_%d-%d.mp4' % (videoId, startTime, endTime))
-
-    os.chdir(thumnail_dir)
-    os.remove('%s_%d-%d.png' % (videoId, startTime, endTime))
+# def removeFile(output_dir, thumnail_dir, videoId, startTime, endTime):  # s3에 올린후 파일 제거
+#     os.chdir(output_dir)
+#     os.remove('%s_%d-%d.mp4' % (videoId, startTime, endTime))
+#
+#     os.chdir(thumnail_dir)
+#     os.remove('%s_%d-%d.png' % (videoId, startTime, endTime))
 
     # # s3에 올리기
     # s3_Path = 'thumnails/%s_%d-%d.png' % (videoId, startTime, endTime)
