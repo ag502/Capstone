@@ -45,7 +45,8 @@ export default [
       },
       {
         title: 'Model',
-        href: '/projects/subscribers/subscribers',
+        // href: '/projects/subscribers/subscribers',
+        href: '/models',
         icon: Models
       }
     ]
