@@ -1,76 +1,111 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/styles';
 import { useSelector, useDispatch } from 'react-redux';
-import { TableRow, TableCell, Checkbox, Avatar, Button } from '@material-ui/core';
+import {
+  TableRow,
+  TableCell,
+  Checkbox,
+  Avatar,
+  Select,
+  MenuItem,
+  Button
+} from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
 import { playVideo } from '../../actions';
-import CircularProgress from "../../components/Progress"
+import ProgressLetter from '../../components/ProgressLetter/ProgressLetter';
 
-const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, classes }) => {
+const useStyles = makeStyles(() => ({
+  selectBox: {
+    width: '150px'
+  }
+}));
+
+const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne }) => {
   const key = `${videoInfo.videoId}_${videoInfo.startTime}-${videoInfo.endTime}`;
   const dispatch = useDispatch();
   const isLoading = useSelector(state => state.clippingVideo[key]);
+  const [model, setModel] = useState('null');
 
-  console.log(isLoading);
-  console.log(key);
+  const classes = useStyles();
 
   const videoIdClickHandler = (videoID, startTime, endTime) => {
     const videoName = `${videoID}_${startTime}-${endTime}`;
     dispatch(playVideo(videoName, videoID));
   };
 
+  const modelChangeHandler = event => {
+    setModel(event.target.value);
+  };
+
   return (
     <TableRow
       hover
       key={videoInfo.videoId}
-      selected={
-        selectedClippedV.indexOf(videoInfo.videoId) !== -1
-      }
+      selected={selectedClippedV.indexOf(videoInfo.videoId) !== -1}
     >
       <TableCell padding="checkbox">
         <Checkbox
-          checked={
-            selectedClippedV.indexOf(videoInfo.videoId) !== -1
-          }
+          checked={selectedClippedV.indexOf(videoInfo.videoId) !== -1}
           color="primary"
-          onChange={event =>
-            handleSelectOne(event, videoInfo.videoId)
-          }
-          value={
-            selectedClippedV.indexOf(videoInfo.videoId) !== -1
-          }
+          onChange={event => handleSelectOne(event, videoInfo.videoId)}
+          value={selectedClippedV.indexOf(videoInfo.videoId) !== -1}
         />
       </TableCell>
-      <TableCell align="center">
-        <div
-          onClick={() => videoIdClickHandler(videoInfo.videoId, videoInfo.startTime, videoInfo.endTime)}
-          className={classes.videoIDContainer}
-        >
-          {isLoading === 1 || isLoading === undefined ?
-            <Avatar
+      <TableCell padding="checkbox">
+        {isLoading === 1 || isLoading === undefined ? (
+          <Avatar
             className={classes.avatar}
             variant="rounded"
             src={`/thumbnails/${key}.png`}
-          /> : null}
+          />
+        ) : null}
+      </TableCell>
+      <TableCell align="left">
+        <div
+          onClick={() =>
+            videoIdClickHandler(
+              videoInfo.videoId,
+              videoInfo.startTime,
+              videoInfo.endTime
+            )
+          }
+        >
           {videoInfo.videoId}
         </div>
       </TableCell>
-      <TableCell>
-        {videoInfo.keyword}
-      </TableCell>
-      <TableCell align="center">{videoInfo.startTime}</TableCell>
-      <TableCell align="center">{videoInfo.endTime}</TableCell>
+      <TableCell align="center">{videoInfo.keyword}</TableCell>
+      <TableCell align="center">{`${videoInfo.startTime}s`}</TableCell>
+      <TableCell align="center">{`${videoInfo.endTime}s`}</TableCell>
       <TableCell align="center">
-        {(isLoading === 1 || isLoading === undefined) ?
+        <Select
+          // className={classes.selectBox}
+          value={model}
+          autoWidth
+          onChange={modelChangeHandler}
+          displayEmpty
+        >
+          <MenuItem value="null">
+            <em>NULL</em>
+          </MenuItem>
+          <MenuItem value="EmotionDetection">Emotion Detection</MenuItem>
+          <MenuItem value="Shadowing">Shadowing</MenuItem>
+          <MenuItem value="FaceAPI">Face API</MenuItem>
+        </Select>
+      </TableCell>
+      <TableCell align="center">
+        {isLoading === 1 || isLoading === undefined ? (
           <Button
             color="primary"
             component={RouterLink}
             size="small"
             to="/management/customers/1"
             variant="outlined"
-        >
-          View
-        </Button> :
-        <CircularProgress/> }
+          >
+            View
+          </Button>
+        ) : (
+          <ProgressLetter />
+        )}
       </TableCell>
     </TableRow>
   );

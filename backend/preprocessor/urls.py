@@ -4,4 +4,4 @@ from . import views
 
 urlpatterns = [
     path('preprocessor/', views.VideoPreprocessor.as_view()),
-              ]
+]
