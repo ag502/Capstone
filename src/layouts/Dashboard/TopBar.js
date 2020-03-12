@@ -312,8 +312,8 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
           </IconButton>
         </Hidden>
         <RouterLink to="/overview">
-          {/* <img alt="Logo" src="/images/logos/logo--white.svg" /> */}
-          <div >Jenesis</div>
+          <img alt="Jenesis" src="/images/name.png" />
+          {/* <div >Jenesis</div> */}
         </RouterLink>
         <div className={classes.flexGrow} />
         <Hidden smDown>
