@@ -8,12 +8,15 @@ import {
   Tab,
   Divider,
   Card, CardContent,
-  Grid,
+  Grid,GridList,
   colors
 } from '@material-ui/core';
 import axios from 'src/utils/axios';
 import Header from './Header';
+import ReactPlayer from 'react-player';
 import FilesDropzone from 'src/components/FilesDropzone';
+import InfiniteScroll from 'src/components/InfiniteScroll';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,12 +27,27 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
   },
   divider: {
-    backgroundColor: colors.grey[300],
+    backgroundColor: colors.grey[300]
   },
   container: {
     maxWidth:"lg"
   },
   videoContainer: {
+    paddingTop: theme.spacing(3),
+    maxWidth:"lg"
+  },
+  videoCard: {
+    maxWidth: '75%',
+    margin: 'auto',
+    boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)"
+  },
+  ListCard: {
+    maxWidth: 300,
+    maxHeight: 360,
+    margin: 'auto',
+    boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)"
+  },
+  ListContainer: {
     paddingTop: theme.spacing(3),
     maxWidth:"lg"
   }
@@ -67,27 +85,67 @@ function TestingModel() {
         <Tabs
           className={classes.tabs}
         >
-            <Tab
-            label="모델이름 어떻게 가져오나?"
+          <Tab
+            label="Model Name!!!"
             disabled
-            />
+           />
+           <Tab
+            disabled
+           />
+           <Tab
+            disabled
+           />
+           <Tab
+            disabled
+           />
+           <Tab
+            disabled
+           />
+           <Tab
+            disabled
+           />
+           <Tab
+            label="VIDEO LIST!!"
+            disabled
+           />
         </Tabs>
-        <Divider className={classes.divider} />
+        <Grid
+          container
+          item
+          direction="row"
+        >
+          <Divider className={classes.divider} width="65%"/>
+          <Divider backgroundColor={colors.grey[200]} width="10%"/>
+          <Divider className={classes.divider} width="25%"/>
+        </Grid>
       </Container>
       <Container 
         className={classes.videoContainer} 
       >
-        <Header />
-        <Tabs
-          className={classes.tabs}
+        <Grid
+          container
+          item
+          justify="flex-start"
+          direction="row"
         >
-            <Tab
-            label="비디오 컨테이너"
-            disabled
-            />
-        </Tabs>
-        <Divider className={classes.divider} />
+          <Card
+            className={classes.videoCard}
+          >
+            <ReactPlayer url="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/clippingVideo/45G3McH8y1M_5-7.mp4" controls /> 
+          </Card>
+          <InfiniteScroll>
+            <GridList
+              className={classes.ListCard}
+            >
+              <ReactPlayer url="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/clippingVideo/45G3McH8y1M_5-7.mp4" controls />
+              <ReactPlayer url="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/clippingVideo/45G3McH8y1M_5-7.mp4" controls />  
+            </GridList>
+          </InfiniteScroll>
+        </Grid>
       </Container>
+      <Card width="50px">
+        <FilesDropzone/>
+      </Card>
     </Page>
   );
 }
