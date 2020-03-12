@@ -22,10 +22,10 @@
 - [x] preprocesser App
   - [x]  VideoInfo model 불러오기
   - [x]  preprocesser model 만들기
-  - [ ]  view 만들기
+  - [x]  view 만들기
       - [x]  영상 선택시 모델 태그 설정
       - [ ]  모델 선택 영상 저장 기능 만들기
-      - [ ]  클리핑된 영상 삭제 기능 만들기
+      - [x]  클리핑된 영상 삭제 기능 만들기
       
 - [ ] data App
   - [ ]  preprocesser model 불러오기
