@@ -34,8 +34,8 @@
       - [ ]  모델 선택 영상 삭제 기능 만들기
       
 - [ ] model App
-  - [ ]view 만들기
-  - [ ]add model 기능
+  - [ ] view 만들기
+  - [ ] add model 기능
       
 
 ***
