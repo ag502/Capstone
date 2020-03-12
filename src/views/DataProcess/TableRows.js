@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
-  const key = `${videoInfo.videoId}_${videoInfo.startTime}-${videoInfo.endTime}`;
+  const key = `${videoInfo.videoId}/${videoInfo.startTime}/${videoInfo.endTime}/${videoInfo.keyword}`;
   const dispatch = useDispatch();
   const isLoading = useSelector(state => state.clippingVideo[key]);
   const [model, setModel] = useState('null');
@@ -57,9 +57,9 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
     >
       <TableCell padding="checkbox">
         <Checkbox
-          checked={selectedClippedV.indexOf(`${index}_${key}`) !== -1}
+          checked={selectedClippedV.indexOf(`${index}/${key}`) !== -1}
           color="primary"
-          onChange={event => handleSelectOne(event, `${index}_${key}`)}
+          onChange={event => handleSelectOne(event, `${index}/${key}`)}
           value={selectedClippedV.indexOf(videoInfo.videoId) !== -1}
         />
       </TableCell>
@@ -68,7 +68,7 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
           <Avatar
             className={classes.avatar}
             variant="rounded"
-            src={`/thumbnails/${key}.png`}
+            src={`/thumbnails/${videoInfo.videoId}_${videoInfo.startTime}-${videoInfo.endTime}.png`}
           />
         ) : null}
       </TableCell>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -79,7 +80,7 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
           .slice(page * rowsPerPage, (1 + page) * rowsPerPage)
           .map(
             (video, idx) =>
-              `${idx}_${video.videoId}_${video.startTime}-${video.endTime}`
+              `${idx}/${video.videoId}/${video.startTime}/${video.endTime}/${video.keyword}`
           )
       : [];
     setSelectedClippedV(selectedClippedVs);
@@ -117,32 +118,77 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
   };
 
   const deleteVideoHandler = event => {
-    const _clippedVideos = [...clippedVideos]
-      .slice(page * rowsPerPage, (1 + page) * rowsPerPage)
-      .filter(
-        (video, idx) =>
-          !selectedClippedV.includes(
-            `${idx}_${video.videoId}_${video.startTime}-${video.endTime}`
-          )
-      );
-    setSelectedClippedV([]);
-    if (page === 0) {
-      setClippedVideos([
-        ..._clippedVideos,
-        ...clippedVideos.slice((1 + page) * rowsPerPage)
-      ]);
-    } else if (page === Math.ceil(clippedVideos.length / rowsPerPage)) {
-      setClippedVideos([
-        ...clippedVideos.slice(0, page * rowsPerPage),
-        ..._clippedVideos
-      ]);
-    } else {
-      setClippedVideos([
-        ...clippedVideos.slice(0, page * rowsPerPage),
-        ..._clippedVideos,
-        ...clippedVideos.slice((1 + page) * rowsPerPage)
-      ]);
-    }
+    const [
+      idx,
+      videoID,
+      startTime,
+      endTime,
+      keyword
+    ] = selectedClippedV[0].split('/');
+
+    console.log(videoID, startTime, endTime, keyword);
+
+    axios
+      .post('http://127.0.0.1:8000/preprocessor_delete/', {
+        videoId: videoID,
+        keyword,
+        startTime,
+        endTime
+      })
+      .then(res => {
+        const _clippedVideos = [...clippedVideos]
+          .slice(page * rowsPerPage, (1 + page) * rowsPerPage)
+          .filter(
+            (video, idx) =>
+              !selectedClippedV.includes(
+                `${idx}/${video.videoId}/${video.startTime}/${video.endTime}/${video.keyword}`
+              )
+          );
+        setSelectedClippedV([]);
+        if (page === 0) {
+          setClippedVideos([
+            ..._clippedVideos,
+            ...clippedVideos.slice((1 + page) * rowsPerPage)
+          ]);
+        } else if (page === Math.ceil(clippedVideos.length / rowsPerPage)) {
+          setClippedVideos([
+            ...clippedVideos.slice(0, page * rowsPerPage),
+            ..._clippedVideos
+          ]);
+        } else {
+          setClippedVideos([
+            ...clippedVideos.slice(0, page * rowsPerPage),
+            ..._clippedVideos,
+            ...clippedVideos.slice((1 + page) * rowsPerPage)
+          ]);
+        }
+      });
+
+    // const _clippedVideos = [...clippedVideos]
+    //   .slice(page * rowsPerPage, (1 + page) * rowsPerPage)
+    //   .filter(
+    //     (video, idx) => !selectedClippedV.includes(
+    //         `${idx}_${video.videoId}_${video.startTime}-${video.endTime}`
+    //       )
+    //   );
+    // setSelectedClippedV([]);
+    // if (page === 0) {
+    //   setClippedVideos([
+    //     ..._clippedVideos,
+    //     ...clippedVideos.slice((1 + page) * rowsPerPage)
+    //   ]);
+    // } else if (page === Math.ceil(clippedVideos.length / rowsPerPage)) {
+    //   setClippedVideos([
+    //     ...clippedVideos.slice(0, page * rowsPerPage),
+    //     ..._clippedVideos
+    //   ]);
+    // } else {
+    //   setClippedVideos([
+    //     ...clippedVideos.slice(0, page * rowsPerPage),
+    //     ..._clippedVideos,
+    //     ...clippedVideos.slice((1 + page) * rowsPerPage)
+    //   ]);
+    // }
   };
 
   return (

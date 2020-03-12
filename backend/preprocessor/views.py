@@ -19,10 +19,10 @@ class PreprocessorSave(APIView):  # 전처리 하여 저장 (모델의 태그 �
 
 
 class PreprocessorDelete(APIView):  # 원본 영상을 삭제
-
     @staticmethod
-    def delete(request):
+    def post(request):
         clip_info = request.data
+        print(request.data)
         video_id = str((clip_info['videoId']))
         key_word = str((clip_info['keyword']))
         start_time = int(clip_info['startTime'])
@@ -42,11 +42,11 @@ class PreprocessorDelete(APIView):  # 원본 영상을 삭제
         # 'C:/Users/LG/Desktop/Material_Ui_Capstone/public/clippingVideo/'
         # 'C:/Users/LG/Desktop/Material_Ui_Capstone/public/thumbnails/'
 
-        output_dir = 'C:/Users/LG/Desktop/Material_Ui_Capstone/public/clippingVideo/'  # 영상 저장경로, 후에 s3로 변경
-        thumbnail_dir = 'C:/Users/LG/Desktop/Material_Ui_Capstone/public/thumbnails/'
-
-        # 원본 영상,썸네일 삭제 ** 추가 s3로 변경 **
-        Preprocess.original_delete(output_dir, thumbnail_dir, video_id, start_time, end_time)
+        # output_dir = 'C:/Users/LG/Desktop/Material_Ui_Capstone/public/clippingVideo/'  # 영상 저장경로, 후에 s3로 변경
+        # thumbnail_dir = 'C:/Users/LG/Desktop/Material_Ui_Capstone/public/thumbnails/'
+        #
+        # # 원본 영상,썸네일 삭제 ** 추가 s3로 변경 **
+        # Preprocess.original_delete(output_dir, thumbnail_dir, video_id, start_time, end_time)
 
         return HttpResponse("delete")
 
