@@ -11,7 +11,6 @@ import {
   CardHeader,
   Checkbox,
   Divider,
-  Button,
   Table,
   TableBody,
   TableCell,
@@ -19,14 +18,13 @@ import {
   TablePagination,
   TableRow,
   Typography,
-  Avatar
+  Select,
+  MenuItem
 } from '@material-ui/core';
+import Pagination from '@material-ui/lab/Pagination';
 import { useSelector, useDispatch } from 'react-redux';
-import getInitials from 'src/utils/getInitials';
-import ReviewStars from 'src/components/ReviewStars';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import TableEditBar from 'src/components/TableEditBar';
-import { playVideo } from '../../actions';
 import VideoPlayerPopUp from '../../components/Video/VideoPlayerPopup';
 import TableRows from './TableRows';
 
@@ -49,7 +47,20 @@ const useStyles = makeStyles(theme => ({
   },
   actions: {
     padding: theme.spacing(1),
-    justifyContent: 'flex-end'
+    justifyContent: 'center'
+  },
+  pageSelector: {
+    '&::before': {
+      border: 0
+    },
+    '&::after': {
+      border: 0
+    },
+    '&:hover:not(.Mui-disabled):before': {
+      border: '0px'
+    },
+    margin: '0px 10px 0px 10px',
+    fontSize: '16px'
   }
 }));
 
@@ -71,7 +82,6 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
               `${idx}_${video.videoId}_${video.startTime}-${video.endTime}`
           )
       : [];
-
     setSelectedClippedV(selectedClippedVs);
   };
 
@@ -99,7 +109,7 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
   };
 
   const chagePageHandler = (event, page) => {
-    setPage(page);
+    setPage(page - 1);
   };
 
   const changeRowsPerPageHandler = event => {
@@ -144,11 +154,28 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
         mode="general"
       />
       <Typography color="textSecondary" gutterBottom variant="body2">
-        {clippedVideos.length} Records found. Page
-        {page + 1} of {Math.ceil(clippedVideos.length / rowsPerPage)}
+        {`${clippedVideos.length} Records found. Page
+        ${page + 1} of ${Math.ceil(clippedVideos.length / rowsPerPage)}`}
       </Typography>
       <Card>
-        <CardHeader action={<GenericMoreButton />} title="All Videos" />
+        <CardHeader
+          action={
+            <>
+              <span>Rows per page:</span>
+              <Select
+                className={classes.pageSelector}
+                value={rowsPerPage}
+                onChange={changeRowsPerPageHandler}
+              >
+                <MenuItem value={5}>5</MenuItem>
+                <MenuItem value={10}>10</MenuItem>
+                <MenuItem value={25}>25</MenuItem>
+              </Select>
+              <GenericMoreButton />
+            </>
+          }
+          title="All Videos"
+        />
         <Divider />
         <CardContent className={classes.content}>
           <PerfectScrollbar>
@@ -195,14 +222,11 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
           </PerfectScrollbar>
         </CardContent>
         <CardActions className={classes.actions}>
-          <TablePagination
-            component="div"
-            count={clippedVideos.length}
-            onChangePage={chagePageHandler}
-            onChangeRowsPerPage={changeRowsPerPageHandler}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            rowsPerPageOptions={[5, 10, 25]}
+          <Pagination
+            count={Math.ceil(clippedVideos.length / rowsPerPage)}
+            shape="rounded"
+            onChange={chagePageHandler}
+            size="large"
           />
         </CardActions>
       </Card>
