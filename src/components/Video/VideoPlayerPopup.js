@@ -39,7 +39,7 @@ const DialogTitle = withStyles(styles)(props => {
           className={classes.closeButton}
           onClick={onClose}
         >
-          <Close/>
+          <Close />
         </IconButton>
       ) : null}
     </MuiDialogTitle>
@@ -78,7 +78,6 @@ function VideoPopWindow({ isPlay, videoID, title, keyword, searchType, mode }) {
   };
 
   const clippingClickHandler = () => {
-
     if (value[0] === value[1]) {
       setAlertOpen(true);
     } else {
@@ -97,18 +96,19 @@ function VideoPopWindow({ isPlay, videoID, title, keyword, searchType, mode }) {
 
       dispatch(addClippingList(clippingVideo));
 
-      axios.post('http://127.0.0.1:8000/clipping/', {
-        videoId: `${videoID}`,
-        keyword: `${keyword}`,
-        startTime: `${value[0]}`,
-        endTime: `${value[1]}`
-      }).then(res => {
-        console.log(res);
-        clippingVideo[key] = 1;
-        dispatch(addClippingList(clippingVideo));
-      });
+      axios
+        .post('http://127.0.0.1:8000/clipping/', {
+          videoId: `${videoID}`,
+          keyword: `${keyword}`,
+          startTime: `${value[0]}`,
+          endTime: `${value[1]}`
+        })
+        .then(res => {
+          console.log(res);
+          clippingVideo[key] = 1;
+          dispatch(addClippingList(clippingVideo));
+        });
     }
-
   };
 
   const videoDurationHandler = playTime => {
