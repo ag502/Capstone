@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -11,7 +12,6 @@ import {
   CardHeader,
   Checkbox,
   Divider,
-  Button,
   Table,
   TableBody,
   TableCell,
@@ -19,14 +19,13 @@ import {
   TablePagination,
   TableRow,
   Typography,
-  Avatar
+  Select,
+  MenuItem
 } from '@material-ui/core';
+import Pagination from '@material-ui/lab/Pagination';
 import { useSelector, useDispatch } from 'react-redux';
-import getInitials from 'src/utils/getInitials';
-import ReviewStars from 'src/components/ReviewStars';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import TableEditBar from 'src/components/TableEditBar';
-import { playVideo } from '../../actions';
 import VideoPlayerPopUp from '../../components/Video/VideoPlayerPopup';
 import TableRows from './TableRows';
 
@@ -49,11 +48,24 @@ const useStyles = makeStyles(theme => ({
   },
   actions: {
     padding: theme.spacing(1),
-    justifyContent: 'flex-end'
+    justifyContent: 'center'
+  },
+  pageSelector: {
+    '&::before': {
+      border: 0
+    },
+    '&::after': {
+      border: 0
+    },
+    '&:hover:not(.Mui-disabled):before': {
+      border: '0px'
+    },
+    margin: '0px 10px 0px 10px',
+    fontSize: '16px'
   }
 }));
 
-function Results({ className, clippedVideos, ...rest }) {
+function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
   const classes = useStyles();
   const [selectedClippedV, setSelectedClippedV] = useState([]);
   const [page, setPage] = useState(0);
@@ -64,9 +76,13 @@ function Results({ className, clippedVideos, ...rest }) {
 
   const handleSelectAll = event => {
     const selectedClippedVs = event.target.checked
-      ? clippedVideos.map(customer => customer.videoId)
+      ? clippedVideos
+          .slice(page * rowsPerPage, (1 + page) * rowsPerPage)
+          .map(
+            (video, idx) =>
+              `${idx}/${video.videoId}/${video.startTime}/${video.endTime}/${video.keyword}`
+          )
       : [];
-
     setSelectedClippedV(selectedClippedVs);
   };
 
@@ -90,16 +106,89 @@ function Results({ className, clippedVideos, ...rest }) {
         selectedClippedV.slice(selectedIndex + 1)
       );
     }
-
     setSelectedClippedV(newSelectedCustomers);
   };
 
-  const handleChangePage = (event, page) => {
-    setPage(page);
+  const chagePageHandler = (event, page) => {
+    setPage(page - 1);
   };
 
-  const handleChangeRowsPerPage = event => {
+  const changeRowsPerPageHandler = event => {
     setRowsPerPage(event.target.value);
+  };
+
+  const deleteVideoHandler = event => {
+    const [
+      idx,
+      videoID,
+      startTime,
+      endTime,
+      keyword
+    ] = selectedClippedV[0].split('/');
+
+    console.log(videoID, startTime, endTime, keyword);
+
+    axios
+      .post('http://127.0.0.1:8000/preprocessor_delete/', {
+        videoId: videoID,
+        keyword,
+        startTime,
+        endTime
+      })
+      .then(res => {
+        const _clippedVideos = [...clippedVideos]
+          .slice(page * rowsPerPage, (1 + page) * rowsPerPage)
+          .filter(
+            (video, idx) =>
+              !selectedClippedV.includes(
+                `${idx}/${video.videoId}/${video.startTime}/${video.endTime}/${video.keyword}`
+              )
+          );
+        setSelectedClippedV([]);
+        if (page === 0) {
+          setClippedVideos([
+            ..._clippedVideos,
+            ...clippedVideos.slice((1 + page) * rowsPerPage)
+          ]);
+        } else if (page === Math.ceil(clippedVideos.length / rowsPerPage)) {
+          setClippedVideos([
+            ...clippedVideos.slice(0, page * rowsPerPage),
+            ..._clippedVideos
+          ]);
+        } else {
+          setClippedVideos([
+            ...clippedVideos.slice(0, page * rowsPerPage),
+            ..._clippedVideos,
+            ...clippedVideos.slice((1 + page) * rowsPerPage)
+          ]);
+        }
+      });
+
+    // const _clippedVideos = [...clippedVideos]
+    //   .slice(page * rowsPerPage, (1 + page) * rowsPerPage)
+    //   .filter(
+    //     (video, idx) => !selectedClippedV.includes(
+    //         `${idx}_${video.videoId}_${video.startTime}-${video.endTime}`
+    //       )
+    //   );
+    // setSelectedClippedV([]);
+    // if (page === 0) {
+    //   setClippedVideos([
+    //     ..._clippedVideos,
+    //     ...clippedVideos.slice((1 + page) * rowsPerPage)
+    //   ]);
+    // } else if (page === Math.ceil(clippedVideos.length / rowsPerPage)) {
+    //   setClippedVideos([
+    //     ...clippedVideos.slice(0, page * rowsPerPage),
+    //     ..._clippedVideos
+    //   ]);
+    // } else {
+    //   setClippedVideos([
+    //     ...clippedVideos.slice(0, page * rowsPerPage),
+    //     ..._clippedVideos,
+    //     ...clippedVideos.slice((1 + page) * rowsPerPage)
+    //   ]);
+    // }
   };
 
   return (
@@ -111,11 +200,28 @@ function Results({ className, clippedVideos, ...rest }) {
         mode="general"
       />
       <Typography color="textSecondary" gutterBottom variant="body2">
-        {clippedVideos.length} Records found. Page
-        {page + 1} of {Math.ceil(clippedVideos.length / rowsPerPage)}
+        {`${clippedVideos.length} Records found. Page
+        ${page + 1} of ${Math.ceil(clippedVideos.length / rowsPerPage)}`}
       </Typography>
       <Card>
-        <CardHeader action={<GenericMoreButton />} title="All Videos" />
+        <CardHeader
+          action={
+            <>
+              <span>Rows per page:</span>
+              <Select
+                className={classes.pageSelector}
+                value={rowsPerPage}
+                onChange={changeRowsPerPageHandler}
+              >
+                <MenuItem value={5}>5</MenuItem>
+                <MenuItem value={10}>10</MenuItem>
+                <MenuItem value={25}>25</MenuItem>
+              </Select>
+              <GenericMoreButton />
+            </>
+          }
+          title="All Videos"
+        />
         <Divider />
         <CardContent className={classes.content}>
           <PerfectScrollbar>
@@ -125,9 +231,7 @@ function Results({ className, clippedVideos, ...rest }) {
                   <TableRow>
                     <TableCell padding="checkbox">
                       <Checkbox
-                        checked={
-                          selectedClippedV.length === clippedVideos.length
-                        }
+                        checked={selectedClippedV.length === rowsPerPage}
                         color="primary"
                         indeterminate={
                           selectedClippedV.length > 0 &&
@@ -146,33 +250,33 @@ function Results({ className, clippedVideos, ...rest }) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {clippedVideos.slice(0, rowsPerPage).map((video, idx) => (
-                    <TableRows
-                      key={`${idx}_${video.videoId}_${video.startTime}-${video.endTime}`}
-                      classes={classes}
-                      videoInfo={video}
-                      selectedClippedV={selectedClippedV}
-                      handleSelectOne={handleSelectOne}
-                    />
-                  ))}
+                  {clippedVideos
+                    .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
+                    .map((video, idx) => (
+                      <TableRows
+                        key={`${idx}_${video.videoId}_${video.startTime}-${video.endTime}`}
+                        index={idx}
+                        classes={classes}
+                        videoInfo={video}
+                        selectedClippedV={selectedClippedV}
+                        handleSelectOne={handleSelectOne}
+                      />
+                    ))}
                 </TableBody>
               </Table>
             </div>
           </PerfectScrollbar>
         </CardContent>
         <CardActions className={classes.actions}>
-          <TablePagination
-            component="div"
-            count={clippedVideos.length}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            rowsPerPageOptions={[5, 10, 25]}
+          <Pagination
+            count={Math.ceil(clippedVideos.length / rowsPerPage)}
+            shape="rounded"
+            onChange={chagePageHandler}
+            size="large"
           />
         </CardActions>
       </Card>
-      <TableEditBar selected={selectedClippedV} />
+      <TableEditBar selected={selectedClippedV} onDelete={deleteVideoHandler} />
     </div>
   );
 }

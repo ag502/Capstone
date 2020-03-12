@@ -27,14 +27,12 @@ function DataProcess() {
       // /api/management/customers
       // https://capstone-react-ea4ac.firebaseio.com/clippingVideos.json
       // http://localhost:8000/clipping/
-      axios
-        .get('http://localhost:8000/clipping/')
-        .then(response => {
-          if (mounted) {
-            console.log(response);
-            setClippedVideos(response.data);
-          }
-        });
+      axios.get('http://localhost:8000/clipping/').then(response => {
+        if (mounted) {
+          console.log(response);
+          setClippedVideos(response.data);
+        }
+      });
     };
 
     fetchCustomers();
@@ -48,7 +46,11 @@ function DataProcess() {
     <Page className={classes.root} title="Customer Management List">
       <Container maxWidth={false}>
         {clippedVideos && (
-          <Results className={classes.results} clippedVideos={clippedVideos} />
+          <Results
+            className={classes.results}
+            clippedVideos={clippedVideos}
+            setClippedVideos={setClippedVideos}
+          />
         )}
       </Container>
     </Page>

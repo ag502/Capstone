@@ -22,8 +22,8 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne }) => {
-  const key = `${videoInfo.videoId}_${videoInfo.startTime}-${videoInfo.endTime}`;
+const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
+  const key = `${videoInfo.videoId}/${videoInfo.startTime}/${videoInfo.endTime}/${videoInfo.keyword}`;
   const dispatch = useDispatch();
   const isLoading = useSelector(state => state.clippingVideo[key]);
   const [model, setModel] = useState('null');
@@ -41,11 +41,11 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne }) => {
 
   const preprocessorClickHandler = () => {
     axios.post('http://127.0.0.1:8000/preprocessor_save/', {
-      videoId: `${videoInfo.videoID}`,
+      videoId: `${videoInfo.videoId}`,
       keyword: `${videoInfo.keyword}`,
       startTime: `${videoInfo.startTime}`,
       endTime: `${videoInfo.endTime}`,
-      model: `${model}`
+      model_tag: `${model}`
     });
   };
 
@@ -57,9 +57,9 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne }) => {
     >
       <TableCell padding="checkbox">
         <Checkbox
-          checked={selectedClippedV.indexOf(videoInfo.videoId) !== -1}
+          checked={selectedClippedV.indexOf(`${index}/${key}`) !== -1}
           color="primary"
-          onChange={event => handleSelectOne(event, videoInfo.videoId)}
+          onChange={event => handleSelectOne(event, `${index}/${key}`)}
           value={selectedClippedV.indexOf(videoInfo.videoId) !== -1}
         />
       </TableCell>
@@ -68,7 +68,7 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne }) => {
           <Avatar
             className={classes.avatar}
             variant="rounded"
-            src={`/thumbnails/${key}.png`}
+            src={`/thumbnails/${videoInfo.videoId}_${videoInfo.startTime}-${videoInfo.endTime}.png`}
           />
         ) : null}
       </TableCell>
@@ -107,7 +107,12 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne }) => {
         {isLoading === 1 || isLoading === undefined ? (
           <>
             <IconButton onClick={preprocessorClickHandler}>
-              <img src="/images/video-editing.png" width="35px" height="35px" />
+              <img
+                src="/images/video-editing.png"
+                width="30px"
+                height="30px"
+                alt="Trimming"
+              />
             </IconButton>
             <Button
               color="primary"
