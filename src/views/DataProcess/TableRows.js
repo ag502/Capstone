@@ -8,8 +8,10 @@ import {
   Avatar,
   Select,
   MenuItem,
-  Button
+  Button,
+  IconButton
 } from '@material-ui/core';
+import axios from 'axios';
 import { Link as RouterLink } from 'react-router-dom';
 import { playVideo } from '../../actions';
 import ProgressLetter from '../../components/ProgressLetter/ProgressLetter';
@@ -35,6 +37,16 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne }) => {
 
   const modelChangeHandler = event => {
     setModel(event.target.value);
+  };
+
+  const preprocessorClickHandler = () => {
+    axios.post('http://127.0.0.1:8000/preprocessor_save/', {
+      videoId: `${videoInfo.videoID}`,
+      keyword: `${videoInfo.keyword}`,
+      startTime: `${videoInfo.startTime}`,
+      endTime: `${videoInfo.endTime}`,
+      model: `${model}`
+    });
   };
 
   return (
@@ -78,7 +90,6 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne }) => {
       <TableCell align="center">{`${videoInfo.endTime}s`}</TableCell>
       <TableCell align="center">
         <Select
-          // className={classes.selectBox}
           value={model}
           autoWidth
           onChange={modelChangeHandler}
@@ -94,15 +105,20 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne }) => {
       </TableCell>
       <TableCell align="center">
         {isLoading === 1 || isLoading === undefined ? (
-          <Button
-            color="primary"
-            component={RouterLink}
-            size="small"
-            to="/management/customers/1"
-            variant="outlined"
-          >
-            View
-          </Button>
+          <>
+            <IconButton onClick={preprocessorClickHandler}>
+              <img src="/images/video-editing.png" width="35px" height="35px" />
+            </IconButton>
+            <Button
+              color="primary"
+              component={RouterLink}
+              size="small"
+              to="/management/customers/1"
+              variant="outlined"
+            >
+              View
+            </Button>
+          </>
         ) : (
           <ProgressLetter />
         )}
