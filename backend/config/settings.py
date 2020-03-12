@@ -104,6 +104,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
+# capstone.cuxnxn5wstp6.ap-northeast-2.rds.amazonaws.com (데이터 베이스 주소)
 
 DATABASES = {
     'default': {

@@ -11,3 +11,10 @@ s3 = boto3.resource(
 )
 bucket = s3.Bucket(AWS_STORAGE_BUCKET_NAME)
 
+
+def original_delete(output_dir, thumbnail_dir, videoId, startTime, endTime):  # 원본영상, 썸네일 삭제
+    os.chdir(output_dir)
+    os.remove('%s_%d-%d.mp4' % (videoId, startTime, endTime))
+
+    os.chdir(thumbnail_dir)
+    os.remove('%s_%d-%d.png' % (videoId, startTime, endTime))

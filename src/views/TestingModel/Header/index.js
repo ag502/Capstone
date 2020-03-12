@@ -10,7 +10,6 @@ import {
 } from '@material-ui/core';
 import ShareIcon from '@material-ui/icons/Share';
 import Label from 'src/components/Label';
-import Application from './Application';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -35,15 +34,6 @@ const useStyles = makeStyles((theme) => ({
 
 function Header({ project, className, ...rest }) {
   const classes = useStyles();
-  const [openApplication, setOpenApplication] = useState(false);
-
-  const handleApplicationOpen = () => {
-    setOpenApplication(true);
-  };
-
-  const handleApplicationClose = () => {
-    setOpenApplication(false);
-  };
 
   return (
     <div
@@ -71,46 +61,11 @@ function Header({ project, className, ...rest }) {
           >
             Test your model
           </Typography>
-          {/* <Label
-            className={classes.label}
-            color={colors.green[600]}
-            variant="outlined"
-          >
-            Active project
-          </Label> */}
-        </Grid>
-        <Grid item>
-          {/* <Button
-            className={classes.shareButton}
-            variant="contained"
-          >
-            <ShareIcon className={classes.shareIcon} />
-            Share
-          </Button> */}
-          <Button
-            className={classes.applyButton}
-            onClick={handleApplicationOpen}
-            variant="contained"
-          >
-            Add Model
-          </Button>
         </Grid>
       </Grid>
-      <Application
-        author={project.author}
-        onApply={handleApplicationClose}
-        onClose={handleApplicationClose}
-        open={openApplication}
-      />
+      
     </div>
   );
 }
-
-Header.propTypes = {
-  className: PropTypes.string,
-  project: PropTypes.object.isRequired
-};
-
-Header.defaultProps = {};
 
 export default Header;

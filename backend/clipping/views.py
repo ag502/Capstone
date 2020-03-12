@@ -13,7 +13,7 @@ class ClipVideoDownloader(APIView):
     def get(request):
         if request.method == 'GET':
             video_info = VideoInfo.objects.all().order_by('-id')
-            serializer = VideoInfoSerializer(video_info, many = True)
+            serializer = VideoInfoSerializer(video_info, many=True)
             return JsonResponse(serializer.data, safe=False)
 
     def post(self, request):
@@ -24,8 +24,17 @@ class ClipVideoDownloader(APIView):
         clip_info = request.data
         video_id = str((clip_info['videoId']))  # 받은 정보중 videoId만 검출 (후에 추가로 다른정보도 저장할것)
 
-        output_dir = '/Users/zigje9/Desktop/jenesis/backend/clippingVideo/'  # 영상 저장경로, 후에 s3로 변경
-        thumnail_dir = '/Users/zigje9/Desktop/jenesis/backend/thumnails/'
+        # 'C:/Users/jaehee/capstone/Material_Ui_Capstone/public/clippingVideo/'
+        # 'C:/Users/jaehee/capstone/Material_Ui_Capstone/public/thumbnails/'
+
+        # '/Users/zigje9/Desktop/jenesis/public/clippingVideo/'
+        # '/Users/zigje9/Desktop/jenesis/public/thumbnails/'
+
+        # 'C:/Users/LG/Desktop/Material_Ui_Capstone/public/clippingVideo/'
+        # 'C:/Users/LG/Desktop/Material_Ui_Capstone/public/thumbnails/'
+
+        output_dir = '/Users/zigje9/Desktop/jenesis/public/clippingVideo/'  # 영상 저장경로, 후에 s3로 변경
+        thumbnail_dir = '/Users/zigje9/Desktop/jenesis/public/thumbnails/'
 
         Cliper.clip_download(output_dir, video_id)  # 원본영상을 받음
 
@@ -33,8 +42,8 @@ class ClipVideoDownloader(APIView):
         end_time = int(clip_info['endTime'])
 
         Cliper.clip_section(output_dir, video_id, start_time, end_time)  # 시작시간,끝시간으로 영상처리
-        Cliper.createThumnail(output_dir, thumnail_dir, video_id, start_time, end_time) # thumnail 생성
-        Cliper.removeFile(output_dir, thumnail_dir, video_id, start_time, end_time)
+        Cliper.createThumbnail(output_dir, thumbnail_dir, video_id, start_time, end_time) # thumbnail 생성
+        # Cliper.removeFile(output_dir, thumbnail_dir, video_id, start_time, end_time)
 
         # DB의 clip 완료여부를 필드값 변경
         queryset = VideoInfo.objects.all()

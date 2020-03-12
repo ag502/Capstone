@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function SubscriberCard({ subscriber, className, ...rest }) {
+function ModelCard({ model, className, ...rest }) {
   const classes = useStyles();
 
   return (
@@ -60,58 +60,41 @@ function SubscriberCard({ subscriber, className, ...rest }) {
     >
       <CardMedia
         className={classes.media}
-        image={subscriber.cover}// 모델 이미지 가져오기
       />
       <CardContent className={classes.content}>
         <div className={classes.avatarContainer}>
            <Avatar
-            alt="Subscriber"
+            alt="Model"
             className={classes.avatar}
             component={RouterLink}
-            src={subscriber.avatar}
-            to="/profile/1/timeline"
+            src={model.avatar}
+            to="/Testing-Model"
           >
           </Avatar>
         </div>
-        <Typography //// 모델 이름
+        <Typography 
           align="center"
           component={RouterLink}
           display="block"
-          to="/profile/1/timeline"
+          to="/Testing-Model"
           variant="h6"
         >
-          {subscriber.name}
+          {model.name}
         </Typography>
-        {/* <Typography
-          align="center"
-          variant="body2"
-        >
-          {subscriber.common_connections}
-          {' '}
-          connections in common
-        </Typography> */}
         <Divider className={classes.divider} />
         <Grid
           container
           spacing={1}
         >
-          {/* {subscriber.labels.map((label) => (
-            <Grid
-              item
-              key={label}
-            >
-              <Label variant="outlined">{label}</Label>
-            </Grid>
-          ))} */}
         </Grid>
       </CardContent>
     </Card>
   );
 }
 
-SubscriberCard.propTypes = {
+ModelCard.propTypes = {
   className: PropTypes.string,
-  subscriber: PropTypes.object.isRequired
+  model: PropTypes.object.isRequired
 };
 
-export default SubscriberCard;
+export default ModelCard;
