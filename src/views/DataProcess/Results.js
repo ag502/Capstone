@@ -163,32 +163,6 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
           ]);
         }
       });
-
-    // const _clippedVideos = [...clippedVideos]
-    //   .slice(page * rowsPerPage, (1 + page) * rowsPerPage)
-    //   .filter(
-    //     (video, idx) => !selectedClippedV.includes(
-    //         `${idx}_${video.videoId}_${video.startTime}-${video.endTime}`
-    //       )
-    //   );
-    // setSelectedClippedV([]);
-    // if (page === 0) {
-    //   setClippedVideos([
-    //     ..._clippedVideos,
-    //     ...clippedVideos.slice((1 + page) * rowsPerPage)
-    //   ]);
-    // } else if (page === Math.ceil(clippedVideos.length / rowsPerPage)) {
-    //   setClippedVideos([
-    //     ...clippedVideos.slice(0, page * rowsPerPage),
-    //     ..._clippedVideos
-    //   ]);
-    // } else {
-    //   setClippedVideos([
-    //     ...clippedVideos.slice(0, page * rowsPerPage),
-    //     ..._clippedVideos,
-    //     ...clippedVideos.slice((1 + page) * rowsPerPage)
-    //   ]);
-    // }
   };
 
   return (
