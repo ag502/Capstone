@@ -7,11 +7,7 @@
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
-<<<<<<< HEAD
     <orderEntry type="jdk" jdkName="Python 3.7 (jenesis)" jdkType="Python SDK" />
-=======
-    <orderEntry type="jdk" jdkName="Python 3.7 (Material_Ui_Capstone)" jdkType="Python SDK" />
->>>>>>> dc8aeb359a09daf02d7607a030b289a5d238e9f5
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
