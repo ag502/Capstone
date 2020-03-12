@@ -7,9 +7,10 @@ import {
   Tabs,
   Tab,
   Divider,
-  Card, CardContent,
-  Grid,GridList,
-  colors
+  Card, CardContent, CardMedia,
+  Grid, GridList,
+  colors,
+  Typography
 } from '@material-ui/core';
 import axios from 'src/utils/axios';
 import Header from './Header';
@@ -34,21 +35,22 @@ const useStyles = makeStyles((theme) => ({
   },
   videoContainer: {
     paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(1.5),
     maxWidth:"lg"
   },
   videoCard: {
-    maxWidth: '75%',
+    maxWidth: '60%',
     margin: 'auto',
     boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)"
   },
   ListCard: {
-    maxWidth: 300,
-    maxHeight: 360,
+    maxWidth: '35%',
     margin: 'auto',
     boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)"
   },
-  ListContainer: {
-    paddingTop: theme.spacing(3),
+  fileDropzoneContainer: {
+    paddingTop: theme.spacing(1.5),
+    paddingBottom: theme.spacing(3),
     maxWidth:"lg"
   }
 }));
@@ -114,38 +116,59 @@ function TestingModel() {
           item
           direction="row"
         >
-          <Divider className={classes.divider} width="65%"/>
-          <Divider backgroundColor={colors.grey[200]} width="10%"/>
-          <Divider className={classes.divider} width="25%"/>
+          <Divider className={classes.divider} width="68%"/>
+          <Divider backgroundColor={colors.grey[200]} width="3%"/>
+          <Divider className={classes.divider} width="29%"/>
         </Grid>
       </Container>
-      <Container 
-        className={classes.videoContainer} 
+      <Grid
+        container
+        item
+        direction="column"
       >
-        <Grid
-          container
-          item
-          justify="flex-start"
-          direction="row"
+        <Container 
+          className={classes.videoContainer} 
         >
-          <Card
-            className={classes.videoCard}
+          <Grid
+            container
+            item
+            direction="row"
+            justify="flex-start"
           >
-            <ReactPlayer url="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/clippingVideo/45G3McH8y1M_5-7.mp4" controls /> 
-          </Card>
-          <InfiniteScroll>
-            <GridList
-              className={classes.ListCard}
-            >
-              <ReactPlayer url="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/clippingVideo/45G3McH8y1M_5-7.mp4" controls />
-              <ReactPlayer url="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/clippingVideo/45G3McH8y1M_5-7.mp4" controls />  
-            </GridList>
-          </InfiniteScroll>
-        </Grid>
-      </Container>
-      <Card width="50px">
-        <FilesDropzone/>
-      </Card>
+            <Card className={classes.videoCard}>
+              <CardMedia paddingTop="25%">
+                <ReactPlayer maxWidth="100%" maxHeigit="100%" url="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/clippingVideo/45G3McH8y1M_5-7.mp4" controls /> 
+              </CardMedia>
+              <CardContent>
+                <Typography
+                  variant={"h6"}
+                >
+                  video info!!!!
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card className={classes.ListCard}>
+              <CardMedia paddingTop="25%">
+                <ReactPlayer maxWidth="100%" maxHeigit="100%" url="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/clippingVideo/45G3McH8y1M_5-7.mp4" controls /> 
+              </CardMedia>
+              <CardContent>
+                <Typography
+                  variant={"h6"}
+                >
+                  video info!!!!
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Container>
+        <Container className={classes.fileDropzoneContainer}>
+            <Card >
+              <CardContent>
+                <FilesDropzone />
+              </CardContent>
+            </Card>
+        </Container>
+      </Grid>
     </Page>
   );
 }
