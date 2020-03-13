@@ -1,6 +1,5 @@
 import React, { useState, useEffect} from 'react';
 import Page from 'src/components/Page';
-import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { 
   Container,
@@ -17,6 +16,7 @@ import Header from './Header';
 import ReactPlayer from 'react-player';
 import FilesDropzone from 'src/components/FilesDropzone';
 import InfiniteScroll from 'src/components/InfiniteScroll';
+import CircularIndeterminate from 'src/components/Progress';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -33,25 +33,34 @@ const useStyles = makeStyles((theme) => ({
   container: {
     maxWidth:"lg"
   },
-  videoContainer: {
-    paddingTop: theme.spacing(3),
-    paddingBottom: theme.spacing(1.5),
-    maxWidth:"lg"
+  modelContainer: {
+    paddingBottom: theme.spacing(3),
+    maxWidth: '54%',
+    maxHeight: '428px',
+    margin: '0 0 0 0'
+  },
+  listContainer: {
+    paddingBottom: theme.spacing(3),
+    maxWidth:"46%",
+    margin: "0 0 0 0"
   },
   videoCard: {
-    maxWidth: '60%',
-    margin: 'auto',
-    boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)"
+    marginTop: theme.spacing(3),
+    boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
+    
   },
   ListCard: {
-    maxWidth: '35%',
-    margin: 'auto',
+    maxHeight: '428px',//???????
+    marginTop: theme.spacing(3),
     boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)"
   },
   fileDropzoneContainer: {
     paddingTop: theme.spacing(1.5),
     paddingBottom: theme.spacing(3),
     maxWidth:"lg"
+  },
+  media: {
+    padding: '100px 150px'
   }
 }));
 
@@ -82,93 +91,138 @@ function TestingModel() {
       className={classes.root}
       title="TestingModel"
     >
-      <Container className={classes.container} >
+      <Container className={classes.container}>
         <Header />
-        <Tabs
-          className={classes.tabs}
-        >
-          <Tab
-            label="Model Name!!!"
-            disabled
-           />
-           <Tab
-            disabled
-           />
-           <Tab
-            disabled
-           />
-           <Tab
-            disabled
-           />
-           <Tab
-            disabled
-           />
-           <Tab
-            disabled
-           />
-           <Tab
-            label="VIDEO LIST!!"
-            disabled
-           />
-        </Tabs>
-        <Grid
-          container
-          item
-          direction="row"
-        >
-          <Divider className={classes.divider} width="68%"/>
-          <Divider backgroundColor={colors.grey[200]} width="3%"/>
-          <Divider className={classes.divider} width="29%"/>
-        </Grid>
       </Container>
       <Grid
         container
         item
-        direction="column"
+        direction="row"
+        justify="space-between"
       >
-        <Container 
-          className={classes.videoContainer} 
-        >
-          <Grid
-            container
-            item
-            direction="row"
-            justify="flex-start"
-          >
-            <Card className={classes.videoCard}>
-              <CardMedia paddingTop="25%">
-                <ReactPlayer maxWidth="100%" maxHeigit="100%" url="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/clippingVideo/45G3McH8y1M_5-7.mp4" controls /> 
-              </CardMedia>
-              <CardContent>
-                <Typography
-                  variant={"h6"}
-                >
-                  video info!!!!
-                </Typography>
-              </CardContent>
-            </Card>
-            <Card className={classes.ListCard}>
-              <CardMedia paddingTop="25%">
-                <ReactPlayer maxWidth="100%" maxHeigit="100%" url="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/clippingVideo/45G3McH8y1M_5-7.mp4" controls /> 
-              </CardMedia>
-              <CardContent>
-                <Typography
-                  variant={"h6"}
-                >
-                  video info!!!!
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+        <Container className={classes.modelContainer}>
+          <Tabs className={classes.tabs}>
+            <Tab
+              label="Model Name!!!"
+              disabled
+            />
+          </Tabs>
+          <Divider className={classes.divider} />
+          <Card className={classes.videoCard}>
+            <CardMedia>
+              <ReactPlayer url="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/clippingVideo/45G3McH8y1M_5-7.mp4" controls /> 
+            </CardMedia>
+            <CardContent>
+              <Typography
+                variant={'h6'}
+              >
+                video info
+              </Typography>
+            </CardContent>
+          </Card>
         </Container>
-        <Container className={classes.fileDropzoneContainer}>
-            <Card >
-              <CardContent>
-                <FilesDropzone />
-              </CardContent>
-            </Card>
+        <Container className={classes.listContainer}>
+          <Tabs className={classes.tabs}>
+            <Tab
+              label="VIDEO LIST"
+              disabled
+            />
+          </Tabs>
+          <Divider className={classes.divider} />
+          <Card className={classes.ListCard}>
+            <InfiniteScroll
+              hasMore
+              pageStart={0}
+              loadMore
+              initialLoad
+              useWindow
+              loader={<CircularIndeterminate key={0} />}
+            >
+              <GridList cellHeight="auto" cols={1} spacing={0}>
+                <Grid
+                  container
+                  item
+                  direction="row"
+                  justify="space-between"
+                >
+                  <CardMedia
+                    className={classes.media}
+                    image="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/thumnails/45G3McH8y1M_5-7.png"
+                  />
+                  <CardContent>
+                    <Typography
+                      variant={'h6'}
+                    >
+                      video info
+                    </Typography>
+                  </CardContent>
+                </Grid>
+                <Grid
+                  container
+                  item
+                  direction="row"
+                  justify="space-between"
+                >
+                  <CardMedia
+                    className={classes.media}
+                    image="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/thumnails/45G3McH8y1M_5-7.png"
+                  />
+                  <CardContent>
+                    <Typography
+                      variant={'h6'}
+                    >
+                      video info
+                    </Typography>
+                  </CardContent>
+                </Grid>
+                <Grid
+                  container
+                  item
+                  direction="row"
+                  justify="space-between"
+                >
+                  <CardMedia
+                    className={classes.media}
+                    image="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/thumnails/45G3McH8y1M_5-7.png"
+                  />
+                  <CardContent>
+                    <Typography
+                      variant={'h6'}
+                    >
+                      video info
+                    </Typography>
+                  </CardContent>
+                </Grid>
+                <Grid
+                  container
+                  item
+                  direction="row"
+                  justify="space-between"
+                >
+                  <CardMedia
+                    className={classes.media}
+                    image="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/thumnails/45G3McH8y1M_5-7.png"
+                  />
+                  <CardContent>
+                    <Typography
+                      variant={'h6'}
+                    >
+                      video info
+                    </Typography>
+                  </CardContent>
+                </Grid>
+              </GridList>
+            </InfiniteScroll>
+          </Card>
         </Container>
       </Grid>
+      <Container className={classes.fileDropzoneContainer}>
+        <Card>
+          <CardContent>
+            <FilesDropzone />
+          </CardContent>
+        </Card>
+      </Container>
     </Page>
   );
 }
