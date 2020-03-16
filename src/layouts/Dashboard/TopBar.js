@@ -218,36 +218,7 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
     }
   };
 
-  // Redux Thunk로 바꾸기 !!!!
-  const loadVideoData = async inputValue => {
-    try {
-      console.log('execute');
-      let receivedData = null;
-      if (searchType === 1) {
-        receivedData = await searchVideosKeyword(inputValue);
-      } else if (searchType === 2) {
-        receivedData = await searchVideosID(inputValue);
-      } else if (searchType === 3) {
-        receivedData = await searchVideosChanID(inputValue);
-      }
-      return receivedData;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
-
   const clickSearchHandler = event => {
-    // loadVideoData(searchValue)
-    //   .then(result => {
-    //     console.log(result);
-    //     window.scrollTo(0, 0);
-    //     dispatch(setVideoData(result));
-    //   })
-    //   .catch(err => {
-    //     console.log(err.response.status);
-    //     dispatch(setLoadError(err.response.status));
-    //   })
-    //   .finally(() => setSearchValue(''));
     if (searchValue) {
       try {
         window.scrollTo(0, 0);
@@ -262,19 +233,6 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
 
   const enterSearchHandler = event => {
     if (event.key === 'Enter' && searchValue) {
-      // loadVideoData(searchValue)
-      //   .then(result => {
-      //     console.log(result);
-      //     window.scrollTo(0, 0);
-      //     dispatch(setVideoData(result));
-      //   })
-      //   .catch(err => {
-      //     console.log(err.response.status);
-      //     dispatch(setLoadError(err.response.status));
-      //   })
-      //   .finally(() => {
-      //     setSearchValue('');
-      //   });
       try {
         window.scrollTo(0, 0);
         dispatch(setVideoData(searchValue, searchType));

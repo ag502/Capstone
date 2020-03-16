@@ -24,14 +24,6 @@ function Overview() {
   useEffect(() => {
     console.log('Overview mount');
     if (!keyword) {
-      // // dispatch(setVideoData({ searchKeyword: '한달살기' }));
-      // searchVideosKeyword('한달살기')
-      //   .then(res => {
-      //     dispatch(setVideoData(res));
-      //   })
-      //   .catch(err => {
-      //     dispatch(setLoadError(err.response.status));
-      //   });
       try {
         dispatch(setVideoData('한달살기'));
       } catch (error) {
@@ -40,32 +32,18 @@ function Overview() {
     }
   }, []);
 
-  // Redux Thunk로 바꾸기
-  const loadVideoData = async () => {
-    try {
-      let receivedData = null;
-      const page = nextPage === 'init' ? '' : nextPage;
-      if (searchType === 1) {
-        receivedData = await searchVideosKeyword(keyword, page);
-      } else if (searchType === 2) {
-        receivedData = await searchVideosID(keyword, page);
-      } else if (searchType === 3) {
-        receivedData = await searchVideosChanID(keyword, page);
-      }
-
-      return receivedData;
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   const loadNextVideoData = page => {
-    loadVideoData()
-      .then(result => {
-        console.log(result);
-        dispatch(setMoreVideoData(result));
-      })
-      .finally(() => {});
+    try {
+      dispatch(
+        setMoreVideoData(
+          keyword,
+          searchType,
+          nextPage === 'init' ? '' : nextPage
+        )
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const ErrorNotFound = lazy(() => import('../ErrorNotFound'));

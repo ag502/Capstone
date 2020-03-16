@@ -40,10 +40,27 @@ export const setChannelVideoData = data => ({
   payload: data
 });
 
-export const setMoreVideoData = data => ({
+const saveMoreVideoData = data => ({
   type: SET_MORE_VIDEO_DATA,
   payload: data
 });
+
+export const setMoreVideoData = (
+  keyword,
+  searchType = 1,
+  page = ''
+) => dispatch => {
+  let pendingData = null;
+  if (searchType === 1) {
+    pendingData = searchVideosKeyword(keyword, page);
+  } else if (searchType === 2) {
+    pendingData = searchVideosID(keyword, page);
+  } else if (searchType === 3) {
+    pendingData = searchVideosChanID(keyword, page);
+  }
+
+  pendingData.then(res => dispatch(saveMoreVideoData(res)));
+};
 
 export const setChannleMoreVidoeData = data => ({
   type: SET_CHANNEL_MORE_VIDEO_DATA,
