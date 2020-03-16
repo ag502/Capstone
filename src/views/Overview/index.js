@@ -24,14 +24,19 @@ function Overview() {
   useEffect(() => {
     console.log('Overview mount');
     if (!keyword) {
-      // dispatch(setVideoData({ searchKeyword: '한달살기' }));
-      searchVideosKeyword('한달살기')
-        .then(res => {
-          dispatch(setVideoData(res));
-        })
-        .catch(err => {
-          dispatch(setLoadError(err.response.status));
-        });
+      // // dispatch(setVideoData({ searchKeyword: '한달살기' }));
+      // searchVideosKeyword('한달살기')
+      //   .then(res => {
+      //     dispatch(setVideoData(res));
+      //   })
+      //   .catch(err => {
+      //     dispatch(setLoadError(err.response.status));
+      //   });
+      try {
+        dispatch(setVideoData('한달살기'));
+      } catch (error) {
+        console.log(error);
+      }
     }
   }, []);
 

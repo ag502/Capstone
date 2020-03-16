@@ -49,7 +49,7 @@ import ChatBar from './ChatBar';
 const useStyles = makeStyles(theme => ({
   root: {
     boxShadow: 'none',
-    backgroundColor: colors.blueGrey[900],
+    backgroundColor: colors.blueGrey[900]
   },
 
   flexGrow: {
@@ -237,34 +237,52 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
   };
 
   const clickSearchHandler = event => {
-    loadVideoData(searchValue)
-      .then(result => {
-        console.log(result);
+    // loadVideoData(searchValue)
+    //   .then(result => {
+    //     console.log(result);
+    //     window.scrollTo(0, 0);
+    //     dispatch(setVideoData(result));
+    //   })
+    //   .catch(err => {
+    //     console.log(err.response.status);
+    //     dispatch(setLoadError(err.response.status));
+    //   })
+    //   .finally(() => setSearchValue(''));
+    if (searchValue) {
+      try {
         window.scrollTo(0, 0);
-        dispatch(setVideoData(result));
-      })
-      .catch(err => {
-        console.log(err.response.status);
-        dispatch(setLoadError(err.response.status));
-      })
-      .finally(() => setSearchValue(''));
+        dispatch(setVideoData(searchValue, searchType));
+      } catch (error) {
+        dispatch(setLoadError(error));
+      } finally {
+        setSearchValue('');
+      }
+    }
   };
 
   const enterSearchHandler = event => {
     if (event.key === 'Enter' && searchValue) {
-      loadVideoData(searchValue)
-        .then(result => {
-          console.log(result);
-          window.scrollTo(0, 0);
-          dispatch(setVideoData(result));
-        })
-        .catch(err => {
-          console.log(err.response.status);
-          dispatch(setLoadError(err.response.status));
-        })
-        .finally(() => {
-          setSearchValue('');
-        });
+      // loadVideoData(searchValue)
+      //   .then(result => {
+      //     console.log(result);
+      //     window.scrollTo(0, 0);
+      //     dispatch(setVideoData(result));
+      //   })
+      //   .catch(err => {
+      //     console.log(err.response.status);
+      //     dispatch(setLoadError(err.response.status));
+      //   })
+      //   .finally(() => {
+      //     setSearchValue('');
+      //   });
+      try {
+        window.scrollTo(0, 0);
+        dispatch(setVideoData(searchValue, searchType));
+      } catch (error) {
+        dispatch(setLoadError(error));
+      } finally {
+        setSearchValue('');
+      }
     }
   };
 
@@ -363,14 +381,14 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
               </Paper>
             </ClickAwayListener>
           </Popper>
-          <Button
+          {/* <Button
             className={classes.trialButton}
             onClick={handlePricingModalOpen}
             variant="contained"
           >
             <LockIcon className={classes.trialIcon} />
             Trial expired
-          </Button>
+          </Button> */}
         </Hidden>
         {/* <IconButton */}
         {/*  className={classes.chatButton} */}
@@ -415,7 +433,7 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
         onClose={handleNotificationsClose}
         open={openNotifications}
       />
-      <PricingModal onClose={handlePricingModalClose} open={pricingModalOpen} />
+      {/* <PricingModal onClose={handlePricingModalClose} open={pricingModalOpen} /> */}
       <ChatBar onClose={handleChatBarClose} open={openChatBar} />
     </AppBar>
   );

@@ -26,7 +26,11 @@ const videoDataReducer = (state = initialState, action) => {
       return {
         ...state,
         error: '',
-        generalSearch: { ...state.generalSearch, ...action.payload }
+        generalSearch: {
+          ...state.generalSearch,
+          ...action.payload,
+          searchType: action.searchType
+        }
       };
     case actionTypes.SET_MORE_VIDEO_DATA:
       return {
