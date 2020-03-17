@@ -10,11 +10,11 @@ from pytz import timezone
 class VideoInfo(models.Model):
     id = models.AutoField(primary_key=True)
     videoId = models.CharField(max_length=11)
-    keyword = models.CharField(max_length=300,null=True)
+    keyword = models.CharField(max_length=300, null=True)
     startTime = models.IntegerField()
     endTime = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
-    clip_complete = models.BooleanField(default=False)
+    clip_complete = models.CharField(max_length=50, default="loading")
 
     @property
     def created_at_korean_time(self):
