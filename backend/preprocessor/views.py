@@ -1,8 +1,7 @@
 from .serializers import VideoDataSerializer
-from .models import VideoData
 from rest_framework.views import APIView
 from django.http import HttpResponse
-from . import Preprocess
+from . import Preprocess, face_discriminator
 from clipping.models import VideoInfo
 
 
@@ -13,6 +12,14 @@ class PreprocessorSave(APIView):  # 전처리 하여 저장 (모델의 태그 �
         serializer = VideoDataSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+        video_info = request.data
+        video_id = str((video_info['videoId']))
+        start_time = int(video_info['startTime'])
+        end_time = int(video_info['endTime'])
+        model_tag = str((video_info['model_tag']))
+        Preprocess.createframes(video_id,start_time,end_time)
+        time_section = face_discriminator.facedetect()
+        Preprocess.time_clip(model_tag,video_id,time_section,start_time,end_time)
 
         # ** 추가 ** 모델에 대한 작업은 Preprocess.py 에서 실행
         return HttpResponse("save")

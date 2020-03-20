@@ -6,7 +6,6 @@ from pytz import timezone
 
 # 모델 선택된 비디오 데이터
 
-
 class VideoData(models.Model):
     id = models.AutoField(primary_key=True)
     videoId = models.CharField(max_length=11)

@@ -154,6 +154,7 @@ venv/
 clippingVideo/
 thumnails/
 thumbnails/
+frames/
 config_secret/
 .idea/
 
