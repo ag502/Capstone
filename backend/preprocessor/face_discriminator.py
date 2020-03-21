@@ -1,9 +1,6 @@
 from mtcnn import MTCNN
 import cv2
-from Preprocess import makelist ,time_clip
-import glob
-
-frames_dir = "C:/Users/jaehee/capstone/Material_Ui_Capstone/backend/preprocessor/frames/"
+from Preprocess import makelist
 
 def facedetect():
     frame_list = makelist()
@@ -31,6 +28,3 @@ def facedetect():
         del section[-1]
 
     return section
-
-time_section = facedetect()
-time_clip("model_tag","Bxl6Gw07tb4",time_section,73,90)

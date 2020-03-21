@@ -3,6 +3,7 @@ import youtube_dl
 import glob
 BASE_YOUTUBE_URL = "https://www.youtube.com/watch?v=%s"
 import boto3
+
 # from config.settings import AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_STORAGE_BUCKET_NAME
 #
 # s3 = boto3.resource(
@@ -12,7 +13,7 @@ import boto3
 # )
 # bucket = s3.Bucket(AWS_STORAGE_BUCKET_NAME)
 
-# path = "https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/clippingVideo/"
+path = "https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/clippingVideo/"
 frames_dir = "C:/Users/jaehee/capstone/Material_Ui_Capstone/backend/preprocessor/frames/"
 
 # 프레임 생성
@@ -44,10 +45,18 @@ def time_clip(model_tag,videoId,time_section,start_time,end_time):
             os.system(ffmpeg_command)
         os.remove('%s_%d-%d.mp4' % (videoId, start_time, end_time))
 
+    #s3에 영상 올리기
+    # for num in range(i):
+    #     s3_Path = 'faceemotion/%s_%s_%d-%d_%d.mp4' % ("modeltag",videoId, start_time, end_time,i)
+    #     s3.Object(bucket.name, s3_Path).upload_file('%s_%s_%d-%d_%d.mp4' % ("modeltag",videoId, start_time, end_time,i))
+
 
 def original_delete(output_dir, thumbnail_dir, videoId, startTime, endTime):  # 원본영상, 썸네일 삭제
     os.chdir(output_dir)
-    os.remove('%s_%d-%d.mp4' % (videoId, startTime, endTime))
+    # os.remove('%s_%d-%d.mp4' % (videoId, startTime, endTime))
+    #
+    # os.chdir(thumbnail_dir)
+    # os.remove('%s_%d-%d.png' % (videoId, startTime, endTime))
 
-    os.chdir(thumbnail_dir)
-    os.remove('%s_%d-%d.png' % (videoId, startTime, endTime))
+    # s3_Path = 'clippingVideo/%s_%d-%d.mp4' % (videoId, startTime, endTime)
+    # s3.Object(bucket.name, s3_Path).delete()
