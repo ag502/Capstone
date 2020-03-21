@@ -5,19 +5,18 @@ import { Container, Typography, Select, MenuItem } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
 import { getProcessedVideos } from '../../utils/axios';
 import VideoCard from './VideoCard';
+import Filter from './Filter';
 
 const useStyles = makeStyles(theme => ({
   root: {
     paddingTop: theme.spacing(3),
-    paddingBottom: theme.spacing(3)
+    paddingBottom: theme.spacing(3),
+    marginTop: theme.spacing(3)
   },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center'
-  },
-  results: {
-    marginTop: theme.spacing(3)
   },
   pagination: {
     display: 'flex',
@@ -67,7 +66,8 @@ function DataManagement() {
   return (
     <Page className={classes.root} title="DataManagement">
       <Container maxWidth={false}>
-        <div className={classes.results}>
+        <Filter />
+        <div>
           <div className={classes.header}>
             <Typography color="textSecondary" gutterBottom variant="body2">
               {`${
