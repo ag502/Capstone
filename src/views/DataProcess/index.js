@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Container } from '@material-ui/core';
-// import axios from 'src/utils/axios';
-import axios from 'axios';
+import { getClippedVideos } from 'src/utils/axios';
+// import axios from 'axios';
 import Page from 'src/components/Page';
 import Results from './Results';
 
@@ -23,11 +23,11 @@ function DataProcess() {
   useEffect(() => {
     let mounted = true;
 
-    const fetchCustomers = () => {
+    const fetchClippedVideos = () => {
       // /api/management/customers
       // https://capstone-react-ea4ac.firebaseio.com/clippingVideos.json
       // http://localhost:8000/clipping/
-      axios.get('http://localhost:8000/clipping/').then(response => {
+      getClippedVideos().then(response => {
         if (mounted) {
           console.log(response);
           setClippedVideos(response.data);
@@ -35,7 +35,7 @@ function DataProcess() {
       });
     };
 
-    fetchCustomers();
+    fetchClippedVideos();
 
     return () => {
       mounted = false;

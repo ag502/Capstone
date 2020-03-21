@@ -3,6 +3,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('preprocessor/', views.Preprocessor.as_view()),
     path('preprocessor_save/', views.PreprocessorSave.as_view()),
     path('preprocessor_delete/', views.PreprocessorDelete.as_view()),
     ]

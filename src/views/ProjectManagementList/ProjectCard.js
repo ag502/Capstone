@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core';
 import getInitials from 'src/utils/getInitials';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     alignItems: 'center',
@@ -72,10 +72,7 @@ function ProjectCard({ project, className, ...rest }) {
   };
 
   return (
-    <Card
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
+    <Card {...rest} className={clsx(classes.root, className)}>
       <CardContent className={classes.content}>
         <div className={classes.header}>
           <Avatar
@@ -96,8 +93,7 @@ function ProjectCard({ project, className, ...rest }) {
               {project.title}
             </Link>
             <Typography variant="body2">
-              by
-              {' '}
+              by{' '}
               <Link
                 color="textPrimary"
                 component={RouterLink}
@@ -142,11 +138,7 @@ function ProjectCard({ project, className, ...rest }) {
           <Typography variant="body2">Project status</Typography>
         </div>
         <div className={classes.actions}>
-          <Button
-            color="primary"
-            size="small"
-            variant="outlined"
-          >
+          <Button color="primary" size="small" variant="outlined">
             View
           </Button>
         </div>

@@ -57,4 +57,10 @@ export const searchVideosID = (id, page = '') => {
     .then(res => processVideoData(res, id));
 };
 
+export const getClippedVideos = () =>
+  axios.get('http://localhost:8000/clipping/');
+
+export const getProcessedVideos = () =>
+  axios.get('http://localhost:8000/preprocessor/');
+
 export default instance;
