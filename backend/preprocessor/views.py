@@ -7,12 +7,24 @@ from .models import VideoData
 
 
 class Preprocessor(APIView):
-    @staticmethod
-    def get(request):
-        current_url = request.get_full_path()
-        if '?' in current_url:
+
+    def __init__(self):
+        super().__init__()
+        self._current_url = ''
+
+    @property
+    def current_url(self):
+        return self._current_url
+
+    @current_url.setter
+    def current_url(self, url):
+        self._current_url = url
+
+    def get(self, request):
+        self.current_url = request.get_full_path()
+        if '?' in self.current_url:
             model_tag = request.GET.get('model_tag')
-            video_data = VideoData.objects.filter(model_tag=model_tag)
+            video_data = VideoData.objects.filter(model_tag=model_tag).order_by('-id')
         else:
             video_data = VideoData.objects.all().order_by('-id')
 
