@@ -9,10 +9,15 @@ from .models import VideoData
 class Preprocessor(APIView):
     @staticmethod
     def get(request):
-        if request.method == 'GET':
+        current_url = request.get_full_path()
+        if '?' in current_url:
+            model_tag = request.GET.get('model_tag')
+            video_data = VideoData.objects.filter(model_tag=model_tag)
+        else:
             video_data = VideoData.objects.all().order_by('-id')
-            serializer = VideoDataSerializer(video_data, many=True)
-            return JsonResponse(serializer.data, safe=False)
+
+        serializer = VideoDataSerializer(video_data, many=True)
+        return JsonResponse(serializer.data, safe=False)
 
 
 class PreprocessorSave(APIView):  # 전처리 하여 저장 (모델의 태그 선택)

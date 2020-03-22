@@ -66,7 +66,7 @@ function DataManagement() {
   return (
     <Page className={classes.root} title="DataManagement">
       <Container maxWidth={false}>
-        <Filter />
+        <Filter setVideoList={setVideoList} />
         <div>
           <div className={classes.header}>
             <Typography color="textSecondary" gutterBottom variant="body2">

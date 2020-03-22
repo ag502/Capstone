@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { Card, Divider, Chip, Input } from '@material-ui/core';
+import { Card, Divider, Chip, Input, Button } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
+import axios from 'axios';
 import MultiSelector from './MultiSelector';
 
 const selector = [
@@ -19,10 +20,21 @@ const useStyles = makeStyles(theme => ({
   },
   chip: {
     margin: theme.spacing(1)
+  },
+  filterButtonContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: '35px'
+  },
+  searchButton: {
+    padding: '3px',
+    height: '30px',
+    marginRight: theme.spacing(1)
   }
 }));
 
-const Filter = () => {
+const Filter = ({ setVideoList }) => {
   const [chips, setChips] = useState([]);
   const inputRef = useRef(null);
   const classes = useStyles();
@@ -60,6 +72,15 @@ const Filter = () => {
     setChips(prevChips => prevChips.filter(chip => chip !== data));
   };
 
+  const searchButtonHandler = () => {
+    if (chips.length !== 0) {
+      console.log(chips);
+      axios
+        .get(`http://127.0.0.1:8000/preprocessor/?model_tag=${chips[0]}`)
+        .then(res => setVideoList(res.data));
+    }
+  };
+
   return (
     <Card>
       <div className={classes.keywords}>
@@ -86,15 +107,28 @@ const Filter = () => {
         ))}
       </div>
       <Divider />
-      {selector.map(option => (
-        <MultiSelector
-          key={option.label}
-          label={option.label}
-          options={option.options}
-          selectedItems={chips}
-          selectHandler={optionSelectHandler}
-        />
-      ))}
+      <div className={classes.filterButtonContainer}>
+        <div>
+          {selector.map(option => (
+            <MultiSelector
+              key={option.label}
+              label={option.label}
+              options={option.options}
+              selectedItems={chips}
+              selectHandler={optionSelectHandler}
+            />
+          ))}
+        </div>
+        <Button
+          className={classes.searchButton}
+          size="small"
+          variant="outlined"
+          color="primary"
+          onClick={searchButtonHandler}
+        >
+          Search
+        </Button>
+      </div>
     </Card>
   );
 };
