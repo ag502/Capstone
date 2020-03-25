@@ -6,13 +6,20 @@ function VideoPlayer({ videoID, onDuration, mode }) {
 
   if (mode === 'clipping') {
     url = `https://www.youtube.com/watch?v=${videoID}`;
-  } else if (mode === 'general') {
+  } else if (mode === 'CLIPPEDVIDEO') {
     url = `/clippingVideo/${videoID}.mp4`;
+  } else if (mode === 'TRIMEDVIDEO') {
+    url = `/trimedVideo/${videoID}.mp4`;
   }
 
   return (
     <>
-      <ReactPlayer url={url} controls onDuration={onDuration} />
+      <ReactPlayer
+        url={url}
+        controls
+        style={{ backgroundColor: 'black', margin: 'auto' }}
+        onDuration={onDuration}
+      />
     </>
   );
 }
