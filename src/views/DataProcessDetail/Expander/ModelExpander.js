@@ -5,8 +5,9 @@ import {
   ExpansionPanelSummary
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import VideoList from './VideoList';
 
-const ModelExpander = () => {
+const ModelExpander = ({ modelTag, videos }) => {
   const [expanded, setExpanded] = useState(false);
 
   const expandHandler = panel => (event, isExpanded) => {
@@ -16,13 +17,15 @@ const ModelExpander = () => {
   return (
     <div>
       <ExpansionPanel
-        expanded={expanded === 'null'}
-        onChange={expandHandler('null')}
+        expanded={expanded === modelTag}
+        onChange={expandHandler(modelTag)}
       >
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          null
+          {modelTag}
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails>HI</ExpansionPanelDetails>
+        <ExpansionPanelDetails>
+          <VideoList videos={videos} />
+        </ExpansionPanelDetails>
       </ExpansionPanel>
     </div>
   );
