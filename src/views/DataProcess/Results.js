@@ -171,7 +171,7 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
         isPlay={isPlay}
         videoID={selectedVideoID}
         title={title}
-        mode="general"
+        mode="CLIPPEDVIDEO"
       />
       <Typography color="textSecondary" gutterBottom variant="body2">
         {`${clippedVideos.length} Records found. Page

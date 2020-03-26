@@ -118,7 +118,8 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
               color="primary"
               component={RouterLink}
               size="small"
-              to="/management/customers/1"
+              // to="/management/customers/1"
+              to={`/data-process/${videoInfo.videoId}&${videoInfo.startTime}&${videoInfo.endTime}`}
               variant="outlined"
             >
               View

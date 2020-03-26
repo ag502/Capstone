@@ -82,15 +82,22 @@ export default [
         exact: true,
         component: lazy(() => import('src/views/DataManagement'))
       },
-      {//models
+      {
+        // models
         path: '/models-home',
         exact: true,
         component: lazy(() => import('src/views/ModelHome'))
       },
-      {//TESTING models
+      {
+        // TESTING models
         path: '/Testing-model',
         exact: true,
         component: lazy(() => import('src/views/TestingModel'))
+      },
+      {
+        path: '/data-process/:videoInfo',
+        exact: true,
+        component: lazy(() => import('src/views/DataProcessDetail'))
       },
       {
         path: '/calendar',

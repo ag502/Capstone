@@ -11,6 +11,7 @@ class Preprocessor(APIView):
     def __init__(self):
         super().__init__()
         self._current_url = ''
+        self._video_info = ''
 
     @property
     def current_url(self):
@@ -31,6 +32,26 @@ class Preprocessor(APIView):
         serializer = VideoDataSerializer(video_data, many=True)
         return JsonResponse(serializer.data, safe=False)
 
+    def post(self, request):
+        self._video_info = request.data
+        video_id = str(self._video_info['videoID'])
+        start_time = int(self._video_info['startTime'])
+        end_time = int(self._video_info['endTime'])
+
+        video_data = VideoData.objects.filter(videoId=video_id, startTime=start_time, endTime=end_time)
+        model_tags = video_data.values('model_tag').distinct()
+
+        sending_json = {}
+        for tag in model_tags:
+            # video_by_model_json = {}
+            video_by_model = video_data.filter(model_tag=tag['model_tag'])
+            video_by_model_sil = VideoDataSerializer(video_by_model, many=True)
+            sending_json[tag['model_tag']] = video_by_model_sil.data
+            # sending_arr.append(video_by_model_json)
+
+        # serializer = VideoDataSerializer(video_data, many=True)
+        # return JsonResponse(serializer.data, safe=False)
+        return JsonResponse(sending_json, safe=False)
 
 class PreprocessorSave(APIView):  # 전처리 하여 저장 (모델의 태그 선택)
 
@@ -45,6 +66,7 @@ class PreprocessorSave(APIView):  # 전처리 하여 저장 (모델의 태그 �
         start_time = int(video_info['startTime'])
         end_time = int(video_info['endTime'])
         model_tag = str((video_info['model_tag']))
+        
         Preprocess.createframes(video_id, start_time, end_time)
         time_section = face_discriminator.facedetect()
         video_numbers = Preprocess.time_clip(model_tag, video_id, time_section, start_time, end_time)
