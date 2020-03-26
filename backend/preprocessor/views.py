@@ -36,19 +36,31 @@ class PreprocessorSave(APIView):  # 전처리 하여 저장 (모델의 태그 �
 
     @staticmethod
     def post(request):
-        serializer = VideoDataSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
+        # serializer = VideoDataSerializer(data=request.data)
+        # if serializer.is_valid():
+        #     serializer.save()
         video_info = request.data
         video_id = str((video_info['videoId']))
+        keyword = str((video_info['keyword']))
         start_time = int(video_info['startTime'])
         end_time = int(video_info['endTime'])
         model_tag = str((video_info['model_tag']))
         Preprocess.createframes(video_id, start_time, end_time)
         time_section = face_discriminator.facedetect()
-        Preprocess.time_clip(model_tag, video_id, time_section, start_time, end_time)
+        video_numbers = Preprocess.time_clip(model_tag, video_id, time_section, start_time, end_time)
 
-        # ** 추가 ** 모델에 대한 작업은 Preprocess.py 에서 실행
+        for num in video_numbers:
+            video = VideoData(
+                videoId=video_id,
+                keyword=keyword,
+                startTime=start_time,
+                endTime=end_time,
+                model_tag=model_tag,
+                video_number=num
+            )
+
+            video.save()
+
         return HttpResponse("save")
 
 

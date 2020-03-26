@@ -43,10 +43,10 @@ def clip_section(output_dir, videoId, startTime, endTime):  # 클리핑 영상�
         os.remove('%s_.mp4' % videoId)  # 변환되면 기존영상은 삭제
 
 
-    # # s3에 올리기
+    # s3에 올리기
 
-    # s3_Path = 'clippingVideo/%s_%d-%d.mp4' % (videoId, startTime, endTime)
-    # s3.Object(bucket.name, s3_Path).upload_file('%s_%d-%d.mp4' % (videoId, startTime, endTime))
+    s3_Path = 'clippingVideo/%s_%d-%d.mp4' % (videoId, startTime, endTime)
+    s3.Object(bucket.name, s3_Path).upload_file('%s_%d-%d.mp4' % (videoId, startTime, endTime))
 
     return print("클 리 핑 완 료")
 
@@ -58,17 +58,17 @@ def createThumbnail(output_dir, thumbnail_dir, videoId, startTime, endTime):
                       % (output_dir+videoId, startTime, endTime, videoId, startTime, endTime)
     os.system(ffmpegThumbnail)
 
-    # # s3에 올리기
-    # s3_Path = 'thumbnails/%s_%d-%d.png' % (videoId, startTime, endTime)
-    # s3.Object(bucket.name, s3_Path).upload_file('%s_%d-%d.png' % (videoId, startTime, endTime))
+    # s3에 올리기
+    s3_Path = 'thumbnails/%s_%d-%d.png' % (videoId, startTime, endTime)
+    s3.Object(bucket.name, s3_Path).upload_file('%s_%d-%d.png' % (videoId, startTime, endTime))
 
 
-# def removeFile(output_dir, thumbnail_dir, videoId, startTime, endTime):  # s3에 올린후 파일 제거
-#     os.chdir(output_dir)
-#     os.remove('%s_%d-%d.mp4' % (videoId, startTime, endTime))
-#
-#     os.chdir(thumbnail_dir)
-#     os.remove('%s_%d-%d.png' % (videoId, startTime, endTime))
+def removeFile(output_dir, thumbnail_dir, videoId, startTime, endTime):  # s3에 올린후 파일 제거
+    os.chdir(output_dir)
+    os.remove('%s_%d-%d.mp4' % (videoId, startTime, endTime))
+
+    os.chdir(thumbnail_dir)
+    os.remove('%s_%d-%d.png' % (videoId, startTime, endTime))
 
     # # s3에 올리기
     # s3_Path = 'thumbnails/%s_%d-%d.png' % (videoId, startTime, endTime)

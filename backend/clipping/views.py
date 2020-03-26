@@ -36,13 +36,13 @@ class ClipVideoDownloader(APIView):
         # 'C:/Users/LG/Desktop/Material_Ui_Capstone/public/clippingVideo/'
         # 'C:/Users/LG/Desktop/Material_Ui_Capstone/public/thumbnails/'
 
-        output_dir = 'C:/Users/LG/Desktop/Material_Ui_Capstone/public/clippingVideo/'  # 영상 저장경로, 후에 s3로 변경
-        thumbnail_dir = 'C:/Users/LG/Desktop/Material_Ui_Capstone/public/thumbnails/'
+        output_dir = 'C:/Users/jaehee/capstone/Material_Ui_Capstone/public/clippingVideo/'  # 영상 저장경로, 후에 s3로 변경
+        thumbnail_dir = 'C:/Users/jaehee/capstone/Material_Ui_Capstone/public/thumbnails/'
 
         Cliper.clip_download(output_dir, video_id)  # 원본영상을 받음
         Cliper.clip_section(output_dir, video_id, start_time, end_time)  # 시작시간,끝시간으로 영상처리
         Cliper.createThumbnail(output_dir, thumbnail_dir, video_id, start_time, end_time) # thumbnail 생성
-        # Cliper.removeFile(output_dir, thumbnail_dir, video_id, start_time, end_time)
+        Cliper.removeFile(output_dir, thumbnail_dir, video_id, start_time, end_time)
 
         # DB의 clip 완료여부를 필드값 변경
         queryset = VideoInfo.objects.all()
