@@ -53,8 +53,8 @@ class Preprocessor(APIView):
         # return JsonResponse(serializer.data, safe=False)
         return JsonResponse(sending_json, safe=False)
 
-class PreprocessorSave(APIView):  # 전처리 하여 저장 (모델의 태그 선택)
 
+class PreprocessorSave(APIView):  # 전처리 하여 저장 (모델의 태그 선택)
     @staticmethod
     def post(request):
         # serializer = VideoDataSerializer(data=request.data)
@@ -66,7 +66,7 @@ class PreprocessorSave(APIView):  # 전처리 하여 저장 (모델의 태그 �
         start_time = int(video_info['startTime'])
         end_time = int(video_info['endTime'])
         model_tag = str((video_info['model_tag']))
-        
+
         Preprocess.createframes(video_id, start_time, end_time)
         time_section = face_discriminator.facedetect()
         video_numbers = Preprocess.time_clip(model_tag, video_id, time_section, start_time, end_time)

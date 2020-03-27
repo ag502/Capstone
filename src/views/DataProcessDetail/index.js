@@ -21,6 +21,7 @@ const useStyles = makeStyles(theme => ({
 const DataProcessDetail = () => {
   const { videoInfo } = useParams();
   const [videoKeywords, setVideoKeywords] = useState([]);
+  const [playVideoName, setPlayVideoName] = useState([]);
   const [videoPerModel, setVideoPerModel] = useState({});
   const [videoID, startTime, endTime] = videoInfo.split('&');
   const classes = useStyles();
@@ -33,7 +34,7 @@ const DataProcessDetail = () => {
         endTime
       })
       .then(res => {
-        console.log(res);
+        console.log(res.data);
         setVideoPerModel(res.data);
         // setVideoKeywords([res.data[0].keyword]);
       });
@@ -44,12 +45,17 @@ const DataProcessDetail = () => {
       <Container maxWidth={false}>
         <Header videoInfo={videoInfo} videoKeywords={videoKeywords} />
         <VideoPlayer
-          mode="TRIMEDVIDEO"
-          videoID={`${videoID}_${startTime}-${endTime}`}
+          mode="STORAGE"
+          videoID={`${playVideoName[0]}/${playVideoName[1]}.mp4`}
         />
         <div className={classes.expanderContainer}>
           {Object.keys(videoPerModel).map(tag => (
-            <ModelExpander modelTag={tag} videos={videoPerModel[tag]} />
+            <ModelExpander
+              key={tag}
+              modelTag={tag}
+              videos={videoPerModel[tag]}
+              setPlayVideoName={setPlayVideoName}
+            />
           ))}
         </div>
       </Container>
