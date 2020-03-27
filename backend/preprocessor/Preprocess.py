@@ -54,12 +54,19 @@ def time_clip(model_tag,videoId,time_section,start_time,end_time):
     for num in range(i):
         s3_Path = '%s/%s_%s_%d-%d_%d.mp4' % (model_tag,model_tag,videoId, start_time, end_time,num)
         s3.Object(bucket.name, s3_Path).upload_file('%s_%s_%d-%d_%d.mp4' % (model_tag,videoId, start_time, end_time,num))
-        s3_thumbnail_Path = '%s/thumbnails/%s_%s_%d-%d_%d.mp4' % (model_tag,model_tag, videoId, start_time, end_time, num)
+        s3_thumbnail_Path = '%s/thumbnails/%s_%s_%d-%d_%d.png' % (model_tag,model_tag, videoId, start_time, end_time, num)
         s3.Object(bucket.name, s3_thumbnail_Path).upload_file(
-            '%s_%s_%d-%d_%d.mp4' % (model_tag, videoId, start_time, end_time, num))
+            '%s_%s_%d-%d_%d.png' % (model_tag, videoId, start_time, end_time, num))
+
+    #frame 폴더 파일 삭제
+    frame_list = makelist()
+    for frame in frame_list:
+        os.remove('%s' % frame)
+    for num in range(i):
+        os.remove('%s_%s_%d-%d_%d.mp4' % (model_tag, videoId, start_time, end_time, num))
+        os.remove('%s_%s_%d-%d_%d.png' % (model_tag, videoId, start_time, end_time, num))
 
     return numbers
-
 
 #def original_delete(output_dir, thumbnail_dir, videoId, startTime, endTime):  # 원본영상, 썸네일 삭제
     # os.chdir(output_dir)
