@@ -14,7 +14,8 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: theme.spacing(3)
   },
   expanderContainer: {
-    marginTop: theme.spacing(4)
+    width: '80%',
+    margin: '25px auto 0px auto'
   }
 }));
 

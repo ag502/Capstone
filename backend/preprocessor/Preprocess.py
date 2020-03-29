@@ -11,7 +11,12 @@ s3 = boto3.resource(
 bucket = s3.Bucket(AWS_STORAGE_BUCKET_NAME)
 
 path = "https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/clippingVideo/"
-frames_dir = "C:/Users/jaehee/capstone/Material_Ui_Capstone/backend/preprocessor/frames/"
+
+# "C:/Users/jaehee/capstone/Material_Ui_Capstone/backend/preprocessor/frames/"
+# "C:/Users/LG/Desktop/Material_Ui_Capstone/public/frames"
+
+frames_dir = "C:/Users/LG/Desktop/Material_Ui_Capstone/public/frames"
+
 
 # 프레임 생성
 def createframes(videoId, startTime, endTime):
@@ -35,7 +40,7 @@ def time_clip(model_tag,videoId,time_section,start_time,end_time):
     i=0
     numbers = []
     if not time_section:
-        os.remove('%s_%d-%d.mp4' % (videoId, start_time, end_time))
+        os.remove('C:/Users/LG/Desktop/Material_Ui_Capstone/public/clippingVideo/%s_%d-%d.mp4' % (videoId, start_time, end_time))
     else:
         for time in time_section:
             numbers.append(i)
