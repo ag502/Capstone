@@ -87,8 +87,8 @@ class PreprocessorSave(APIView):  # 전처리 하여 저장 (모델의 태그 �
 
             video.save()
 
-        return HttpResponse("save")
-
+        # return HttpResponse("save")
+        return JsonResponse(status=200)
 
 class PreprocessorDelete(APIView):  # 원본 영상을 삭제
     @staticmethod

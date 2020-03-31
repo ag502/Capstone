@@ -21,7 +21,6 @@ const useStyles = makeStyles(theme => ({
 
 const DataProcessDetail = () => {
   const { videoInfo } = useParams();
-  const [videoKeywords, setVideoKeywords] = useState([]);
   const [playVideoName, setPlayVideoName] = useState([]);
   const [videoPerModel, setVideoPerModel] = useState({});
   const [videoID, startTime, endTime] = videoInfo.split('&');
