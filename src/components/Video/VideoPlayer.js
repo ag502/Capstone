@@ -8,8 +8,8 @@ function VideoPlayer({ videoID, onDuration, mode }) {
     url = `https://www.youtube.com/watch?v=${videoID}`;
   } else if (mode === 'CLIPPEDVIDEO') {
     url = `/clippingVideo/${videoID}.mp4`;
-  } else if (mode === 'TRIMEDVIDEO') {
-    url = `/trimedVideo/${videoID}.mp4`;
+  } else if (mode === 'TEST') {
+    url = `/frames/${videoID}.mp4`;
   } else if (mode === 'STORAGE') {
     url = `https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/${videoID}`;
   }

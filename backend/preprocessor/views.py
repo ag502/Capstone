@@ -40,14 +40,18 @@ class Preprocessor(APIView):
 
         video_data = VideoData.objects.filter(videoId=video_id, startTime=start_time, endTime=end_time)
         model_tags = video_data.values('model_tag').distinct()
+        keyword = video_data.values('keyword').distinct()[0]['keyword']
+        keywords = [keyword]
 
-        sending_json = {}
+        sending_json = {'keyword': keywords}
+
+        print(sending_json)
         for tag in model_tags:
-            # video_by_model_json = {}
+            print(tag)
             video_by_model = video_data.filter(model_tag=tag['model_tag'])
             video_by_model_sil = VideoDataSerializer(video_by_model, many=True)
             sending_json[tag['model_tag']] = video_by_model_sil.data
-            # sending_arr.append(video_by_model_json)
+
 
         # serializer = VideoDataSerializer(video_data, many=True)
         # return JsonResponse(serializer.data, safe=False)

@@ -98,7 +98,7 @@ function VideoPopWindow({ isPlay, videoID, title, keyword, searchType, mode }) {
 
       const clippingVideo = {};
       const key = `${videoID}/${value[0]}/${value[1]}/${keyword}`;
-      clippingVideo[key] = 0;
+      clippingVideo[key] = 'LOADING';
 
       dispatch(addClippingList(clippingVideo));
 
@@ -111,7 +111,11 @@ function VideoPopWindow({ isPlay, videoID, title, keyword, searchType, mode }) {
         })
         .then(res => {
           console.log(res);
-          clippingVideo[key] = 1;
+          clippingVideo[key] = 'SUCCESS';
+          dispatch(addClippingList(clippingVideo));
+        })
+        .catch(res => {
+          clippingVideo[key] = 'FAIL';
           dispatch(addClippingList(clippingVideo));
         });
     }

@@ -79,8 +79,8 @@ const ModelExpander = ({ modelTag, videos, setPlayVideoName }) => {
         <ExpansionPanelDetails>
           <div className={classes.gridListContainer}>
             <GridList className={classes.gridList}>
-              {videos.map(video => {
-                const videoName = `${video.videoId}_${video.startTime}-${video.endTime}_${video.id}`;
+              {videos.map((video, index) => {
+                const videoName = `${video.videoId}_${video.startTime}-${video.endTime}_${index}`;
                 return (
                   <GridListTile
                     cols={0.7}
@@ -88,7 +88,8 @@ const ModelExpander = ({ modelTag, videos, setPlayVideoName }) => {
                     className={classes.gridListTile}
                   >
                     <img
-                      src={`https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/${modelTag}/thumbnails/${modelTag}_${videoName}.png`}
+                      // src={`https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/${modelTag}/thumbnails/${modelTag}_${videoName}.png`}
+                      src={`/frames/${modelTag}_${videoName}.png`}
                       alt={videoName}
                       style={{ width: '100%' }}
                       onClick={thumbnailClickHandler(

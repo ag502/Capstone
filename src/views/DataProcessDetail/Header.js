@@ -16,9 +16,12 @@ const Header = ({ videoInfo, videoKeywords }) => {
   return (
     <div className={classes.root}>
       <Typography variant="h2">{`${videoID}_${startTime}_${endTime}`}</Typography>
-      {videoKeywords.map(keyword => (
-        <Label color="#66bb6a">{keyword}</Label>
-      ))}
+      {videoKeywords &&
+        videoKeywords.map(keyword => (
+          <Label color="#66bb6a" key={keyword}>
+            {keyword}
+          </Label>
+        ))}
     </div>
   );
 };

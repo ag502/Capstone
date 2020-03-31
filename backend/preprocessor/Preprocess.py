@@ -15,17 +15,18 @@ path = "https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/clippingVideo/"
 # "C:/Users/jaehee/capstone/Material_Ui_Capstone/backend/preprocessor/frames/"
 # "C:/Users/LG/Desktop/Material_Ui_Capstone/public/frames"
 
-frames_dir = "C:/Users/LG/Desktop/Material_Ui_Capstone/public/frames"
+frames_dir = "C:/Users/LG/Desktop/Material_Ui_Capstone/public/frames/"
 
 
 # 프레임 생성
 def createframes(videoId, startTime, endTime):
     #s3에서 영상 가져온다.
-    s3_Path = 'clippingVideo/%s_%d-%d.mp4' % (videoId, startTime, endTime)
-    s3.Object(bucket.name, s3_Path).download_file('%s_%d-%d.mp4' % (frames_dir+videoId, startTime, endTime))
+    # s3_Path = 'clippingVideo/%s_%d-%d.mp4' % (videoId, startTime, endTime)
+    # s3.Object(bucket.name, s3_Path).download_file('%s_%d-%d.mp4' % (frames_dir+videoId, startTime, endTime))
 
     os.chdir(frames_dir)
-    ffmpeg_command = "ffmpeg -i %s_%d-%d.mp4 -ss 00:00:00 -t %d -r 1 -vframes %d -vcodec bmp %s.bmp" % (path+videoId,startTime,endTime,endTime-startTime,endTime-startTime,"%03d")
+    # path + videoId, startTime, endTime, endTime - startTime, endTime - startTime
+    ffmpeg_command = "ffmpeg -i %s_%d-%d.mp4 -ss 00:00:00 -t %d -r 1 -vframes %d -vcodec bmp %s.bmp" % (frames_dir+videoId,startTime,endTime,endTime-startTime,endTime-startTime,"%03d")
     os.system(ffmpeg_command)
 
 # 구간 생성
@@ -40,7 +41,7 @@ def time_clip(model_tag,videoId,time_section,start_time,end_time):
     i=0
     numbers = []
     if not time_section:
-        os.remove('C:/Users/LG/Desktop/Material_Ui_Capstone/public/clippingVideo/%s_%d-%d.mp4' % (videoId, start_time, end_time))
+        os.remove('%s_%d-%d.mp4' % (videoId, start_time, end_time))
     else:
         for time in time_section:
             numbers.append(i)
@@ -56,20 +57,20 @@ def time_clip(model_tag,videoId,time_section,start_time,end_time):
         os.remove('%s_%d-%d.mp4' % (videoId, start_time, end_time))
 
     #s3에 영상 올리기
-    for num in range(i):
-        s3_Path = '%s/%s_%s_%d-%d_%d.mp4' % (model_tag,model_tag,videoId, start_time, end_time,num)
-        s3.Object(bucket.name, s3_Path).upload_file('%s_%s_%d-%d_%d.mp4' % (model_tag,videoId, start_time, end_time,num))
-        s3_thumbnail_Path = '%s/thumbnails/%s_%s_%d-%d_%d.png' % (model_tag,model_tag, videoId, start_time, end_time, num)
-        s3.Object(bucket.name, s3_thumbnail_Path).upload_file(
-            '%s_%s_%d-%d_%d.png' % (model_tag, videoId, start_time, end_time, num))
+    # for num in range(i):
+    #     s3_Path = '%s/%s_%s_%d-%d_%d.mp4' % (model_tag,model_tag,videoId, start_time, end_time,num)
+    #     s3.Object(bucket.name, s3_Path).upload_file('%s_%s_%d-%d_%d.mp4' % (model_tag,videoId, start_time, end_time,num))
+    #     s3_thumbnail_Path = '%s/thumbnails/%s_%s_%d-%d_%d.png' % (model_tag,model_tag, videoId, start_time, end_time, num)
+    #     s3.Object(bucket.name, s3_thumbnail_Path).upload_file(
+    #         '%s_%s_%d-%d_%d.png' % (model_tag, videoId, start_time, end_time, num))
 
     #frame 폴더 파일 삭제
     frame_list = makelist()
     for frame in frame_list:
         os.remove('%s' % frame)
-    for num in range(i):
-        os.remove('%s_%s_%d-%d_%d.mp4' % (model_tag, videoId, start_time, end_time, num))
-        os.remove('%s_%s_%d-%d_%d.png' % (model_tag, videoId, start_time, end_time, num))
+    # for num in range(i):
+    #     os.remove('%s_%s_%d-%d_%d.mp4' % (model_tag, videoId, start_time, end_time, num))
+    #     os.remove('%s_%s_%d-%d_%d.png' % (model_tag, videoId, start_time, end_time, num))
 
     return numbers
 

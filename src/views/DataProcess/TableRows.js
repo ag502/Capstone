@@ -49,6 +49,43 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
     });
   };
 
+  const Buttons = () => {
+    let component = null;
+
+    if (isLoading === 'SUCCESS' || videoInfo.clip_complete === 'success') {
+      component = (
+        <>
+          <IconButton onClick={preprocessorClickHandler}>
+            <img
+              src="/images/video-editing.png"
+              width="30px"
+              height="30px"
+              alt="Trimming"
+            />
+          </IconButton>
+          <Button
+            color="primary"
+            component={RouterLink}
+            size="small"
+            // to="/management/customers/1"
+            to={`/data-process/${videoInfo.videoId}&${videoInfo.startTime}&${videoInfo.endTime}`}
+            variant="outlined"
+          >
+            View
+          </Button>
+        </>
+      );
+    } else if (
+      isLoading === 'LOADING' ||
+      videoInfo.clip_complete === 'loading'
+    ) {
+      component = <ProgressLetter />;
+    } else if (isLoading === 'FAIL' || videoInfo.clip_complete === 'fail') {
+      component = <div>Fail</div>;
+    }
+    return component;
+  };
+
   return (
     <TableRow
       hover
@@ -104,7 +141,7 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
         </Select>
       </TableCell>
       <TableCell align="center">
-        {isLoading === 1 || isLoading === undefined ? (
+        {/* {isLoading === 1 || isLoading === undefined ? (
           <>
             <IconButton onClick={preprocessorClickHandler}>
               <img
@@ -127,7 +164,8 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
           </>
         ) : (
           <ProgressLetter />
-        )}
+        )} */}
+        {Buttons()}
       </TableCell>
     </TableRow>
   );

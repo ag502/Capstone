@@ -37,27 +37,29 @@ const DataProcessDetail = () => {
       .then(res => {
         console.log(res.data);
         setVideoPerModel(res.data);
-        // setVideoKeywords([res.data[0].keyword]);
       });
   }, []);
 
   return (
     <Page className={classes.root}>
       <Container maxWidth={false}>
-        <Header videoInfo={videoInfo} videoKeywords={videoKeywords} />
+        <Header videoInfo={videoInfo} videoKeywords={videoPerModel.keyword} />
         <VideoPlayer
-          mode="STORAGE"
-          videoID={`${playVideoName[0]}/${playVideoName[1]}.mp4`}
+          mode="TEST"
+          // videoID={`${playVideoName[0]}/${playVideoName[1]}.mp4`}
+          videoID={`${playVideoName[1]}`}
         />
         <div className={classes.expanderContainer}>
-          {Object.keys(videoPerModel).map(tag => (
-            <ModelExpander
-              key={tag}
-              modelTag={tag}
-              videos={videoPerModel[tag]}
-              setPlayVideoName={setPlayVideoName}
-            />
-          ))}
+          {Object.keys(videoPerModel)
+            .slice(1)
+            .map(tag => (
+              <ModelExpander
+                key={tag}
+                modelTag={tag}
+                videos={videoPerModel[tag]}
+                setPlayVideoName={setPlayVideoName}
+              />
+            ))}
         </div>
       </Container>
     </Page>

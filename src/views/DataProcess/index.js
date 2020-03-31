@@ -24,9 +24,6 @@ function DataProcess() {
     let mounted = true;
 
     const fetchClippedVideos = () => {
-      // /api/management/customers
-      // https://capstone-react-ea4ac.firebaseio.com/clippingVideos.json
-      // http://localhost:8000/clipping/
       getClippedVideos().then(response => {
         if (mounted) {
           console.log(response);
