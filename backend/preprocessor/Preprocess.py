@@ -14,8 +14,9 @@ path = "https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/clippingVideo/"
 
 # "C:/Users/jaehee/capstone/Material_Ui_Capstone/backend/preprocessor/frames/"
 # "C:/Users/LG/Desktop/Material_Ui_Capstone/public/frames"
+# "/Users/zigje9/Desktop/jenesis/public/frames/"
 
-frames_dir = "C:/Users/LG/Desktop/Material_Ui_Capstone/public/frames/"
+frames_dir = "/Users/zigje9/Desktop/jenesis/public/frames/"
 
 
 # 프레임 생성

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'clipping', ## 영상 클리핑
     'rest_framework',
     'preprocessor',  # 전처리페이지
+    'datamanagement',  # 데이터관리 페이지
 ]
 
 ## AWS Access

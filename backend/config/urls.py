@@ -5,4 +5,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('clipping.urls')),
     path('', include('preprocessor.urls')),
+    path('', include('datamanagement.urls')),
 ]
