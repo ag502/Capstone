@@ -77,7 +77,7 @@ const Videos = ({
           <GridList cellHeight="auto" cols={4} className={classes.gridList}>
             {videoItems.map((cur, idx) => {
               const {
-                id: { videoId },
+                id: videoId,
                 snippet: {
                   publishedAt,
                   channelId,
@@ -96,7 +96,7 @@ const Videos = ({
                     publishDate={publishDate}
                     channelID={channelId}
                     channelTitle={channelTitle}
-                    videoID={videoId}
+                    videoID={videoId.videoId || videoId}
                     title={title}
                     thumbnail={url}
                   />

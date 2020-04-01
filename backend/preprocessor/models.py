@@ -13,8 +13,8 @@ class VideoData(models.Model):
     keyword = models.CharField(max_length=300, null=True)
     startTime = models.IntegerField(null=True)
     endTime = models.IntegerField(null=True)
-    model_tag = models.CharField(max_length=300, null=True)
     video_number = models.IntegerField(null=True)
+    model_tag = models.CharField(max_length=300, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     @property

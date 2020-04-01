@@ -1,4 +1,4 @@
-from mtcnn import MTCNN
+from mtcnn.mtcnn import MTCNN
 import cv2
 # from Preprocess import makelist
 from .Preprocess import makelist

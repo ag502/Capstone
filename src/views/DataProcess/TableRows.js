@@ -13,8 +13,9 @@ import {
 } from '@material-ui/core';
 import axios from 'axios';
 import { Link as RouterLink } from 'react-router-dom';
-import { playVideo } from '../../actions';
+import { playVideo, addClippingList } from '../../actions';
 import ProgressLetter from '../../components/ProgressLetter/ProgressLetter';
+import ProgressImage from '../../components/ProgressImage/ProgressImage';
 
 const useStyles = makeStyles(() => ({
   selectBox: {
@@ -23,10 +24,14 @@ const useStyles = makeStyles(() => ({
 }));
 
 const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
+  // redux 저장 키 형태
   const key = `${videoInfo.videoId}/${videoInfo.startTime}/${videoInfo.endTime}/${videoInfo.keyword}`;
-  const dispatch = useDispatch();
-  const isLoading = useSelector(state => state.clippingVideo[key]);
   const [model, setModel] = useState('null');
+  const dispatch = useDispatch();
+  const clippedVideoLoading = useSelector(state => state.clippingVideo[key]);
+  const trimmedVideoLoading = useSelector(
+    state => state.clippingVideo[`${model}/${key}`]
+  );
 
   const classes = useStyles();
 
@@ -40,15 +45,74 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
   };
 
   const preprocessorClickHandler = () => {
-    axios.post('http://127.0.0.1:8000/preprocessor_save/', {
-      videoId: `${videoInfo.videoId}`,
-      keyword: `${videoInfo.keyword}`,
-      startTime: `${videoInfo.startTime}`,
-      endTime: `${videoInfo.endTime}`,
-      model_tag: `${model}`
-    });
+    const modelTrimmingVideo = {};
+    modelTrimmingVideo[`${model}/${key}`] = 'RUN';
+    dispatch(addClippingList(modelTrimmingVideo));
+
+    axios
+      .post('http://127.0.0.1:8000/preprocessor_save/', {
+        videoId: `${videoInfo.videoId}`,
+        keyword: `${videoInfo.keyword}`,
+        startTime: `${videoInfo.startTime}`,
+        endTime: `${videoInfo.endTime}`,
+        model_tag: `${model}`
+      })
+      .catch(res => console.log(res))
+      .finally(() => {
+        modelTrimmingVideo[`${model}/${key}`] = 'FINISH';
+        dispatch(addClippingList(modelTrimmingVideo));
+      });
   };
 
+  const Buttons = () => {
+    let component = null;
+
+    if (
+      clippedVideoLoading === 'SUCCESS' ||
+      videoInfo.clip_complete === 'success'
+    ) {
+      component = (
+        <>
+          {!trimmedVideoLoading || trimmedVideoLoading === 'FINISH' ? (
+            <IconButton onClick={preprocessorClickHandler}>
+              <img
+                src="/images/video-editing.png"
+                width="30px"
+                height="30px"
+                alt="Trimming"
+              />
+            </IconButton>
+          ) : (
+            <ProgressImage modelType={model} style={{ marginLeft: '5px' }} />
+          )}
+
+          <Button
+            color="primary"
+            component={RouterLink}
+            size="small"
+            // to="/management/customers/1"
+            to={`/data-process/${videoInfo.videoId}&${videoInfo.startTime}&${videoInfo.endTime}`}
+            variant="outlined"
+          >
+            View
+          </Button>
+        </>
+      );
+    } else if (
+      clippedVideoLoading === 'LOADING' ||
+      videoInfo.clip_complete === 'loading'
+    ) {
+      component = <ProgressLetter />;
+    } else if (
+      clippedVideoLoading === 'FAIL' ||
+      videoInfo.clip_complete === 'fail'
+    ) {
+      component = <div>Fail</div>;
+    }
+    return component;
+  };
+
+  console.log(trimmedVideoLoading);
   return (
     <TableRow
       hover
@@ -64,7 +128,8 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
         />
       </TableCell>
       <TableCell padding="checkbox">
-        {isLoading === 1 || isLoading === undefined ? (
+        {clippedVideoLoading === 'SUCCESS' ||
+        videoInfo.clip_complete === 'success' ? (
           <Avatar
             className={classes.avatar}
             variant="rounded"
@@ -104,7 +169,7 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
         </Select>
       </TableCell>
       <TableCell align="center">
-        {isLoading === 1 || isLoading === undefined ? (
+        {/* {isLoading === 1 || isLoading === undefined ? (
           <>
             <IconButton onClick={preprocessorClickHandler}>
               <img
@@ -118,7 +183,8 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
               color="primary"
               component={RouterLink}
               size="small"
-              to="/management/customers/1"
+              // to="/management/customers/1"
+              to={`/data-process/${videoInfo.videoId}&${videoInfo.startTime}&${videoInfo.endTime}`}
               variant="outlined"
             >
               View
@@ -126,7 +192,8 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
           </>
         ) : (
           <ProgressLetter />
-        )}
+        )} */}
+        {Buttons()}
       </TableCell>
     </TableRow>
   );

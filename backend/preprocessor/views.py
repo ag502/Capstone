@@ -11,6 +11,7 @@ class Preprocessor(APIView):
     def __init__(self):
         super().__init__()
         self._current_url = ''
+        self._video_info = ''
 
     @property
     def current_url(self):
@@ -31,26 +32,63 @@ class Preprocessor(APIView):
         serializer = VideoDataSerializer(video_data, many=True)
         return JsonResponse(serializer.data, safe=False)
 
+    def post(self, request):
+        self._video_info = request.data
+        video_id = str(self._video_info['videoID'])
+        start_time = int(self._video_info['startTime'])
+        end_time = int(self._video_info['endTime'])
+
+        video_data = VideoData.objects.filter(videoId=video_id, startTime=start_time, endTime=end_time)
+        model_tags = video_data.values('model_tag').distinct()
+        keyword = video_data.values('keyword').distinct()[0]['keyword']
+        keywords = [keyword]
+
+        sending_json = {'keyword': keywords}
+
+        print(sending_json)
+        for tag in model_tags:
+            print(tag)
+            video_by_model = video_data.filter(model_tag=tag['model_tag'])
+            video_by_model_sil = VideoDataSerializer(video_by_model, many=True)
+            sending_json[tag['model_tag']] = video_by_model_sil.data
+
+
+        # serializer = VideoDataSerializer(video_data, many=True)
+        # return JsonResponse(serializer.data, safe=False)
+        return JsonResponse(sending_json, safe=False)
+
 
 class PreprocessorSave(APIView):  # 전처리 하여 저장 (모델의 태그 선택)
-
     @staticmethod
     def post(request):
-        serializer = VideoDataSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
+        # serializer = VideoDataSerializer(data=request.data)
+        # if serializer.is_valid():
+        #     serializer.save()
         video_info = request.data
         video_id = str((video_info['videoId']))
+        keyword = str((video_info['keyword']))
         start_time = int(video_info['startTime'])
         end_time = int(video_info['endTime'])
         model_tag = str((video_info['model_tag']))
+
         Preprocess.createframes(video_id, start_time, end_time)
         time_section = face_discriminator.facedetect()
-        Preprocess.time_clip(model_tag, video_id, time_section, start_time, end_time)
+        video_numbers = Preprocess.time_clip(model_tag, video_id, time_section, start_time, end_time)
 
-        # ** 추가 ** 모델에 대한 작업은 Preprocess.py 에서 실행
-        return HttpResponse("save")
+        for num in video_numbers:
+            video = VideoData(
+                videoId=video_id,
+                keyword=keyword,
+                startTime=start_time,
+                endTime=end_time,
+                model_tag=model_tag,
+                video_number=num
+            )
 
+            video.save()
+
+        # return HttpResponse("save")
+        return JsonResponse(status=200)
 
 class PreprocessorDelete(APIView):  # 원본 영상을 삭제
     @staticmethod
