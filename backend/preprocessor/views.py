@@ -49,10 +49,12 @@ class Preprocessor(APIView):
         # print(video_data)
         # print(model_tag)
         sending_dict = {}
+        model_temp = {}
         for tag in model_tag:
             video_data_by_model = video_data.filter(model_tag=tag['model_tag'])
-            sending_dict[tag['model_tag']] = VideoDataSerializer(video_data_by_model, many=True).data
-
+            model_temp[tag['model_tag']] = VideoDataSerializer(video_data_by_model, many=True).data
+        sending_dict['model'] = model_temp
+        print(sending_dict)
         # for videos in video_info:
         #     video = videos.split(',')
         #     print(video)
