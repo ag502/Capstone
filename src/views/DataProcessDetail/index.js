@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { Container, Grid } from '@material-ui/core';
+import { Container, Grid, Typography, Divider, Chip } from '@material-ui/core';
+import { indigo, pink } from '@material-ui/core/colors';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Page from 'src/components/Page';
 import VideoPlayer from 'src/components/Video/VideoPlayer';
-import Header from './Header';
-import ModelExpander from './Expander/ModelExpander';
+import ModelExpander from './ModelExpander';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,9 +21,9 @@ const useStyles = makeStyles(theme => ({
 
 const DataProcessDetail = () => {
   const { videoInfo } = useParams();
-  const [playVideoName, setPlayVideoName] = useState([]);
+  const [playVideoInfo, setPlayVideoInfo] = useState([]);
   const [videoPerModel, setVideoPerModel] = useState({});
-  const [videoID, startTime, endTime] = videoInfo.split('&');
+
   const classes = useStyles();
 
   // 추가
@@ -47,20 +47,51 @@ const DataProcessDetail = () => {
     <Page className={classes.root}>
       <Container maxWidth={false}>
         <Grid container alignContent="space-around" wrap="nowrap">
-          <Grid container>
-            <Grid item>
-              <VideoPlayer
-                mode="TEST"
-                // videoID={`${playVideoName[0]}/${playVideoName[1]}.mp4`}
-                videoID={`${playVideoName[0]}_${playVideoName[1]}`}
-              />
-            </Grid>
-            <Grid item>
-              <div>{playVideoName[2]}</div>
-            </Grid>
+          <Grid container direction="column" spacing={2}>
+            <div style={{ position: 'fixed' }}>
+              <Grid item>
+                <VideoPlayer
+                  mode="TEST"
+                  // videoID={`${playVideoName[0]}/${playVideoName[1]}.mp4`}
+                  videoID={`${playVideoInfo[0]}_${playVideoInfo[1]}`}
+                />
+              </Grid>
+              <Grid item>
+                {playVideoInfo.length !== 0 && (
+                  <>
+                    <div style={{ marginBottom: '10px' }}>
+                      <Typography
+                        variant="h2"
+                        style={{ margin: '10px 0 10px 0' }}
+                      >
+                        {playVideoInfo[1]}
+                      </Typography>
+                      <Chip
+                        label={playVideoInfo[0]}
+                        color="secondary"
+                        style={{
+                          backgroundColor: `${indigo[300]}`,
+                          marginRight: '10px'
+                        }}
+                      />
+                      <Chip
+                        label={playVideoInfo[2]}
+                        color="secondary"
+                        style={{ backgroundColor: `${pink[300]}` }}
+                      />
+                    </div>
+                    <Divider style={{ backgroundColor: '#d1cebd' }} />
+                  </>
+                )}
+              </Grid>
+            </div>
           </Grid>
           <Grid container direction="column" alignContent="center">
-            <Grid item>Hello</Grid>
+            <Grid item>
+              <div style={{ height: '176px', backgroundColor: 'white' }}>
+                Pannel
+              </div>
+            </Grid>
             <Grid item>
               <div className={classes.expanderContainer}>
                 {videoPerModel.model &&
@@ -69,7 +100,7 @@ const DataProcessDetail = () => {
                       key={tag}
                       modelTag={tag}
                       videos={videoPerModel.model[tag]}
-                      setPlayVideoName={setPlayVideoName}
+                      setPlayVideoName={setPlayVideoInfo}
                     />
                   ))}
               </div>

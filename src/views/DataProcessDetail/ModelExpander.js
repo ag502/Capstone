@@ -15,7 +15,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { pink } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { setVideoData } from 'src/actions';
-import VideoList from './VideoList';
 
 const useStyles = makeStyles(theme => ({
   expander: {
@@ -23,7 +22,7 @@ const useStyles = makeStyles(theme => ({
       marginBottom: theme.spacing(3)
     },
     '&.Mui-expanded:first-child': {
-      marginBottom: theme.spacing(3)
+      marginTop: theme.spacing(3)
     }
   },
   gridListContainer: {
