@@ -25,9 +25,9 @@ import {
 import getInitials from 'src/utils/getInitials';
 import ReviewStars from 'src/components/ReviewStars';
 import GenericMoreButton from 'src/components/GenericMoreButton';
-import TableEditBar from 'src/components/TableEditBar';
+import TableEditBar from 'src/views/DataProcess/TableEditBar';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {},
   content: {
     padding: 0
@@ -56,9 +56,9 @@ function Results({ className, customers, ...rest }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const handleSelectAll = (event) => {
+  const handleSelectAll = event => {
     const selectedCustomers = event.target.checked
-      ? customers.map((customer) => customer.id)
+      ? customers.map(customer => customer.id)
       : [];
 
     setSelectedCustomers(selectedCustomers);
@@ -92,35 +92,18 @@ function Results({ className, customers, ...rest }) {
     setPage(page);
   };
 
-  const handleChangeRowsPerPage = (event) => {
+  const handleChangeRowsPerPage = event => {
     setRowsPerPage(event.target.value);
   };
 
   return (
-    <div
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
-      <Typography
-        color="textSecondary"
-        gutterBottom
-        variant="body2"
-      >
-        {customers.length}
-        {' '}
-        Records found. Page
-        {' '}
-        {page + 1}
-        {' '}
-        of
-        {' '}
+    <div {...rest} className={clsx(classes.root, className)}>
+      <Typography color="textSecondary" gutterBottom variant="body2">
+        {customers.length} Records found. Page {page + 1} of{' '}
         {Math.ceil(customers.length / rowsPerPage)}
       </Typography>
       <Card>
-        <CardHeader
-          action={<GenericMoreButton />}
-          title="All customers"
-        />
+        <CardHeader action={<GenericMoreButton />} title="All customers" />
         <Divider />
         <CardContent className={classes.content}>
           <PerfectScrollbar>
@@ -133,8 +116,8 @@ function Results({ className, customers, ...rest }) {
                         checked={selectedCustomers.length === customers.length}
                         color="primary"
                         indeterminate={
-                          selectedCustomers.length > 0
-                          && selectedCustomers.length < customers.length
+                          selectedCustomers.length > 0 &&
+                          selectedCustomers.length < customers.length
                         }
                         onChange={handleSelectAll}
                       />
@@ -149,7 +132,7 @@ function Results({ className, customers, ...rest }) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {customers.slice(0, rowsPerPage).map((customer) => (
+                  {customers.slice(0, rowsPerPage).map(customer => (
                     <TableRow
                       hover
                       key={customer.id}
@@ -161,7 +144,9 @@ function Results({ className, customers, ...rest }) {
                             selectedCustomers.indexOf(customer.id) !== -1
                           }
                           color="primary"
-                          onChange={(event) => handleSelectOne(event, customer.id)}
+                          onChange={event =>
+                            handleSelectOne(event, customer.id)
+                          }
                           value={selectedCustomers.indexOf(customer.id) !== -1}
                         />
                       </TableCell>

@@ -26,12 +26,16 @@ const DataProcessDetail = () => {
   const [videoID, startTime, endTime] = videoInfo.split('&');
   const classes = useStyles();
 
+  // 추가
+  const videoInfosArr = videoInfo.split('+');
+
   useEffect(() => {
     axios
       .post('http://localhost:8000/preprocessor/', {
-        videoID,
-        startTime,
-        endTime
+        // videoID,
+        // startTime,
+        // endTime
+        videoInfo: videoInfosArr
       })
       .then(res => {
         console.log(res.data);
@@ -49,16 +53,14 @@ const DataProcessDetail = () => {
           videoID={`${playVideoName[1]}`}
         />
         <div className={classes.expanderContainer}>
-          {Object.keys(videoPerModel)
-            .slice(1)
-            .map(tag => (
-              <ModelExpander
-                key={tag}
-                modelTag={tag}
-                videos={videoPerModel[tag]}
-                setPlayVideoName={setPlayVideoName}
-              />
-            ))}
+          {Object.keys(videoPerModel).map(tag => (
+            <ModelExpander
+              key={tag}
+              modelTag={tag}
+              videos={videoPerModel[tag]}
+              setPlayVideoName={setPlayVideoName}
+            />
+          ))}
         </div>
       </Container>
     </Page>

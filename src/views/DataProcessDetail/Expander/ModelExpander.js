@@ -80,7 +80,7 @@ const ModelExpander = ({ modelTag, videos, setPlayVideoName }) => {
           <div className={classes.gridListContainer}>
             <GridList className={classes.gridList}>
               {videos.map((video, index) => {
-                const videoName = `${video.videoId}_${video.startTime}-${video.endTime}_${index}`;
+                const videoName = `${video.videoId}_${video.startTime}-${video.endTime}_${video.video_number}`;
                 return (
                   <GridListTile
                     cols={0.7}
