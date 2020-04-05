@@ -105,19 +105,7 @@ class PreprocessorDelete(APIView):  # 원본 영상을 삭제
         queryset = queryset.filter(videoId=video_id, keyword=key_word, startTime=start_time, endTime=end_time)
         queryset.delete()
 
-        # 'C:/Users/jaehee/capstone/Material_Ui_Capstone/public/clippingVideo/'
-        # 'C:/Users/jaehee/capstone/Material_Ui_Capstone/public/thumbnails/'
-
-        # '/Users/zigje9/Desktop/jenesis/public/clippingVideo/'
-        # '/Users/zigje9/Desktop/jenesis/public/thumbnails/'
-
-        # 'C:/Users/LG/Desktop/Material_Ui_Capstone/public/clippingVideo/'
-        # 'C:/Users/LG/Desktop/Material_Ui_Capstone/public/thumbnails/'
-
-        # output_dir = 'C:/Users/LG/Desktop/Material_Ui_Capstone/public/clippingVideo/'  # 영상 저장경로, 후에 s3로 변경
-        # thumbnail_dir = 'C:/Users/LG/Desktop/Material_Ui_Capstone/public/thumbnails/'
-        #
-        # # 원본 영상,썸네일 삭제 ** 추가 s3로 변경 **
-        # Preprocess.original_delete(output_dir, thumbnail_dir, video_id, start_time, end_time)
+        # 원본 영상,썸네일 삭제 ** 추가 s3로 변경 **
+        # Preprocess.original_delete(video_id, start_time, end_time)
 
         return HttpResponse("delete")

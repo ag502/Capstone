@@ -75,12 +75,8 @@ def time_clip(model_tag,videoId,time_section,start_time,end_time):
 
     return numbers
 
-#def original_delete(output_dir, thumbnail_dir, videoId, startTime, endTime):  # 원본영상, 썸네일 삭제
-    # os.chdir(output_dir)
-    # os.remove('%s_%d-%d.mp4' % (videoId, startTime, endTime))
-    #
-    # os.chdir(thumbnail_dir)
-    # os.remove('%s_%d-%d.png' % (videoId, startTime, endTime))
-
-    # s3_Path = 'clippingVideo/%s_%d-%d.mp4' % (videoId, startTime, endTime)
-    # s3.Object(bucket.name, s3_Path).delete()
+def original_delete( videoId, startTime, endTime):  # 원본영상, 썸네일 삭제
+    s3_Path = 'clippingVideo/%s_%d-%d.mp4' % (videoId, startTime, endTime)
+    s3.Object(bucket.name, s3_Path).delete()
+    s3_thumbnail_Path = 'thumbnails/%s_%d-%d_%d.png' % (videoId, startTime, endTime)
+    s3.Object(bucket.name, s3_thumbnail_Path).delete()
