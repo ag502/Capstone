@@ -15,7 +15,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { pink } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { setVideoData } from 'src/actions';
-import VideoList from './VideoList';
 
 const useStyles = makeStyles(theme => ({
   expander: {
@@ -23,14 +22,17 @@ const useStyles = makeStyles(theme => ({
       marginBottom: theme.spacing(3)
     },
     '&.Mui-expanded:first-child': {
-      marginBottom: theme.spacing(3)
+      marginTop: theme.spacing(3)
     }
   },
   gridListContainer: {
-    width: '100%'
+    width: '100%',
+    display: 'flex',
+    overflow: 'hidden'
   },
   gridList: {
-    flexWrap: 'nowrap'
+    flexWrap: 'wrap',
+    height: '500px'
   },
   checkbox: {
     color: pink[200],
@@ -52,8 +54,8 @@ const ModelExpander = ({ modelTag, videos, setPlayVideoName }) => {
     }
   };
 
-  const thumbnailClickHandler = (modelTag, videoName) => () => {
-    setPlayVideoName([modelTag, videoName]);
+  const thumbnailClickHandler = (modelTag, videoName, keyword) => () => {
+    setPlayVideoName([modelTag, videoName, keyword]);
   };
 
   const selectVideoHandler = videoName => () => {
@@ -80,10 +82,10 @@ const ModelExpander = ({ modelTag, videos, setPlayVideoName }) => {
           <div className={classes.gridListContainer}>
             <GridList className={classes.gridList}>
               {videos.map((video, index) => {
-                const videoName = `${video.videoId}_${video.startTime}-${video.endTime}_${index}`;
+                const videoName = `${video.videoId}_${video.startTime}-${video.endTime}_${video.video_number}`;
                 return (
                   <GridListTile
-                    cols={0.7}
+                    cols={2}
                     key={videoName}
                     className={classes.gridListTile}
                   >
@@ -94,7 +96,8 @@ const ModelExpander = ({ modelTag, videos, setPlayVideoName }) => {
                       style={{ width: '100%' }}
                       onClick={thumbnailClickHandler(
                         modelTag,
-                        `${modelTag}_${videoName}`
+                        videoName,
+                        video.keyword
                       )}
                     />
                     <GridListTileBar

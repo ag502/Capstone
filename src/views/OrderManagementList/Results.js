@@ -24,9 +24,9 @@ import {
 } from '@material-ui/core';
 import Label from 'src/components/Label';
 import GenericMoreButton from 'src/components/GenericMoreButton';
-import TableEditBar from 'src/components/TableEditBar';
+import TableEditBar from 'src/views/DataProcess/TableEditBar';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {},
   filterButton: {
     marginRight: theme.spacing(2)
@@ -56,9 +56,9 @@ function Results({ className, orders, ...rest }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const handleSelectAll = (event) => {
+  const handleSelectAll = event => {
     const newSelectedOrders = event.target.checked
-      ? orders.map((order) => order.id)
+      ? orders.map(order => order.id)
       : [];
 
     setSelectedOrders(newSelectedOrders);
@@ -88,35 +88,18 @@ function Results({ className, orders, ...rest }) {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
+  const handleChangeRowsPerPage = event => {
     setRowsPerPage(event.target.value);
   };
 
   return (
-    <div
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
-      <Typography
-        color="textSecondary"
-        gutterBottom
-        variant="body2"
-      >
-        {orders.length}
-        {' '}
-        Records found. Page
-        {' '}
-        {page + 1}
-        {' '}
-        of
-        {' '}
+    <div {...rest} className={clsx(classes.root, className)}>
+      <Typography color="textSecondary" gutterBottom variant="body2">
+        {orders.length} Records found. Page {page + 1} of{' '}
         {Math.ceil(orders.length / rowsPerPage)}
       </Typography>
       <Card>
-        <CardHeader
-          action={<GenericMoreButton />}
-          title="Orders"
-        />
+        <CardHeader action={<GenericMoreButton />} title="Orders" />
         <Divider />
         <CardContent className={classes.content}>
           <PerfectScrollbar>
@@ -129,8 +112,8 @@ function Results({ className, orders, ...rest }) {
                         checked={selectedOrders.length === orders.length}
                         color="primary"
                         indeterminate={
-                          selectedOrders.length > 0
-                          && selectedOrders.length < orders.length
+                          selectedOrders.length > 0 &&
+                          selectedOrders.length < orders.length
                         }
                         onChange={handleSelectAll}
                       />
@@ -144,7 +127,7 @@ function Results({ className, orders, ...rest }) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {orders.slice(0, rowsPerPage).map((order) => (
+                  {orders.slice(0, rowsPerPage).map(order => (
                     <TableRow
                       key={order.id}
                       selected={selectedOrders.indexOf(order.id) !== -1}
@@ -153,7 +136,7 @@ function Results({ className, orders, ...rest }) {
                         <Checkbox
                           checked={selectedOrders.indexOf(order.id) !== -1}
                           color="primary"
-                          onChange={(event) => handleSelectOne(event, order.id)}
+                          onChange={event => handleSelectOne(event, order.id)}
                           value={selectedOrders.indexOf(order.id) !== -1}
                         />
                       </TableCell>

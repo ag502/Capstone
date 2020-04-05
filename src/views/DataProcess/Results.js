@@ -25,7 +25,7 @@ import {
 import Pagination from '@material-ui/lab/Pagination';
 import { useSelector, useDispatch } from 'react-redux';
 import GenericMoreButton from 'src/components/GenericMoreButton';
-import TableEditBar from 'src/components/TableEditBar';
+import TableEditBar from 'src/views/DataProcess/TableEditBar';
 import VideoPlayerPopUp from '../../components/Video/VideoPlayerPopup';
 import TableRows from './TableRows';
 
@@ -80,7 +80,7 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
           .slice(page * rowsPerPage, (1 + page) * rowsPerPage)
           .map(
             (video, idx) =>
-              `${idx}/${video.videoId}/${video.startTime}/${video.endTime}/${video.keyword}`
+              `${idx},${video.videoId},${video.startTime},${video.endTime},${video.keyword}`
           )
       : [];
     setSelectedClippedV(selectedClippedVs);
@@ -124,7 +124,7 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
       startTime,
       endTime,
       keyword
-    ] = selectedClippedV[0].split('/');
+    ] = selectedClippedV[0].split(',');
 
     console.log(videoID, startTime, endTime, keyword);
 
@@ -141,7 +141,7 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
           .filter(
             (video, idx) =>
               !selectedClippedV.includes(
-                `${idx}/${video.videoId}/${video.startTime}/${video.endTime}/${video.keyword}`
+                `${idx},${video.videoId},${video.startTime},${video.endTime},${video.keyword}`
               )
           );
         setSelectedClippedV([]);
@@ -163,6 +163,10 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
           ]);
         }
       });
+  };
+
+  const viewVideoHandler = () => {
+    console.log(selectedClippedV);
   };
 
   return (
@@ -205,7 +209,13 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
                   <TableRow>
                     <TableCell padding="checkbox">
                       <Checkbox
-                        checked={selectedClippedV.length === rowsPerPage}
+                        checked={
+                          selectedClippedV.length ===
+                          clippedVideos.slice(
+                            page * rowsPerPage,
+                            (1 + page) * rowsPerPage
+                          ).length
+                        }
                         color="primary"
                         indeterminate={
                           selectedClippedV.length > 0 &&
@@ -250,7 +260,11 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
           />
         </CardActions>
       </Card>
-      <TableEditBar selected={selectedClippedV} onDelete={deleteVideoHandler} />
+      <TableEditBar
+        selected={selectedClippedV}
+        onDelete={deleteVideoHandler}
+        onView={viewVideoHandler}
+      />
     </div>
   );
 }
