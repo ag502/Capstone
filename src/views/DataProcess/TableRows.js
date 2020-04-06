@@ -25,7 +25,8 @@ const useStyles = makeStyles(() => ({
 
 const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
   // redux 저장 키 형태
-  const key = `${videoInfo.videoId}/${videoInfo.startTime}/${videoInfo.endTime}/${videoInfo.keyword}`;
+  // todo: Clipping 버튼 누를때 redux 형식 변환해 줘야함.
+  const key = `${videoInfo.videoId},${videoInfo.startTime},${videoInfo.endTime},${videoInfo.keyword}`;
   const [model, setModel] = useState('null');
   const dispatch = useDispatch();
   const clippedVideoLoading = useSelector(state => state.clippingVideo[key]);
@@ -113,6 +114,7 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
   };
 
   console.log(trimmedVideoLoading);
+
   return (
     <TableRow
       hover
@@ -121,9 +123,9 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
     >
       <TableCell padding="checkbox">
         <Checkbox
-          checked={selectedClippedV.indexOf(`${index}/${key}`) !== -1}
+          checked={selectedClippedV.indexOf(`${index},${key}`) !== -1}
           color="primary"
-          onChange={event => handleSelectOne(event, `${index}/${key}`)}
+          onChange={event => handleSelectOne(event, `${index},${key}`)}
           value={selectedClippedV.indexOf(videoInfo.videoId) !== -1}
         />
       </TableCell>
@@ -168,33 +170,7 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
           <MenuItem value="FaceAPI">Face API</MenuItem>
         </Select>
       </TableCell>
-      <TableCell align="center">
-        {/* {isLoading === 1 || isLoading === undefined ? (
-          <>
-            <IconButton onClick={preprocessorClickHandler}>
-              <img
-                src="/images/video-editing.png"
-                width="30px"
-                height="30px"
-                alt="Trimming"
-              />
-            </IconButton>
-            <Button
-              color="primary"
-              component={RouterLink}
-              size="small"
-              // to="/management/customers/1"
-              to={`/data-process/${videoInfo.videoId}&${videoInfo.startTime}&${videoInfo.endTime}`}
-              variant="outlined"
-            >
-              View
-            </Button>
-          </>
-        ) : (
-          <ProgressLetter />
-        )} */}
-        {Buttons()}
-      </TableCell>
+      <TableCell align="center">{Buttons()}</TableCell>
     </TableRow>
   );
 };
