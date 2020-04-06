@@ -15,6 +15,11 @@ class VideoInfo(models.Model):
     endTime = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     clip_complete = models.CharField(max_length=50, default="loading")
+    preprocess_complete = models.CharField(max_length=50, default="waiting")
+    FaceAPI = models.BooleanField(default=0)
+    EmotionDetection = models.BooleanField(default=0)
+    Shadowing = models.BooleanField(default=0)
+
 
     @property
     def created_at_korean_time(self):

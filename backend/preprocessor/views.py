@@ -110,12 +110,14 @@ class PreprocessorSave(APIView):  # 전처리 하여 저장 (모델의 태그 �
                 startTime=start_time,
                 endTime=end_time,
                 model_tag=model_tag,
-                video_number=num
+                video_number=num,
+                final_save=0
             )
 
             video.save()
 
         # return HttpResponse("save")
+
         return JsonResponse(status=200)
 
 

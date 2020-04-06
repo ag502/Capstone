@@ -16,6 +16,7 @@ class VideoData(models.Model):
     video_number = models.IntegerField(null=True)
     model_tag = models.CharField(max_length=300, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    final_save = models.BooleanField(default=0)
 
     @property
     def created_at_korean_time(self):

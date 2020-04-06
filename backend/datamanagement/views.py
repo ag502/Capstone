@@ -1,22 +1,20 @@
 from preprocessor.models import VideoData
 from rest_framework.views import APIView
 from django.http import HttpResponse, JsonResponse
+from . import data_manager
 
 
 class DataDelete(APIView):
     @staticmethod
     def post(request):
-        clip_info = request.data
-        print(request.data)
-        # video_id = str((clip_info['videoId']))
-        # key_word = str((clip_info['keyword']))
-        # start_time = int(clip_info['startTime'])
-        # end_time = int(clip_info['endTime'])
+        delete_list = request.data
+        print(delete_list)
+        try:
+            data_manager.data_delete(delete_list)  # S3 데이터 삭제 예정
+            data_manager.db_delete(delete_list)  # DB 삭제
 
-        # 전처리된 영상 DB 삭제
-        # queryset = VideoData.objects.all()
-        # queryset = queryset.filter(videoId=video_id, keyword=key_word, startTime=start_time, endTime=end_time)
-        # queryset.delete()
-
+        except Exception as err:
+            print('{} error!!'.format(err))
 
         return HttpResponse("delete")
+
