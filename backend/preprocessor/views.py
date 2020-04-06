@@ -90,6 +90,7 @@ class PreprocessorSave(APIView):  # 전처리 하여 저장 (모델의 태그 �
         # return HttpResponse("save")
         return JsonResponse(status=200)
 
+
 class PreprocessorDelete(APIView):  # 원본 영상을 삭제
     @staticmethod
     def post(request):
