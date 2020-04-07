@@ -1,3 +1,4 @@
+from clipping.models import VideoInfo
 import os
 import glob
 import boto3
@@ -74,8 +75,20 @@ def time_clip(model_tag,videoId,time_section,start_time,end_time):
 
     return numbers
 
-def original_delete( videoId, startTime, endTime):  # 원본영상, 썸네일 삭제
+
+def original_delete(videoId, startTime, endTime):  # 원본영상, 썸네일 삭제
     s3_Path = 'clippingVideo/%s_%d-%d.mp4' % (videoId, startTime, endTime)
     s3.Object(bucket.name, s3_Path).delete()
     s3_thumbnail_Path = 'thumbnails/%s_%d-%d_%d.png' % (videoId, startTime, endTime)
     s3.Object(bucket.name, s3_thumbnail_Path).delete()
+
+
+def db_update(video_id, keyword, start_time, end_time, model_tag):
+    queryset = VideoInfo.objects.all()
+    queryset = queryset.filter(videoId=video_id, keyword=keyword, startTime=start_time, endTime=end_time)
+    if model_tag == "FaceAPI":
+        queryset.update(FaceAPI=1)
+    elif model_tag == "Shadowing":
+        queryset.update(Shadowing=1)
+    else:
+        queryset.update(EmotionDetection=1)

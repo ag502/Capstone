@@ -89,9 +89,6 @@ class Preprocessor(APIView):
 class PreprocessorSave(APIView):  # 전처리 하여 저장 (모델의 태그 선택)
     @staticmethod
     def post(request):
-        # serializer = VideoDataSerializer(data=request.data)
-        # if serializer.is_valid():
-        #     serializer.save()
         video_info = request.data
         video_id = str((video_info['videoId']))
         keyword = str((video_info['keyword']))
@@ -116,6 +113,7 @@ class PreprocessorSave(APIView):  # 전처리 하여 저장 (모델의 태그 �
 
             video.save()
 
+        Preprocess.db_update(video_id, keyword, start_time, end_time, model_tag)  # 전처리된 모델태그를 원본 DB 업데이트
         # return HttpResponse("save")
 
         return JsonResponse(status=200)
