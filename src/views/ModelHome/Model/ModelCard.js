@@ -17,8 +17,7 @@ import Label from 'src/components/Label';
 import blueGrey from '@material-ui/core/colors/blueGrey';
 import grey from '@material-ui/core/colors/grey';
 
-
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: blueGrey[50]
   },
@@ -26,15 +25,13 @@ const useStyles = makeStyles((theme) => ({
     height: 125
   },
   content: {
-    paddingTop: 0,
-    
+    paddingTop: 0
   },
   avatarContainer: {
     marginTop: -48,
     display: 'flex',
     paddingBottom: 10,
-    justifyContent: 'center',
-    
+    justifyContent: 'center'
   },
   avatar: {
     height: 130,
@@ -54,25 +51,19 @@ function ModelCard({ model, className, ...rest }) {
   const classes = useStyles();
 
   return (
-    <Card
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
-      <CardMedia
-        className={classes.media}
-      />
+    <Card {...rest} className={clsx(classes.root, className)}>
+      <CardMedia className={classes.media} />
       <CardContent className={classes.content}>
         <div className={classes.avatarContainer}>
-           <Avatar
+          <Avatar
             alt="Model"
             className={classes.avatar}
             component={RouterLink}
             src={model.avatar}
             to="/Testing-Model"
-          >
-          </Avatar>
+          />
         </div>
-        <Typography 
+        <Typography
           align="center"
           component={RouterLink}
           display="block"
@@ -82,18 +73,13 @@ function ModelCard({ model, className, ...rest }) {
           {model.name}
         </Typography>
         <Divider className={classes.divider} />
-        <Grid
-          container
-          spacing={1}
-        >
-        </Grid>
+        <Grid container spacing={1} />
       </CardContent>
     </Card>
   );
 }
 
 ModelCard.propTypes = {
-  className: PropTypes.string,
   model: PropTypes.object.isRequired
 };
 

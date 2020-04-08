@@ -19,13 +19,8 @@ function Model({ models, className, ...rest }) {
       container
       spacing={3}
     >
-      {models.map((model) => (
-        <Grid
-          item
-          key={model.id}
-          lg={4}
-          xs={12}
-        >
+      {models.map(model => (
+        <Grid item key={model.id} lg={4} xs={12}>
           <ModelCard model={model} />
         </Grid>
       ))}
@@ -34,7 +29,6 @@ function Model({ models, className, ...rest }) {
 }
 
 Model.propTypes = {
-  className: PropTypes.string,
   models: PropTypes.array.isRequired
 };
 
