@@ -16,7 +16,7 @@ path = "https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/clippingVideo/"
 # "C:/Users/LG/Desktop/Material_Ui_Capstone/public/frames/"
 # "/Users/zigje9/Desktop/jenesis/public/frames/"
 
-frames_dir = "/Users/zigje9/Desktop/jenesis/public/frames/"
+frames_dir = "C:/Users/LG/Desktop/Material_Ui_Capstone/public/frames/"
 
 # 프레임 생성
 def createframes(videoId, startTime, endTime):
@@ -74,8 +74,8 @@ def time_clip(model_tag,videoId,time_section,start_time,end_time):
 
     return numbers
 
-def original_delete( videoId, startTime, endTime):  # 원본영상, 썸네일 삭제
-    s3_Path = 'clippingVideo/%s_%d-%d.mp4' % (videoId, startTime, endTime)
-    s3.Object(bucket.name, s3_Path).delete()
-    s3_thumbnail_Path = 'thumbnails/%s_%d-%d_%d.png' % (videoId, startTime, endTime)
-    s3.Object(bucket.name, s3_thumbnail_Path).delete()
+# def original_delete( videoId, startTime, endTime):  # 원본영상, 썸네일 삭제
+#     s3_Path = 'clippingVideo/%s_%d-%d.mp4' % (videoId, startTime, endTime)
+#     s3.Object(bucket.name, s3_Path).delete()
+#     s3_thumbnail_Path = 'thumbnails/%s_%d-%d_%d.png' % (videoId, startTime, endTime)
+#     s3.Object(bucket.name, s3_thumbnail_Path).delete()
