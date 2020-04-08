@@ -46,44 +46,14 @@ class Preprocessor(APIView):
                                               endTime__in=video_field[3], keyword__in=video_field[4])
         model_tag = video_data.values('model_tag').distinct()
 
-        # print(video_data)
-        # print(model_tag)
         sending_dict = {}
         model_temp = {}
         for tag in model_tag:
             video_data_by_model = video_data.filter(model_tag=tag['model_tag'])
             model_temp[tag['model_tag']] = VideoDataSerializer(video_data_by_model, many=True).data
         sending_dict['model'] = model_temp
-        print(sending_dict)
-        # for videos in video_info:
-        #     video = videos.split(',')
-        #     print(video)
-        #     video_data = video_data.filter(videoId__in=['c1Xoj674Bmw', '89ppVWIint8'], startTime='0', endTime__in=[31, 27])
 
-        # self._video_info = request.data
-        # video_id = str(self._video_info['videoID'])
-        # start_time = int(self._video_info['startTime'])
-        # end_time = int(self._video_info['endTime'])
-        #
-        # video_data = VideoData.objects.filter(videoId=video_id, startTime=start_time, endTime=end_time)
-        # model_tags = video_data.values('model_tag').distinct()
-        # keyword = video_data.values('keyword').distinct()[0]['keyword']
-        # keywords = [keyword]
-        #
-        # sending_json = {'keyword': keywords}
-        #
-        # print(sending_json)
-        # for tag in model_tags:
-        #     print(tag)
-        #     video_by_model = video_data.filter(model_tag=tag['model_tag'])
-        #     video_by_model_sil = VideoDataSerializer(video_by_model, many=True)
-        #     sending_json[tag['model_tag']] = video_by_model_sil.data
-
-
-        # serializer = VideoDataSerializer(video_data, many=True)
-        # return JsonResponse(serializer.data, safe=False)
         return JsonResponse(sending_dict, safe=False)
-        # return HttpResponse('TEST')
 
 
 class PreprocessorSave(APIView):  # 전처리 하여 저장 (모델의 태그 선택)
@@ -115,8 +85,8 @@ class PreprocessorSave(APIView):  # 전처리 하여 저장 (모델의 태그 �
 
         Preprocess.db_update(video_id, keyword, start_time, end_time, model_tag)  # 전처리된 모델태그를 원본 DB 업데이트
         # return HttpResponse("save")
-
-        return JsonResponse(status=200)
+        return HttpResponse("save")
+        # return JsonResponse(status=200)
 
 
 class PreprocessorDelete(APIView):  # 원본 영상을 삭제

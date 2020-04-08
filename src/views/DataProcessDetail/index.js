@@ -22,12 +22,24 @@ const useStyles = makeStyles(theme => ({
 const DataProcessDetail = () => {
   const { videoInfo } = useParams();
   const [playVideoInfo, setPlayVideoInfo] = useState([]);
+  const [isPIP, setIsPIP] = useState(false);
   const [videoPerModel, setVideoPerModel] = useState({});
-
+  const videoInfosArr = videoInfo.split('+');
   const classes = useStyles();
 
   // 추가
-  const videoInfosArr = videoInfo.split('+');
+
+  const scrollEventHandler = () => {
+    if (
+      Math.ceil(
+        (document.documentElement.scrollTop / window.innerHeight) * 100
+      ) >= 60
+    ) {
+      setIsPIP(true);
+    } else {
+      setIsPIP(false);
+    }
+  };
 
   useEffect(() => {
     axios
@@ -41,6 +53,9 @@ const DataProcessDetail = () => {
         console.log(res.data);
         setVideoPerModel(res.data);
       });
+    window.addEventListener('scroll', scrollEventHandler);
+
+    return () => window.removeEventListener('scroll', scrollEventHandler);
   }, []);
 
   return (
@@ -48,10 +63,11 @@ const DataProcessDetail = () => {
       <Container maxWidth={false}>
         <Grid container alignContent="space-around" wrap="nowrap">
           <Grid container direction="column" spacing={2}>
-            <div style={{ position: 'fixed' }}>
+            <div>
               <Grid item>
                 <VideoPlayer
                   mode="TEST"
+                  isPIP={isPIP}
                   // videoID={`${playVideoName[0]}/${playVideoName[1]}.mp4`}
                   videoID={`${playVideoInfo[0]}_${playVideoInfo[1]}`}
                 />
