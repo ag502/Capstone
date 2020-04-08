@@ -38,11 +38,6 @@ function VideoPlayer({ videoID, onDuration, mode, isPIP }) {
       controls
       style={{ backgroundColor: 'black', margin: 'auto' }}
       onDuration={onDuration}
-      pip={mode === 'TEST' ? true : false}
-      onEnablePIP={event =>
-        console.log(event, document.pictureInPictureElement)
-      }
-      onDisablePIP={event => console.log(event)}
     />
   );
 }
