@@ -27,15 +27,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function TableEditBar({
-  selected,
-  className,
-  onMarkPaid,
-  onMarkUnpaid,
-  onDelete,
-  onView,
-  ...rest
-}) {
+function TableEditBar({ selected, className, onDelete, onView, ...rest }) {
   const classes = useStyles();
   const open = selected.length > 0;
   const requestVideoUrl = selected.join('+');
@@ -58,14 +50,6 @@ function TableEditBar({
           </Hidden>
           <Grid item md={6} xs={12}>
             <div className={classes.actions}>
-              {/* <Button onClick={onMarkPaid}>
-                <CheckIcon className={classes.buttonIcon} />
-                Mark Paid
-              </Button>
-              <Button onClick={onMarkUnpaid}>
-                <CloseIcon className={classes.buttonIcon} />
-                Mark Unpaid
-              </Button> */}
               <Button
                 onClick={onView}
                 component={RouterLink}

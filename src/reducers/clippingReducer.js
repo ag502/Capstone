@@ -1,7 +1,8 @@
 import * as actionTypes from 'src/actions';
 
 const initialState = {
-
+  clipping: {},
+  preprocess: {}
 };
 
 const clippingReducer = (state = initialState, action) => {
@@ -9,7 +10,15 @@ const clippingReducer = (state = initialState, action) => {
     case actionTypes.ADD_CLIPPING_LIST:
       return {
         ...state,
-        ...action.payload
+        clipping: { ...state.clipping, ...action.payload }
+      };
+    case actionTypes.ADD_PREPRO_LIST:
+      return {
+        ...state,
+        preprocess: {
+          ...state.preprocess,
+          ...action.payload
+        }
       };
     default:
       return state;

@@ -97,7 +97,7 @@ function VideoPopWindow({ isPlay, videoID, title, keyword, searchType, mode }) {
       console.log(keyword);
 
       const clippingVideo = {};
-      const key = `${videoID}/${value[0]}/${value[1]}/${keyword}`;
+      const key = `${videoID},${value[0]},${value[1]},${keyword}`;
       clippingVideo[key] = 'LOADING';
 
       dispatch(addClippingList(clippingVideo));

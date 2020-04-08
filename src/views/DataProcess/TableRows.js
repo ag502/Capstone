@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core';
 import axios from 'axios';
 import { Link as RouterLink } from 'react-router-dom';
-import { playVideo, addClippingList } from '../../actions';
+import { playVideo, addClippingList, addPreproList } from '../../actions';
 import ProgressLetter from '../../components/ProgressLetter/ProgressLetter';
 import ProgressImage from '../../components/ProgressImage/ProgressImage';
 
@@ -25,13 +25,14 @@ const useStyles = makeStyles(() => ({
 
 const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
   // redux 저장 키 형태
-  // todo: Clipping 버튼 누를때 redux 형식 변환해 줘야함.
   const key = `${videoInfo.videoId},${videoInfo.startTime},${videoInfo.endTime},${videoInfo.keyword}`;
   const [model, setModel] = useState('null');
   const dispatch = useDispatch();
-  const clippedVideoLoading = useSelector(state => state.clippingVideo[key]);
+  const clippedVideoLoading = useSelector(
+    state => state.clippingVideo.clipping[key]
+  );
   const trimmedVideoLoading = useSelector(
-    state => state.clippingVideo[`${model}/${key}`]
+    state => state.clippingVideo.preprocess[key]
   );
 
   const classes = useStyles();
@@ -47,8 +48,8 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
 
   const preprocessorClickHandler = () => {
     const modelTrimmingVideo = {};
-    modelTrimmingVideo[`${model}/${key}`] = 'RUN';
-    dispatch(addClippingList(modelTrimmingVideo));
+    modelTrimmingVideo[key] = [model, 'RUN'];
+    dispatch(addPreproList(modelTrimmingVideo));
 
     axios
       .post('http://127.0.0.1:8000/preprocessor_save/', {
@@ -60,21 +61,22 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
       })
       .catch(res => console.log(res))
       .finally(() => {
-        modelTrimmingVideo[`${model}/${key}`] = 'FINISH';
-        dispatch(addClippingList(modelTrimmingVideo));
+        modelTrimmingVideo[key] = [model, 'FINISH'];
+        dispatch(addPreproList(modelTrimmingVideo));
       });
   };
 
   const Buttons = () => {
     let component = null;
 
+    console.log(trimmedVideoLoading);
     if (
       clippedVideoLoading === 'SUCCESS' ||
       videoInfo.clip_complete === 'success'
     ) {
       component = (
         <>
-          {!trimmedVideoLoading || trimmedVideoLoading === 'FINISH' ? (
+          {!trimmedVideoLoading || trimmedVideoLoading[1] === 'FINISH' ? (
             <IconButton onClick={preprocessorClickHandler}>
               <img
                 src="/images/video-editing.png"
@@ -84,7 +86,10 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
               />
             </IconButton>
           ) : (
-            <ProgressImage modelType={model} style={{ marginLeft: '5px' }} />
+            <ProgressImage
+              modelType={trimmedVideoLoading[0]}
+              style={{ marginLeft: '5px' }}
+            />
           )}
 
           <Button
@@ -112,8 +117,6 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
     }
     return component;
   };
-
-  console.log(trimmedVideoLoading);
 
   return (
     <TableRow
