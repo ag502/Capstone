@@ -1,12 +1,14 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
+import { Link as RouterLink, useParams, useRouteMatch } from 'react-router-dom';
 import {
   Card,
   CardActionArea,
   CardContent,
   Box,
   Typography,
-  Divider
+  Divider,
+  Link
 } from '@material-ui/core';
 
 // const modelList = [['Face API', 'Emotion Dection', 'Shadowing']];
@@ -32,22 +34,30 @@ const useStyle = makeStyles(theme => ({
 
 const Home = () => {
   const classes = useStyle();
+  const { path } = useRouteMatch();
+  console.log(path);
+
   return (
     <Box display="flex" flexWrap="wrap" justifyContent="space-between">
       {modelList.map(model => (
-        <Box>
+        <Box key={model}>
           <Card className={classes.card}>
-            <CardActionArea>
-              <img
-                className={classes.cardImg}
-                src="/images/models/faceApi.png"
-                alt={model}
-              />
-              <Divider />
-              <CardContent className={classes.cardContent}>
-                <Typography variant="h4">{model}</Typography>
-              </CardContent>
-            </CardActionArea>
+            <Link component={RouterLink} to={`${path}/${model}`}>
+              <CardActionArea>
+                <img
+                  className={classes.cardImg}
+                  src="/images/models/faceApi.png"
+                  alt={model}
+                />
+                <Divider />
+                <CardContent
+                  className={classes.cardContent}
+                  style={{ padding: 0 }}
+                >
+                  <Typography variant="h4">{model}</Typography>
+                </CardContent>
+              </CardActionArea>
+            </Link>
           </Card>
         </Box>
       ))}

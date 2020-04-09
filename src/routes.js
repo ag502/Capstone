@@ -7,6 +7,7 @@ import DashboardAnalyticsView from './views/DashboardAnalytics';
 import DashboardDefaultView from './views/DashboardDefault';
 import OverviewView from './views/Overview';
 import PresentationView from './views/Presentation';
+import DataManagement from './views/DataManagement';
 
 export default [
   {
@@ -77,9 +78,27 @@ export default [
       },
       {
         path: '/data-management',
-        exact: true,
-        component: lazy(() => import('src/views/DataManagement'))
+        component: DataManagement,
+        routes: [
+          {
+            path: '/data-management',
+            exact: true,
+            component: lazy(() => import('src/views/DataManagement/Pages/Home'))
+          },
+          {
+            path: '/data-management/:model',
+            exact: true,
+            component: lazy(() =>
+              import('src/views/DataManagement/Pages/VideoGroup')
+            )
+          }
+        ]
       },
+      // {
+      //   path: '/data-management',
+      //   exact: true,
+      //   component: lazy(() => import('src/views/DataManagement'))
+      // },
       {
         // models
         path: '/models-home',
