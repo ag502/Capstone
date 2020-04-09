@@ -89,7 +89,14 @@ export default [
             path: '/data-management/:model',
             exact: true,
             component: lazy(() =>
-              import('src/views/DataManagement/Pages/VideoGroup')
+              import('src/views/DataManagement/Pages/VideoGroup/index')
+            )
+          },
+          {
+            path: '/data-management/:model/:videoInfo',
+            exact: true,
+            component: lazy(() =>
+              import('src/views/DataManagement/Pages/VideoList')
             )
           }
         ]

@@ -11,8 +11,7 @@ import {
   Link
 } from '@material-ui/core';
 
-// const modelList = [['Face API', 'Emotion Dection', 'Shadowing']];
-const modelList = ['Face API', 'Emotion Dection', 'Shadowing'];
+const modelList = ['FaceAPI', 'EmotionDetection', 'Shadowing'];
 
 const useStyle = makeStyles(theme => ({
   card: {
@@ -34,15 +33,14 @@ const useStyle = makeStyles(theme => ({
 
 const Home = () => {
   const classes = useStyle();
-  const { path } = useRouteMatch();
-  console.log(path);
+  const { url } = useRouteMatch();
 
   return (
     <Box display="flex" flexWrap="wrap" justifyContent="space-between">
       {modelList.map(model => (
         <Box key={model}>
           <Card className={classes.card}>
-            <Link component={RouterLink} to={`${path}/${model}`}>
+            <Link component={RouterLink} to={`${url}/${model}`}>
               <CardActionArea>
                 <img
                   className={classes.cardImg}

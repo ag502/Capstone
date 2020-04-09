@@ -12,13 +12,11 @@ import {
   Divider,
   Avatar
 } from '@material-ui/core';
-import Label from 'src/components/Label';
 
 import blueGrey from '@material-ui/core/colors/blueGrey';
 import grey from '@material-ui/core/colors/grey';
 
-
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: blueGrey[50]
   },
@@ -26,15 +24,13 @@ const useStyles = makeStyles((theme) => ({
     height: 125
   },
   content: {
-    paddingTop: 0,
-    
+    paddingTop: 0
   },
   avatarContainer: {
     marginTop: -48,
     display: 'flex',
     paddingBottom: 10,
-    justifyContent: 'center',
-    
+    justifyContent: 'center'
   },
   avatar: {
     height: 130,
@@ -54,26 +50,22 @@ function SubscriberCard({ subscriber, className, ...rest }) {
   const classes = useStyles();
 
   return (
-    <Card
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
+    <Card {...rest} className={clsx(classes.root, className)}>
       <CardMedia
         className={classes.media}
-        image={subscriber.cover}// 모델 이미지 가져오기
+        image={subscriber.cover} // 모델 이미지 가져오기
       />
       <CardContent className={classes.content}>
         <div className={classes.avatarContainer}>
-           <Avatar
+          <Avatar
             alt="Subscriber"
             className={classes.avatar}
             component={RouterLink}
             src={subscriber.avatar}
             to="/profile/1/timeline"
-          >
-          </Avatar>
+          />
         </div>
-        <Typography //// 모델 이름
+        <Typography // // 모델 이름
           align="center"
           component={RouterLink}
           display="block"
@@ -91,10 +83,7 @@ function SubscriberCard({ subscriber, className, ...rest }) {
           connections in common
         </Typography> */}
         <Divider className={classes.divider} />
-        <Grid
-          container
-          spacing={1}
-        >
+        <Grid container spacing={1}>
           {/* {subscriber.labels.map((label) => (
             <Grid
               item

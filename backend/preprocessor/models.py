@@ -24,4 +24,4 @@ class VideoData(models.Model):
         return self.created_at.astimezone(korean_timezone)
 
     def __str__(self):
-        return "{}_{}".format(self.videoId, self.created_at)
+        return "{}_{}_{}_{}".format(self.videoId, self.created_at, self.model_tag, self.final_save)

@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Page from 'src/components/Page';
 import { makeStyles } from '@material-ui/styles';
 import { Container } from '@material-ui/core';
-import { Route, Switch } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { renderRoutes } from 'react-router-config';
 import Header from './Header';
 import Home from './Pages/Home';
-import VideoGroup from './Pages/VideoGroup';
+import VideoGroup from './Pages/VideoGroup/index';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,10 +21,18 @@ const useStyles = makeStyles(theme => ({
 
 const DataManagement = ({ route }) => {
   const classes = useStyles();
+  const { pathname } = useLocation();
+  const [currentLoc, setCurrentLoc] = useState([]);
+
+  useEffect(() => {
+    const pathNameArr = pathname.split('/');
+    setCurrentLoc(pathNameArr);
+  }, [pathname]);
+
   return (
     <Page className={classes.root}>
       <Container maxWidth={false}>
-        <Header classes={classes} />
+        <Header classes={classes} pathInfo={currentLoc} />
         {/* <Switch>
           <Route exact path="/data-management" component={Home} />
           <Route exact path="/data-management/:model" component={VideoGroup} />

@@ -1,7 +1,9 @@
 from preprocessor.models import VideoData
+from preprocessor.serializers import VideoDataSerializer
 from rest_framework.views import APIView
 from django.http import HttpResponse, JsonResponse
 from . import data_manager
+
 
 
 class DataDelete(APIView):
@@ -18,3 +20,11 @@ class DataDelete(APIView):
 
         return HttpResponse("delete")
 
+
+class DataManagement(APIView):
+    def get(self, request, model):
+        video_data = VideoData.objects.filter(model_tag=model, final_save=True)
+        video_data = video_data.values('videoId', 'startTime', 'endTime', 'keyword').distinct()
+        serializer = VideoDataSerializer(video_data, many=True)
+
+        return JsonResponse(serializer.data, safe=False)

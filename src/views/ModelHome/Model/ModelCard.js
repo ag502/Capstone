@@ -12,7 +12,6 @@ import {
   Divider,
   Avatar
 } from '@material-ui/core';
-import Label from 'src/components/Label';
 
 import blueGrey from '@material-ui/core/colors/blueGrey';
 import grey from '@material-ui/core/colors/grey';

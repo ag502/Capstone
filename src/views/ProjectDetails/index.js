@@ -2,23 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-import {
-  Container,
-  Tabs,
-  Tab,
-  Divider,
-  colors
-} from '@material-ui/core';
+import { Container, Tabs, Tab, Divider, colors } from '@material-ui/core';
 import axios from 'src/utils/axios';
 import Page from 'src/components/Page';
-import Alert from 'src/components/Alert';
 import Header from './Header';
 import Overview from './Overview';
 import Files from './Files';
 import Activities from './Activities';
 import Subscribers from './Subscribers';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3)
@@ -40,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 function ProjectDetails({ match, history }) {
   const classes = useStyles();
   const { id, tab } = match.params;
-  const [openAlert, setOpenAlert] = useState(true);
+  // const [openAlert, setOpenAlert] = useState(true);
   const [project, setProject] = useState(null);
   const tabs = [
     // { value: 'overview', label: 'Overview' },
@@ -49,9 +42,9 @@ function ProjectDetails({ match, history }) {
     { value: 'subscribers', label: 'Models' }
   ];
 
-  const handleAlertClose = () => {
-    setOpenAlert(false);
-  };
+  // const handleAlertClose = () => {
+  //   setOpenAlert(false);
+  // };
 
   const handleTabsChange = (event, value) => {
     history.push(value);
@@ -61,7 +54,7 @@ function ProjectDetails({ match, history }) {
     let mounted = true;
 
     const fetchProject = () => {
-      axios.get('/api/projects/1').then((response) => {
+      axios.get('/api/projects/1').then(response => {
         if (mounted) {
           setProject(response.data.project);
         }
@@ -79,7 +72,7 @@ function ProjectDetails({ match, history }) {
     return <Redirect to={`/projects/${id}/overview`} />;
   }
 
-  if (!tabs.find((t) => t.value === tab)) {
+  if (!tabs.find(t => t.value === tab)) {
     return <Redirect to="/errors/error-404" />;
   }
 
@@ -88,10 +81,7 @@ function ProjectDetails({ match, history }) {
   }
 
   return (
-    <Page
-      className={classes.root}
-      title="Models"
-    >
+    <Page className={classes.root} title="Models">
       <Container maxWidth="lg">
         <Header project={project} />
         <Tabs
@@ -101,12 +91,8 @@ function ProjectDetails({ match, history }) {
           value={tab}
           variant="scrollable"
         >
-          {tabs.map((tab) => (
-            <Tab
-              key={tab.value}
-              label={tab.label}
-              value={tab.value}
-            />
+          {tabs.map(tab => (
+            <Tab key={tab.value} label={tab.label} value={tab.value} />
           ))}
         </Tabs>
         <Divider className={classes.divider} />

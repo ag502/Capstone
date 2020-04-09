@@ -2,17 +2,10 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
-import {
-  Typography,
-  Grid,
-  Button,
-  colors
-} from '@material-ui/core';
-import ShareIcon from '@material-ui/icons/Share';
-import Label from 'src/components/Label';
+import { Typography, Grid, Button, colors } from '@material-ui/core';
 import Application from './Application';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {},
   label: {
     marginTop: theme.spacing(1)
@@ -46,29 +39,13 @@ function Header({ project, className, ...rest }) {
   };
 
   return (
-    <div
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
-      <Grid
-        alignItems="flex-end"
-        container
-        justify="space-between"
-        spacing={3}
-      >
+    <div {...rest} className={clsx(classes.root, className)}>
+      <Grid alignItems="flex-end" container justify="space-between" spacing={3}>
         <Grid item>
-          <Typography
-            component="h2"
-            gutterBottom
-            variant="overline"
-          >
+          <Typography component="h2" gutterBottom variant="overline">
             Browse models
           </Typography>
-          <Typography
-            component="h1"
-            gutterBottom
-            variant="h3"
-          >
+          <Typography component="h1" gutterBottom variant="h3">
             Test your model
           </Typography>
           {/* <Label
