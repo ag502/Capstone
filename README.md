@@ -14,7 +14,7 @@
 - [x] 비디오 재생 팝업 우측하단 cliping 클릭시 server에 post 요청
   - [x] cliping 요청시 post 할 정보에 videoid, keyword 추가
 - [x] 비디오 전처리 화면 관리 페이지
-- [x] redux-thunk 적용
+- [x] redux  적용
 
 - [ ] 모델 기능
   - [x] 모델 페이지 화면 구성
