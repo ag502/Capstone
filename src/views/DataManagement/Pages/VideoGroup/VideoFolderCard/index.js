@@ -7,8 +7,6 @@ const VideoFolderCard = ({ videoInfo }) => {
   const { videoId, startTime, endTime, keyword } = videoInfo;
   const { url } = useRouteMatch();
 
-  console.log(url);
-
   return (
     <Link
       component={RouterLink}

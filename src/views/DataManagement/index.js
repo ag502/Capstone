@@ -25,8 +25,8 @@ const DataManagement = ({ route }) => {
   const [currentLoc, setCurrentLoc] = useState([]);
 
   useEffect(() => {
-    const pathNameArr = pathname.split('/');
-    setCurrentLoc(pathNameArr);
+    const location = pathname.split('/');
+    setCurrentLoc(location);
   }, [pathname]);
 
   return (
