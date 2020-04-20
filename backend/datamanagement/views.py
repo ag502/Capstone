@@ -5,7 +5,6 @@ from django.http import HttpResponse, JsonResponse
 from . import data_manager
 
 
-
 class DataDelete(APIView):
     @staticmethod
     def post(request):
@@ -22,9 +21,17 @@ class DataDelete(APIView):
 
 
 class DataManagement(APIView):
-    def get(self, request, model):
-        video_data = VideoData.objects.filter(model_tag=model, final_save=True)
-        video_data = video_data.values('videoId', 'startTime', 'endTime', 'keyword').distinct()
-        serializer = VideoDataSerializer(video_data, many=True)
+    def get(self, request, model, video_info=None):
+        video_data = None
+        if video_info is None:
+            video_data = VideoData.objects.filter(model_tag=model, final_save=True)
+            video_fields = video_data.values('videoId', 'startTime', 'endTime', 'keyword').distinct()
+            serializer = VideoDataSerializer(video_fields, many=True)
+        else:
+            video_id, start_time, end_time, keyword = video_info.split('&')
+            video_data = VideoData.objects.filter(model_tag=model, final_save=True, videoId=video_id,
+                                                  startTime=start_time, endTime=end_time, keyword=keyword)
+            serializer = VideoDataSerializer(video_data, many=True)
 
         return JsonResponse(serializer.data, safe=False)
+

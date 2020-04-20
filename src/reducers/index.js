@@ -8,7 +8,7 @@ const rootReducer = combineReducers({
   session: sessionReducer,
   videoData: videoDataReducer,
   videoPlay: videoPlayReducer,
-  clippingVideo: clippingReducer,
+  clippingVideo: clippingReducer
 });
 
 export default rootReducer;
