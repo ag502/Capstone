@@ -88,6 +88,7 @@ function TestingModel() {
     };
   }, []);
 
+
   return (
     <Page 
       className={classes.root}
@@ -112,7 +113,7 @@ function TestingModel() {
           <Divider className={classes.divider} />
           <Card className={classes.videoCard}>
             <CardMedia>
-              {/* <Face /> */}
+              <Face />
               {/* <video src = "https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/FaceAPI/FaceAPI_7ZkkMyUMfK0_22-47_0.mp4" controls></video> */}
               {/* <ReactPlayer url="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/FaceAPI/FaceAPI_7ZkkMyUMfK0_22-47_0.mp4" controls />  */}
             </CardMedia>

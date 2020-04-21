@@ -1,10 +1,11 @@
 import React from 'react';
-import { Typography, Grid, colors } from '@material-ui/core';
+import * as faceapi from 'face-api.js';
+//face api 적용하기
+console.log("hi")
+console.log(faceapi.nets)
 
 function Face(){
-    console.log("여기에서 opencv사용");
-}
-
-Face()
+    
+};
 
 export default Face;
