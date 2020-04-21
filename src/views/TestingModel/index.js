@@ -9,10 +9,12 @@ import {
   Card, CardContent, CardMedia,
   Grid, GridList,
   colors,
-  Typography
+  Typography,
+  Button
 } from '@material-ui/core';
 import axios from 'src/utils/axios';
 import Header from './Header';
+import Face from './Face';
 import ReactPlayer from 'react-player';
 import FilesDropzone from 'src/components/FilesDropzone';
 import InfiniteScroll from 'src/components/InfiniteScroll';
@@ -110,13 +112,16 @@ function TestingModel() {
           <Divider className={classes.divider} />
           <Card className={classes.videoCard}>
             <CardMedia>
-              <ReactPlayer url="https://aws-s3-capstone/FaceAPI/FaceAPI_RIRQ4OuOZ64_0-36_0.mp4" controls /> 
+              {/* <Face /> */}
+              {/* <video src = "https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/FaceAPI/FaceAPI_7ZkkMyUMfK0_22-47_0.mp4" controls></video> */}
+              {/* <ReactPlayer url="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/FaceAPI/FaceAPI_7ZkkMyUMfK0_22-47_0.mp4" controls />  */}
             </CardMedia>
             <CardContent>
               <Typography
                 variant={'h6'}
               >
-                video info
+                keyword : 혁오 date : 2020.04.21
+                <Button variant="contained">Play</Button>
               </Typography>
             </CardContent>
           </Card>
@@ -147,7 +152,7 @@ function TestingModel() {
                 >
                   <CardMedia
                     className={classes.media}
-                    image="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/thumnails/45G3McH8y1M_5-7.png"
+                    image="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/FaceAPI/thumbnails/FaceAPI_7ZkkMyUMfK0_22-47_0.png"
                   />
                   <CardContent>
                     <Typography
