@@ -1,7 +1,6 @@
 from mtcnn.mtcnn import MTCNN
 import cv2
-# from Preprocess import makelist
-from .Preprocess import makelist
+from ..Preprocess import makelist
 
 def facedetect():
     frame_list = makelist()

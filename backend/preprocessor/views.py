@@ -1,7 +1,8 @@
 from .serializers import VideoDataSerializer
 from rest_framework.views import APIView
 from django.http import HttpResponse, JsonResponse
-from . import Preprocess, face_discriminator
+from . import Preprocess
+from .discriminators import face_discriminator
 from clipping.models import VideoInfo
 from .models import VideoData
 

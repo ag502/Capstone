@@ -110,7 +110,7 @@ function TestingModel() {
           <Divider className={classes.divider} />
           <Card className={classes.videoCard}>
             <CardMedia>
-              <ReactPlayer url="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/clippingVideo/45G3McH8y1M_5-7.mp4" controls /> 
+              <ReactPlayer url="https://aws-s3-capstone/FaceAPI/FaceAPI_RIRQ4OuOZ64_0-36_0.mp4" controls /> 
             </CardMedia>
             <CardContent>
               <Typography

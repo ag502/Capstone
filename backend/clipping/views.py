@@ -37,8 +37,8 @@ class ClipVideoDownloader(APIView):
         # 'C:/Users/LG/Desktop/Material_Ui_Capstone/public/clippingVideo/'
         # 'C:/Users/LG/Desktop/Material_Ui_Capstone/public/thumbnails/'
 
-        output_dir = 'C:/Users/LG/Desktop/Material_Ui_Capstone/public/clippingVideo/'  # 영상 저장경로, 후에 s3로 변경
-        thumbnail_dir = 'C:/Users/LG/Desktop/Material_Ui_Capstone/public/thumbnails/'
+        output_dir = 'C:/Users/jaehee/capstone/Material_Ui_Capstone/public/clippingVideo/'  # 영상 저장경로, 후에 s3로 변경
+        thumbnail_dir = 'C:/Users/jaehee/capstone/Material_Ui_Capstone/public/thumbnails/'
 
         response_status = 200
         queryset = VideoInfo.objects.all()
