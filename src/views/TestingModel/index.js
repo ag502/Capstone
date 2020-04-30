@@ -8,10 +8,10 @@ import {
   Tab,
   Divider,
   Card, CardContent, CardMedia,
-  Grid, GridList, GridListTile,
+  Grid, GridList, GridListTile, GridListTileBar,
   colors,
   Typography,
-  Button,
+  Chip
 } from '@material-ui/core';
 import axios from 'axios';
 import Header from './Header';
@@ -49,9 +49,11 @@ const useStyles = makeStyles((theme) => ({
     
   },
   ListCard: {
-    maxHeight: '430px',
+    maxHeight: '448px',
     marginTop: theme.spacing(3),
-    boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)"
+    boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
+    display: 'flex',
+    overflow: 'hidden'
   },
   media: {
     padding: '100px 150px'
@@ -61,7 +63,12 @@ const useStyles = makeStyles((theme) => ({
 function TestingModel() {
   const classes = useStyles();
   const [videoList, setVideoList] = useState([]);
+  const [videoInfo, setVideoInfo] = useState([]);
   const { modelName } = useParams();
+
+  const thumbnailClickHandler = (videoId, startTime, endTime, videoNumber, keyword, createdAt) => () => {
+    setVideoInfo([videoId, startTime, endTime, videoNumber, keyword, createdAt.substr(0, 10)]);
+  };
 
 
   useEffect(() => {
@@ -76,6 +83,7 @@ function TestingModel() {
 
     fetchData();
   }, []);
+
 
   return (
     <Page 
@@ -101,16 +109,22 @@ function TestingModel() {
           <Divider className={classes.divider} />
           <Card className={classes.videoCard}>
             <CardMedia>
-              <video id="video" src = {`https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/${modelName}/${modelName}_7ZkkMyUMfK0_22-47_0.mp4`} controls autoplay loop></video>
-              {/* <ReactPlayer url="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/FaceAPI/FaceAPI_7ZkkMyUMfK0_22-47_0.mp4" controls />  */}
+              <ReactPlayer
+                url={`https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/${modelName}/${modelName}_${videoInfo[0]}_${videoInfo[1]}-${videoInfo[2]}_${videoInfo[3]}.mp4`} 
+                controls
+                width='100%'
+              />
+              {/* <video id="video" src = {`https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/${modelName}/${modelName}_${videoInfo[0]}_${videoInfo[1]}-${videoInfo[2]}_${videoInfo[3]}.mp4`} controls></video> */}
             </CardMedia>
             <CardContent>
-              <Typography
-                variant={'h6'}
-              >
-                keyword : 혁오 date : 2020.04.21
-                <Button variant="contained">Play</Button>
-              </Typography>
+              <Chip
+                color="default"
+                label={`date : ${videoInfo[5]}`}
+              />
+              <Chip
+                color="primary"
+                label={`keyword : ${videoInfo[4]}`}
+              />
             </CardContent>
           </Card>
         </Container>
@@ -124,10 +138,9 @@ function TestingModel() {
           <Divider className={classes.divider} />
           <Card className={classes.ListCard}>
             <GridList
-            flexWrap='wrap' 
-            // cellHeight="auto" 
+            cellHeight="auto" 
             cols={1} 
-            // spacing={0}
+            spacing={2}
             >
               {videoList.map(video => (
                 <GridListTile
@@ -140,19 +153,18 @@ function TestingModel() {
                   <CardMedia
                     className={classes.media}
                     image={`https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/${modelName}/thumbnails/${modelName}_${video['videoId']}_${video['startTime']}-${video['endTime']}_${video['video_number']}.png`}
+                    onClick={thumbnailClickHandler(
+                      video['videoId'],
+                      video['startTime'],
+                      video['endTime'],
+                      video['video_number'],
+                      video['keyword'],
+                      video['created_at']
+                    )}
                   />
-                  <CardContent>
-                    <Typography
-                      variant="h6"
-                    >
-                      keyword : {video['keyword']} 
-                    </Typography>
-                    <Typography
-                      variant="h6"
-                    >
-                      date : {video['created_at'].substr(0,10)}
-                    </Typography>
-                  </CardContent>
+                  <GridListTileBar
+                      title={`keyword : ${video['keyword']} date : ${video['created_at'].substr(0,10)}`}
+                  />
                 </GridListTile>
                 ))}
             </GridList>
