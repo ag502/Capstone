@@ -2,6 +2,7 @@ from mtcnn.mtcnn import MTCNN
 import cv2
 from ..Preprocess import makelist
 
+
 def facedetect():
     frame_list = makelist()
     time = 0

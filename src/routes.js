@@ -114,7 +114,7 @@ export default [
       },
       {
         // TESTING models
-        path: '/Testing-model',
+        path: '/Testing-model/:modelName',
         exact: true,
         component: lazy(() => import('src/views/TestingModel'))
       },

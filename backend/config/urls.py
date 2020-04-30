@@ -6,4 +6,5 @@ urlpatterns = [
     path('', include('clipping.urls')),
     path('', include('preprocessor.urls')),
     path('', include('datamanagement.urls')),
+    path('', include('testing.urls')),
 ]

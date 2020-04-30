@@ -71,17 +71,7 @@ function Header({ project, className, ...rest }) {
             Select your model
           </Typography>
         </Grid>
-        <Grid item>
-          <Button
-            className={classes.applyButton}
-            onClick={handleApplicationOpen}
-            variant="contained"
-          >
-            Add Model
-          </Button>
-        </Grid>
       </Grid>
-      
     </div>
   );
 }

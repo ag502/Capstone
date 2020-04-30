@@ -45,6 +45,7 @@
     "no-underscore-dangle": 0,
     "react/jsx-wrap-multilines": 0,
     "jsx-a11y/no-noninteractive-element-interactions": 0,
-    "no-confusing-arrow": 0
+    "no-confusing-arrow": 0,
+    "quotes": 0
   }
 }

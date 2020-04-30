@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'preprocessor',  # 전처리페이지
     'datamanagement',  # 데이터관리 페이지
+    'testing', # 모델 테스트
 ]
 
 ## AWS Access

@@ -59,7 +59,7 @@ function ModelCard({ model, className, ...rest }) {
             className={classes.avatar}
             component={RouterLink}
             src={model.avatar}
-            to="/Testing-Model"
+            to={model.link}
           />
         </div>
         <Typography

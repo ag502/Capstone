@@ -1,5 +1,6 @@
 import React, { useState, useEffect} from 'react';
 import Page from 'src/components/Page';
+import { useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import { 
   Container,
@@ -7,19 +8,15 @@ import {
   Tab,
   Divider,
   Card, CardContent, CardMedia,
-  Grid, GridList,
+  Grid, GridList, GridListTile,
   colors,
   Typography,
-  Button
+  Button,
 } from '@material-ui/core';
-import axios from 'src/utils/axios';
+import axios from 'axios';
 import Header from './Header';
 import Face from './Face';
 import ReactPlayer from 'react-player';
-import FilesDropzone from 'src/components/FilesDropzone';
-import InfiniteScroll from 'src/components/InfiniteScroll';
-import CircularIndeterminate from 'src/components/Progress';
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,14 +49,9 @@ const useStyles = makeStyles((theme) => ({
     
   },
   ListCard: {
-    maxHeight: '428px',//???????
+    maxHeight: '430px',
     marginTop: theme.spacing(3),
     boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)"
-  },
-  fileDropzoneContainer: {
-    paddingTop: theme.spacing(1.5),
-    paddingBottom: theme.spacing(3),
-    maxWidth:"lg"
   },
   media: {
     padding: '100px 150px'
@@ -68,26 +60,22 @@ const useStyles = makeStyles((theme) => ({
 
 function TestingModel() {
   const classes = useStyles();
-  const [model, setModel] = useState(null);
+  const [videoList, setVideoList] = useState([]);
+  const { modelName } = useParams();
+
 
   useEffect(() => {
-    let mounted = true;
-
-    const fetchModel = () => {
-      axios.get('/api/models').then((response) => {
-        if (mounted) {
-          setModel(response.data.model);
-        }
-      });
+    const fetchData = () => {
+      axios
+        .get(`http://localhost:8000/testing/${modelName}/`)
+        .then(res => {
+          setVideoList(res.data);
+        })
+        .catch(err => console.log(err));
     };
 
-    fetchModel();
-
-    return () => {
-      mounted = false;
-    };
+    fetchData();
   }, []);
-
 
   return (
     <Page 
@@ -106,15 +94,14 @@ function TestingModel() {
         <Container className={classes.modelContainer}>
           <Tabs className={classes.tabs}>
             <Tab
-              label="Model Name!!!"
+              label={modelName}
               disabled
             />
           </Tabs>
           <Divider className={classes.divider} />
           <Card className={classes.videoCard}>
             <CardMedia>
-              <Face />
-              {/* <video src = "https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/FaceAPI/FaceAPI_7ZkkMyUMfK0_22-47_0.mp4" controls></video> */}
+              <video id="video" src = {`https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/${modelName}/${modelName}_7ZkkMyUMfK0_22-47_0.mp4`} controls autoplay loop></video>
               {/* <ReactPlayer url="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/FaceAPI/FaceAPI_7ZkkMyUMfK0_22-47_0.mp4" controls />  */}
             </CardMedia>
             <CardContent>
@@ -136,99 +123,42 @@ function TestingModel() {
           </Tabs>
           <Divider className={classes.divider} />
           <Card className={classes.ListCard}>
-            <InfiniteScroll
-              hasMore
-              pageStart={0}
-              loadMore
-              initialLoad
-              useWindow
-              loader={<CircularIndeterminate key={0} />}
+            <GridList
+            flexWrap='wrap' 
+            // cellHeight="auto" 
+            cols={1} 
+            // spacing={0}
             >
-              <GridList cellHeight="auto" cols={1} spacing={0}>
-                <Grid
-                  container
-                  item
-                  direction="row"
-                  justify="space-between"
+              {videoList.map(video => (
+                <GridListTile
+                  key={video}
+                  // container
+                  // item
+                  // direction="row"
+                  // justify="space-between"
                 >
                   <CardMedia
                     className={classes.media}
-                    image="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/FaceAPI/thumbnails/FaceAPI_7ZkkMyUMfK0_22-47_0.png"
+                    image={`https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/${modelName}/thumbnails/${modelName}_${video['videoId']}_${video['startTime']}-${video['endTime']}_${video['video_number']}.png`}
                   />
                   <CardContent>
                     <Typography
-                      variant={'h6'}
+                      variant="h6"
                     >
-                      video info
+                      keyword : {video['keyword']} 
                     </Typography>
-                  </CardContent>
-                </Grid>
-                <Grid
-                  container
-                  item
-                  direction="row"
-                  justify="space-between"
-                >
-                  <CardMedia
-                    className={classes.media}
-                    image="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/thumnails/45G3McH8y1M_5-7.png"
-                  />
-                  <CardContent>
                     <Typography
-                      variant={'h6'}
+                      variant="h6"
                     >
-                      video info
+                      date : {video['created_at'].substr(0,10)}
                     </Typography>
                   </CardContent>
-                </Grid>
-                <Grid
-                  container
-                  item
-                  direction="row"
-                  justify="space-between"
-                >
-                  <CardMedia
-                    className={classes.media}
-                    image="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/thumnails/45G3McH8y1M_5-7.png"
-                  />
-                  <CardContent>
-                    <Typography
-                      variant={'h6'}
-                    >
-                      video info
-                    </Typography>
-                  </CardContent>
-                </Grid>
-                <Grid
-                  container
-                  item
-                  direction="row"
-                  justify="space-between"
-                >
-                  <CardMedia
-                    className={classes.media}
-                    image="https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/thumnails/45G3McH8y1M_5-7.png"
-                  />
-                  <CardContent>
-                    <Typography
-                      variant={'h6'}
-                    >
-                      video info
-                    </Typography>
-                  </CardContent>
-                </Grid>
-              </GridList>
-            </InfiniteScroll>
+                </GridListTile>
+                ))}
+            </GridList>
           </Card>
         </Container>
       </Grid>
-      <Container className={classes.fileDropzoneContainer}>
-        <Card>
-          <CardContent>
-            <FilesDropzone />
-          </CardContent>
-        </Card>
-      </Container>
     </Page>
   );
 }
