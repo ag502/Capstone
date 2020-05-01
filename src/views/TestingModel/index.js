@@ -145,10 +145,6 @@ function TestingModel() {
               {videoList.map(video => (
                 <GridListTile
                   key={video}
-                  // container
-                  // item
-                  // direction="row"
-                  // justify="space-between"
                 >
                   <CardMedia
                     className={classes.media}

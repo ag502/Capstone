@@ -66,7 +66,7 @@ function ModelCard({ model, className, ...rest }) {
           align="center"
           component={RouterLink}
           display="block"
-          to="/Testing-Model"
+          to={model.link}
           variant="h6"
         >
           {model.name}

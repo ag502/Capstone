@@ -119,6 +119,12 @@ export default [
         component: lazy(() => import('src/views/TestingModel'))
       },
       {
+        // RealTime
+        path: '/RealTime',
+        exact: true,
+        component: lazy(() => import('src/views/RealTime'))
+      },
+      {
         path: '/data-process/:videoInfo',
         exact: true,
         component: lazy(() => import('src/views/DataProcessDetail'))

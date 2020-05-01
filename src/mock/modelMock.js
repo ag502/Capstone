@@ -15,9 +15,9 @@ mock.onGet('/api/models').reply(200, {
       },
       {
         id: uuid(),
-        name: 'Shadowing',
-        avatar: '/images/models/monaLisa.png',
-        link: 'Testing-Model/Shadowing'
+        name: 'Real Time Face',
+        avatar: '/images/models/realtime.png',
+        link: 'RealTime'
       },
       {
         id: uuid(),
