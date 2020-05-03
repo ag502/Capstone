@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Page from 'src/components/Page';
 import { useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
@@ -16,7 +16,6 @@ import {
 import axios from 'axios';
 import Header from './Header';
 import Face from './Face';
-import ReactPlayer from 'react-player';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -108,14 +107,17 @@ function TestingModel() {
           </Tabs>
           <Divider className={classes.divider} />
           <Card className={classes.videoCard}>
-            <CardMedia>
+            <Face
+              modelName={modelName}
+              videoInfo={videoInfo}
+            />
+            {/* <CardMedia>
               <ReactPlayer
                 url={`https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/${modelName}/${modelName}_${videoInfo[0]}_${videoInfo[1]}-${videoInfo[2]}_${videoInfo[3]}.mp4`} 
                 controls
                 width='100%'
               />
-              {/* <video id="video" src = {`https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/${modelName}/${modelName}_${videoInfo[0]}_${videoInfo[1]}-${videoInfo[2]}_${videoInfo[3]}.mp4`} controls></video> */}
-            </CardMedia>
+            </CardMedia> */}
             <CardContent>
               <Chip
                 color="default"

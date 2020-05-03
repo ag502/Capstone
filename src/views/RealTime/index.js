@@ -1,4 +1,5 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect, useRef} from 'react';
+import * as faceapi from 'face-api.js';
 import Page from 'src/components/Page';
 import { useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
@@ -42,13 +43,55 @@ const useStyles = makeStyles((theme) => ({
 
 function TestingModel() {
   const classes = useStyles();
+  const videoRef = useRef();
+  const constraints = { video: true }
 
-  const videoConstraints = {
-      facingMode: "user"
-    };
+  async function loadModel() {
+    try {
+      await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
+      await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
+      await faceapi.nets.faceExpressionNet.loadFromUri('/models');
+      await faceapi.nets.ageGenderNet.loadFromUri('/models')
+      startVideo();
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
+  function startVideo() {
+    const video = videoRef.current;
+    navigator.mediaDevices.getUserMedia(constraints).then(
+    (stream) => { video.srcObject = stream })
+
+    if (video) {
+      video.addEventListener('play', () => {
+      video.style.transform = "rotateY(180deg)"
+      video.style.webkitTransform="rotateY(180deg)"
+      const canvas = faceapi.createCanvasFromMedia(video)
+      document.getElementById('cont').append(canvas)
+      const displaySize = { width: video.width, height: video.height }
+      faceapi.matchDimensions(canvas, displaySize)
+      setInterval(async () => {
+      const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
+      const resizedDetections = faceapi.resizeResults(detections, displaySize)
+      canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+      faceapi.draw.drawDetections(canvas, resizedDetections)
+      faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
+      if (detections[0]) {
+        let _X = -detections[0].detection.box._x;
+        let _Y = -detections[0].detection.box._y;
+        canvas.style.transform=`translate(${_X}px,${_Y}px)`
+      }
+      }, 100);
+      });
+    }
+  }
+
+  useEffect(() => {
+    loadModel();
+  });
   return (
-    <Page 
+    <Page
       className={classes.root}
       title="RealTime"
     >
@@ -72,18 +115,28 @@ function TestingModel() {
           </Tabs>
           <Divider className={classes.divider} />
         </Container>
-        <Webcam
-          videoConstraints={videoConstraints}
-          height={720}
-          width={720}
-          audio={false}
-        />
+        <Container
+          width="100vw"
+          height="100vh"
+          id="cont"
+          align-items="center"
+          justify-content="center"
+          display="flex"
+          // position="absolute"
+        >
+          <video 
+            id="video"
+            ref={videoRef}
+            width="400"
+            height="400"
+            autoPlay={true}
+            muted
+            >
+            </video>
+        </Container>
       </Grid>
     </Page>
   );
-
-
-
 }
 
 export default TestingModel;
