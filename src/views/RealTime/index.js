@@ -15,7 +15,6 @@ import {
   Chip
 } from '@material-ui/core';
 import axios from 'axios';
-import Webcam from "react-webcam";
 import Header from './Header';
 
 
@@ -67,7 +66,7 @@ function TestingModel() {
       video.addEventListener('play', () => {
       video.style.transform = "rotateY(180deg)"
       video.style.webkitTransform="rotateY(180deg)"
-      const canvas = faceapi.createCanvasFromMedia(video)
+      const canvas = faceapi.createCanvasFromMedia(video);
       document.getElementById('cont').append(canvas)
       const displaySize = { width: video.width, height: video.height }
       faceapi.matchDimensions(canvas, displaySize)
@@ -132,7 +131,7 @@ function TestingModel() {
             autoPlay={true}
             muted
             >
-            </video>
+          </video>
         </Container>
       </Grid>
     </Page>
