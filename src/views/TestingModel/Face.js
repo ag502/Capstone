@@ -29,10 +29,10 @@ const Face = ({ modelName, videoInfo }) => {
     const video = videoRef.current;
     video.src = `https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/${modelName}/${modelName}_${videoInfo[0]}_${videoInfo[1]}-${videoInfo[2]}_${videoInfo[3]}.mp4`;
     video.addEventListener('play', () => {
-      // const canvas = faceapi.createCanvasFromMedia(video);
-      // document.getElementById('cont').append(canvas);
-      // const displaySize = { width: video.width, height: video.height }
-      // faceapi.matchDimensions(canvas, displaySize);
+      const canvas = faceapi.createCanvasFromMedia(video);
+      document.getElementById('cont').append(canvas);
+      const displaySize = { width: video.width, height: video.height }
+      faceapi.matchDimensions(canvas, displaySize);
       setInterval(async () => {
         let detections = null;
         if (model === "EmotionDetection") {
@@ -41,10 +41,10 @@ const Face = ({ modelName, videoInfo }) => {
           detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withAgeAndGender();
           console.log(detections);
         }
-        // const resizedDetections = faceapi.resizeResults(detections, displaySize);
-        // canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-        // faceapi.draw.drawDetections(canvas, resizedDetections);
-        // faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
+        const resizedDetections = faceapi.resizeResults(detections, displaySize);
+        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+        faceapi.draw.drawDetections(canvas, resizedDetections);
+        faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
       }, 100);
     });
   }
@@ -63,6 +63,7 @@ const Face = ({ modelName, videoInfo }) => {
             width='100%'
             height='100%'
             controls
+            crossOrigin='Anonymous'
           />
       </div>
     </CardMedia>
