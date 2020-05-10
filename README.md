@@ -15,6 +15,7 @@
   - [x] cliping 요청시 post 할 정보에 videoid, keyword 추가
 - [x] 비디오 전처리 화면 관리 페이지
 - [x] redux  적용
+- [ ] data 관리
 
 - [ ] 모델 기능
   - [x] 모델 페이지 화면 구성
