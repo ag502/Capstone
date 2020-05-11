@@ -44,9 +44,6 @@ const DataProcessDetail = () => {
   useEffect(() => {
     axios
       .post('http://localhost:8000/preprocessor/', {
-        // videoID,
-        // startTime,
-        // endTime
         videoInfo: videoInfosArr
       })
       .then(res => {
@@ -54,9 +51,21 @@ const DataProcessDetail = () => {
         setVideoPerModel(res.data);
       });
     window.addEventListener('scroll', scrollEventHandler);
-
     return () => window.removeEventListener('scroll', scrollEventHandler);
   }, []);
+
+  const finalSaveHandler = (modelTag, selectedVideo) => {
+    const newModelPerVideo = videoPerModel.model[modelTag].filter(
+      ({ model_tag, videoId, video_number, startTime, endTime }) =>
+        !selectedVideo.includes(
+          `${model_tag}_${videoId}_${startTime}-${endTime}_${video_number}`
+        )
+    );
+
+    setVideoPerModel(prevState => ({
+      model: { ...prevState.model, [modelTag]: [...newModelPerVideo] }
+    }));
+  };
 
   return (
     <Page className={classes.root}>
@@ -112,6 +121,7 @@ const DataProcessDetail = () => {
                       modelTag={tag}
                       videos={videoPerModel.model[tag]}
                       setPlayVideoName={setPlayVideoInfo}
+                      finalSaveHandler={finalSaveHandler}
                     />
                   ))}
               </div>

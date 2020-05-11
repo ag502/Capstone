@@ -11,6 +11,7 @@ import {
   Divider,
   Button
 } from '@material-ui/core';
+import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import { pink } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -42,7 +43,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ModelExpander = ({ modelTag, videos, setPlayVideoName }) => {
+const ModelExpander = ({
+  modelTag,
+  videos,
+  setPlayVideoName,
+  finalSaveHandler
+}) => {
   const [expanded, setExpanded] = useState(false);
   const [checkedVideo, setCheckedVideo] = useState([]);
   const classes = useStyles();
@@ -65,6 +71,18 @@ const ModelExpander = ({ modelTag, videos, setPlayVideoName }) => {
       );
     } else {
       setCheckedVideo(prevState => [...prevState, videoName]);
+    }
+  };
+
+  const onSaveClick = async () => {
+    try {
+      const result = await axios.post(
+        'http://127.0.0.1:8000/preprocessor_final_save/',
+        { videoInfo: checkedVideo }
+      );
+      finalSaveHandler(modelTag, checkedVideo);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -105,8 +123,12 @@ const ModelExpander = ({ modelTag, videos, setPlayVideoName }) => {
                       actionIcon={
                         <Checkbox
                           className={classes.checkbox}
-                          onClick={selectVideoHandler(videoName)}
-                          checked={checkedVideo.includes(videoName)}
+                          onClick={selectVideoHandler(
+                            `${modelTag}_${videoName}`
+                          )}
+                          checked={checkedVideo.includes(
+                            `${modelTag}_${videoName}`
+                          )}
                         />
                       }
                     />
@@ -119,7 +141,7 @@ const ModelExpander = ({ modelTag, videos, setPlayVideoName }) => {
         <Divider />
         {checkedVideo.length ? (
           <ExpansionPanelActions>
-            <Button>Delete</Button>
+            <Button onClick={onSaveClick}>SAVE</Button>
           </ExpansionPanelActions>
         ) : null}
       </ExpansionPanel>

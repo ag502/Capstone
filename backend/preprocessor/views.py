@@ -5,6 +5,7 @@ from . import Preprocess
 from .discriminators import face_discriminator
 from clipping.models import VideoInfo
 from .models import VideoData
+import re
 
 
 class Preprocessor(APIView):
@@ -44,7 +45,8 @@ class Preprocessor(APIView):
         print(video_field)
 
         video_data = VideoData.objects.filter(videoId__in=video_field[1], startTime__in=video_field[2],
-                                              endTime__in=video_field[3], keyword__in=video_field[4])
+                                              endTime__in=video_field[3], keyword__in=video_field[4],
+                                              final_save=False)
         model_tag = video_data.values('model_tag').distinct()
 
         sending_dict = {}
@@ -109,3 +111,18 @@ class PreprocessorDelete(APIView):  # 원본 영상을 삭제
         # Preprocess.original_delete(video_id, start_time, end_time)
 
         return HttpResponse("delete")
+
+
+class PreprocessorFinalSave(APIView):
+    def post(self, request):
+        processed_video = [re.split('_|-', video) for video in request.data['videoInfo']]
+        processed_video_zip = [video for video in zip(*processed_video)]
+
+        # [(model_tag), (videoId1,..), (startTime1, ..), (endTime1, ..), (videoNumber1,..)]
+        queryset = VideoData.objects.filter(model_tag__in=processed_video_zip[0], videoId__in=processed_video_zip[1],
+                                            startTime__in=processed_video_zip[2], endTime__in=processed_video_zip[3],
+                                            video_number__in=processed_video_zip[4])
+        queryset.update(final_save=True)
+
+        return HttpResponse('Final_Save')
+
