@@ -99,7 +99,8 @@ class PreprocessorDelete(APIView):  # 원본 영상을 삭제
         # 원본 DB 삭제
         video_info = [video.split(',') for video in clip_info['videoInfo']]
         video_info_zip = [field for field in zip(*video_info)]
-        
+
+        #[(idx1, idx2...), (videoId1, videoId2, ...), (startTime1,...), (endTime1, ...), (keyword1, ..)]
         queryset = VideoInfo.objects.filter(videoId__in=video_info_zip[1], keyword__in=video_info_zip[4],
                                    startTime__in=video_info_zip[2], endTime__in=video_info_zip[3])
         queryset.delete()

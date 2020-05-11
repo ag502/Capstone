@@ -104,11 +104,6 @@ const DataProcessDetail = () => {
           </Grid>
           <Grid container direction="column" alignContent="center">
             <Grid item>
-              <div style={{ height: '176px', backgroundColor: 'white' }}>
-                Pannel
-              </div>
-            </Grid>
-            <Grid item>
               <div className={classes.expanderContainer}>
                 {videoPerModel.model &&
                   Object.keys(videoPerModel.model).map(tag => (
