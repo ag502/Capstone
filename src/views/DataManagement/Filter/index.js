@@ -4,24 +4,9 @@ import { indigo, pink } from '@material-ui/core/colors';
 import { Card, Divider, Chip, Input, Button } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import axios from 'axios';
-import MultiSelector from './MultiSelector';
-
-const selector = [
-  { label: 'Model', options: ['null', 'Shadowing', 'FaceAPI'] }
-];
 
 const chipReducer = (initialState, action) => {
   switch (action.type) {
-    case 'ADD_MODEL':
-      return {
-        ...initialState,
-        model: [action.payload]
-      };
-    case 'CLEAR_MODEL':
-      return {
-        ...initialState,
-        model: []
-      };
     case 'ADD_KEYWORD':
       return {
         ...initialState,
@@ -60,7 +45,7 @@ const useStyles = makeStyles(theme => ({
   },
   filterButtonContainer: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     height: '35px'
   },
@@ -71,9 +56,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Filter = ({ setVideoList }) => {
+const Filter = ({ model, setVideoList }) => {
   const [chips, chipsDispatch] = useReducer(chipReducer, {
-    model: [],
     keyword: []
   });
   const inputRef = useRef(null);
@@ -100,29 +84,21 @@ const Filter = ({ setVideoList }) => {
     }
   };
 
-  const optionSelectHandler = option => {
-    if (chips.model.includes(option)) {
-      chipsDispatch({ type: 'CLEAR_MODEL' });
-    } else {
-      chipsDispatch({ type: 'ADD_MODEL', payload: option });
-    }
-  };
-
   const deleteChipHandler = (key, data) => {
-    if (key === 'model') {
-      chipsDispatch({ type: 'CLEAR_MODEL' });
-    } else if (key === 'keyword') {
-      chipsDispatch({ type: 'DELETE_KEYWORD', payload: data });
-    }
+    chipsDispatch({ type: 'DELETE_KEYWORD', payload: data });
   };
 
-  const searchButtonHandler = () => {
-    // if (chips.length !== 0) {
-    //   console.log(chips);
-    //   axios
-    //     .get(`http://127.0.0.1:8000/preprocessor/?model_tag=${chips[0]}`)
-    //     .then(res => setVideoList(res.data));
-    // }
+  const searchButtonHandler = async () => {
+    try {
+      const result = await axios.post(
+        `http://localhost:8000/datamanagement/${model}/`,
+        { videoInfo: chips.keyword }
+      );
+      setVideoList(result.data);
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -155,17 +131,6 @@ const Filter = ({ setVideoList }) => {
       </div>
       <Divider />
       <div className={classes.filterButtonContainer}>
-        <div>
-          {selector.map(option => (
-            <MultiSelector
-              key={option.label}
-              label={option.label}
-              options={option.options}
-              selectedItems={chips.model}
-              selectHandler={optionSelectHandler}
-            />
-          ))}
-        </div>
         <Button
           className={classes.searchButton}
           size="small"

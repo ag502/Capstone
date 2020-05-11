@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { GridList, GridListTile } from '@material-ui/core';
 import axios from 'axios';
 import VideoFolderCard from './VideoFolderCard';
+import SearchFilter from '../../Filter';
 
 const VideoGroup = () => {
   const [videoList, setVideoList] = useState([]);
@@ -22,13 +23,16 @@ const VideoGroup = () => {
   }, []);
 
   return (
-    <GridList cellHeight="auto" cols={4} style={{ width: '100%' }}>
-      {videoList.map(video => (
-        <GridListTile>
-          <VideoFolderCard videoInfo={video} />
-        </GridListTile>
-      ))}
-    </GridList>
+    <>
+      <SearchFilter model={model} setVideoList={setVideoList} />
+      <GridList cellHeight="auto" cols={4} style={{ width: '100%' }}>
+        {videoList.map(video => (
+          <GridListTile>
+            <VideoFolderCard videoInfo={video} />
+          </GridListTile>
+        ))}
+      </GridList>
+    </>
   );
 };
 

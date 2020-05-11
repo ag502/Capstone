@@ -35,3 +35,16 @@ class DataManagement(APIView):
 
         return JsonResponse(serializer.data, safe=False)
 
+    def post(self, request, model):
+        keyword = request.data['videoInfo']
+
+        video_data = None
+        if len(keyword) == 0:
+            video_data = VideoData.objects.filter(model_tag=model, final_save=True)
+        else:
+            video_data = VideoData.objects.filter(model_tag=model, final_save=True, keyword__in=keyword)
+        video_fields = video_data.values('videoId', 'startTime', 'endTime', 'keyword').distinct()
+        serializer = VideoDataSerializer(video_fields, many=True)
+
+        return JsonResponse(serializer.data, safe=False)
+
