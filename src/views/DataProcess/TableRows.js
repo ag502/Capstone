@@ -173,7 +173,7 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
           <MenuItem value="FaceAPI">Face API</MenuItem>
         </Select>
       </TableCell>
-      <TableCell align="center">{Buttons()}</TableCell>
+      {/* <TableCell align="center">{Buttons()}</TableCell> */}
     </TableRow>
   );
 };

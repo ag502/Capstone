@@ -130,10 +130,7 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
 
     axios
       .post('http://127.0.0.1:8000/preprocessor_delete/', {
-        videoId: videoID,
-        keyword,
-        startTime,
-        endTime
+        videoInfo: selectedClippedV
       })
       .then(res => {
         const _clippedVideos = [...clippedVideos]
