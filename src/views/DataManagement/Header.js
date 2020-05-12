@@ -17,10 +17,11 @@ const Header = ({ classes, pathInfo }) => (
       }
 
       if (idx === arr.length - 1) {
-        component = <Typography>{locPathName}</Typography>;
+        component = <Typography key={idx}>{locPathName}</Typography>;
       } else {
         component = (
           <Link
+            key={idx}
             component={RouterLink}
             color="inherit"
             to={`/data-management/${locPathName}`}
@@ -29,7 +30,7 @@ const Header = ({ classes, pathInfo }) => (
           </Link>
         );
       }
-      return <>{component}</>;
+      return component;
     })}
   </Breadcrumbs>
 );
