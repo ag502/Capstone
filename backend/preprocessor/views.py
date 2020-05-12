@@ -5,7 +5,6 @@ from . import Preprocess
 from .discriminators import face_discriminator
 from clipping.models import VideoInfo
 from .models import VideoData
-import re
 
 
 class Preprocessor(APIView):
@@ -129,7 +128,7 @@ class PreprocessorDelete(APIView):  # 원본 영상을 삭제
 
 class PreprocessorFinalSave(APIView):
     def post(self, request):
-        processed_video = [re.split('_|-', video) for video in request.data['videoInfo']]
+        processed_video = [video.split(',') for video in request.data['videoInfo']]
         processed_video_zip = [video for video in zip(*processed_video)]
 
         # [(model_tag), (videoId1,..), (startTime1, ..), (endTime1, ..), (videoNumber1,..)]

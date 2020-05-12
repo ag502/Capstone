@@ -69,6 +69,10 @@
   color: #777;
 }
 
+.card .details .MuiButtonBase-root {
+  padding: 0;
+}
+
 .card .details h2 span {
   font-weight: 500;
   font-size: 16px;

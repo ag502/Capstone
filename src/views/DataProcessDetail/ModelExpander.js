@@ -124,10 +124,10 @@ const ModelExpander = ({
                         <Checkbox
                           className={classes.checkbox}
                           onClick={selectVideoHandler(
-                            `${modelTag}_${videoName}`
+                            `${modelTag},${video.videoId},${video.startTime},${video.endTime},${video.video_number}`
                           )}
                           checked={checkedVideo.includes(
-                            `${modelTag}_${videoName}`
+                            `${modelTag},${video.videoId},${video.startTime},${video.endTime},${video.video_number}`
                           )}
                         />
                       }
