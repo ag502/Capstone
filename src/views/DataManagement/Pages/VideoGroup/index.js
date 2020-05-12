@@ -45,7 +45,7 @@ const VideoGroup = () => {
         prevState.filter(
           ({ videoId, keyword, startTime, endTime }) =>
             !selectedFolder.includes(
-              `${model}_${keyword}_${videoId}_${startTime}_${endTime}`
+              `${model},${keyword},${videoId},${startTime},${endTime}`
             )
         )
       );

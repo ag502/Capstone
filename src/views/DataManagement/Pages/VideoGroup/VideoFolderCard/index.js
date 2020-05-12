@@ -30,8 +30,12 @@ const VideoFolderCard = ({
         <h4>{folderName}</h4>
         <Checkbox
           size="small"
-          onChange={checkFolderHandler(`${model}_${keyword}_${folderName}`)}
-          checked={selectedFolder.includes(`${model}_${keyword}_${folderName}`)}
+          onChange={checkFolderHandler(
+            `${model},${keyword},${videoId},${startTime},${endTime}`
+          )}
+          checked={selectedFolder.includes(
+            `${model},${keyword},${videoId},${startTime},${endTime}`
+          )}
           color="primary"
         />
         <Chip size="small" label={keyword} />

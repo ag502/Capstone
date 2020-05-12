@@ -26,7 +26,6 @@ const useStyles = makeStyles(theme => ({
 function EditBar({ selected, className, onDelete, onView, setOpen, ...rest }) {
   const classes = useStyles();
   const open = selected.length > 0;
-  const requestVideoUrl = selected.join('+');
 
   return (
     <Drawer

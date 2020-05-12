@@ -58,7 +58,7 @@ const DataProcessDetail = () => {
     const newModelPerVideo = videoPerModel.model[modelTag].filter(
       ({ model_tag, videoId, video_number, startTime, endTime }) =>
         !selectedVideo.includes(
-          `${model_tag}_${videoId}_${startTime}-${endTime}_${video_number}`
+          `${model_tag},${videoId},${startTime},${endTime},${video_number}`
         )
     );
 
