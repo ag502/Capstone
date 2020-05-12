@@ -8,14 +8,21 @@ from . import data_manager
 class DataDelete(APIView):
     @staticmethod
     def post(request):
-        delete_list = request.data
-        print(delete_list)
-        try:
-            data_manager.data_delete(delete_list)  # S3 데이터 삭제 예정
-            data_manager.db_delete(delete_list)  # DB 삭제
+        delete_list = [video.split('_') for video in request.data['videoInfo']]
+        delete_list_zip = [field for field in zip(*delete_list)]
+        print(delete_list_zip)
 
-        except Exception as err:
-            print('{} error!!'.format(err))
+        #[(modelTag1,..), (keyword1, ..), (videoId1, ..), (startTime1,..), (endTime1, ..)]
+        queryset = VideoData.objects.filter(model_tag__in=delete_list_zip[0], keyword__in=delete_list_zip[1],
+                                            videoId__in=delete_list_zip[2], startTime__in=delete_list_zip[3],
+                                            endTime__in=delete_list_zip[4], final_save=True).delete()
+
+        # try:
+        #     data_manager.data_delete(delete_list)  # S3 데이터 삭제 예정
+        #     data_manager.db_delete(delete_list)  # DB 삭제
+        #
+        # except Exception as err:
+        #     print('{} error!!'.format(err))
 
         return HttpResponse("delete")
 

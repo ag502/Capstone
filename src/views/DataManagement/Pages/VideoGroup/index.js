@@ -5,10 +5,12 @@ import axios from 'axios';
 import VideoFolderCard from './VideoFolderCard';
 import SearchFilter from '../../Filter';
 import EditBar from '../../Editbar';
+import AlertDialog from '../../AlertDialog';
 
 const VideoGroup = () => {
   const [videoList, setVideoList] = useState([]);
   const [selectedFolder, setSelectedFolder] = useState([]);
+  const [open, setOpen] = useState({ isOpen: false, type: 'None' });
   const { model } = useParams();
 
   useEffect(() => {
@@ -34,6 +36,26 @@ const VideoGroup = () => {
     }
   };
 
+  const deleteFolderHandler = async () => {
+    try {
+      const result = axios.post('http://localhost:8000/datamanagement/', {
+        videoInfo: selectedFolder
+      });
+      setVideoList(prevState =>
+        prevState.filter(
+          ({ videoId, keyword, startTime, endTime }) =>
+            !selectedFolder.includes(
+              `${model}_${keyword}_${videoId}_${startTime}_${endTime}`
+            )
+        )
+      );
+      setSelectedFolder([]);
+      setOpen({ isOpen: false, type: 'None' });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <SearchFilter model={model} setVideoList={setVideoList} />
@@ -49,7 +71,14 @@ const VideoGroup = () => {
           </GridListTile>
         ))}
       </GridList>
-      <EditBar selected={selectedFolder} />
+      <EditBar selected={selectedFolder} setOpen={setOpen} />
+      <AlertDialog
+        open={open.isOpen}
+        type={open.type}
+        setOpen={setOpen}
+        selectedNumber={selectedFolder.length}
+        deleteFolderHandler={deleteFolderHandler}
+      />
     </>
   );
 };

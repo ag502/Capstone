@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function EditBar({ selected, className, onDelete, onView, ...rest }) {
+function EditBar({ selected, className, onDelete, onView, setOpen, ...rest }) {
   const classes = useStyles();
   const open = selected.length > 0;
   const requestVideoUrl = selected.join('+');
@@ -54,7 +54,7 @@ function EditBar({ selected, className, onDelete, onView, ...rest }) {
                 <GetApp className={classes.buttonIcon} />
                 Download
               </Button>
-              <Button onClick={onDelete}>
+              <Button onClick={() => setOpen({ isOpen: true, type: 'Delete' })}>
                 <DeleteOutline className={classes.buttonIcon} />
                 Delete
               </Button>
