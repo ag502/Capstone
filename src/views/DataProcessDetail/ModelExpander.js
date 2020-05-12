@@ -108,8 +108,8 @@ const ModelExpander = ({
                     className={classes.gridListTile}
                   >
                     <img
-                      // src={`https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/${modelTag}/thumbnails/${modelTag}_${videoName}.png`}
-                      src={`/frames/${modelTag}_${videoName}.png`}
+                      src={`https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/${modelTag}/thumbnails/${modelTag}_${videoName}.png`}
+                      // src={`/frames/${modelTag}_${videoName}.png`}
                       alt={videoName}
                       style={{ width: '100%' }}
                       onClick={thumbnailClickHandler(

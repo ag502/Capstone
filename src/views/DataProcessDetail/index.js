@@ -78,7 +78,8 @@ const DataProcessDetail = () => {
                   mode="TEST"
                   isPIP={isPIP}
                   // videoID={`${playVideoName[0]}/${playVideoName[1]}.mp4`}
-                  videoID={`${playVideoInfo[0]}_${playVideoInfo[1]}`}
+                  // videoID={`${playVideoInfo[0]}_${playVideoInfo[1]}`}
+                  videoID={`${playVideoInfo[0]}/${playVideoInfo[0]}_${playVideoInfo[1]}`}
                 />
               </Grid>
               <Grid item>

@@ -17,7 +17,7 @@ path = "https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/clippingVideo/"
 # "C:/Users/LG/Desktop/Material_Ui_Capstone/public/frames/"
 # "/Users/zigje9/Desktop/jenesis/public/frames/"
 
-frames_dir = "C:/Users/LG/Desktop/Capstone/public/frames/"
+frames_dir = "C:/Users/jaehee/capstone/Material_Ui_Capstone/backend/preprocessor/frames/"
 
 # 프레임 생성
 def createframes(videoId, startTime, endTime):
@@ -58,29 +58,49 @@ def time_clip(model_tag,videoId,time_section,start_time,end_time):
         os.remove('%s_%d-%d.mp4' % (videoId, start_time, end_time))
 
     #s3에 영상 올리기
-    # for num in range(i):
-    #     s3_Path = '%s/%s_%s_%d-%d_%d.mp4' % (model_tag,model_tag,videoId, start_time, end_time,num)
-    #     s3.Object(bucket.name, s3_Path).upload_file('%s_%s_%d-%d_%d.mp4' % (model_tag,videoId, start_time, end_time,num))
-    #     s3_thumbnail_Path = '%s/thumbnails/%s_%s_%d-%d_%d.png' % (model_tag,model_tag, videoId, start_time, end_time, num)
-    #     s3.Object(bucket.name, s3_thumbnail_Path).upload_file(
-    #         '%s_%s_%d-%d_%d.png' % (model_tag, videoId, start_time, end_time, num))
+    for num in range(i):
+        s3_Path = '%s/%s_%s_%d-%d_%d.mp4' % (model_tag,model_tag,videoId, start_time, end_time,num)
+        s3.Object(bucket.name, s3_Path).upload_file('%s_%s_%d-%d_%d.mp4' % (model_tag,videoId, start_time, end_time,num))
+        s3_thumbnail_Path = '%s/thumbnails/%s_%s_%d-%d_%d.png' % (model_tag,model_tag, videoId, start_time, end_time, num)
+        s3.Object(bucket.name, s3_thumbnail_Path).upload_file(
+            '%s_%s_%d-%d_%d.png' % (model_tag, videoId, start_time, end_time, num))
 
     #frame 폴더 파일 삭제
     frame_list = makelist()
     for frame in frame_list:
         os.remove('%s' % frame)
-    # for num in range(i):
-        # os.remove('%s_%s_%d-%d_%d.mp4' % (model_tag, videoId, start_time, end_time, num))
-        # os.remove('%s_%s_%d-%d_%d.png' % (model_tag, videoId, start_time, end_time, num))
+    for num in range(i):
+        os.remove('%s_%s_%d-%d_%d.mp4' % (model_tag, videoId, start_time, end_time, num))
+        os.remove('%s_%s_%d-%d_%d.png' % (model_tag, videoId, start_time, end_time, num))
 
     return numbers
 
 
-def original_delete(videoId, startTime, endTime):  # 원본영상, 썸네일 삭제
-    s3_Path = 'clippingVideo/%s_%d-%d.mp4' % (videoId, startTime, endTime)
-    s3.Object(bucket.name, s3_Path).delete()
-    s3_thumbnail_Path = 'thumbnails/%s_%d-%d_%d.png' % (videoId, startTime, endTime)
-    s3.Object(bucket.name, s3_thumbnail_Path).delete()
+def original_delete(videoInfo):  # 원본영상, 썸네일 삭제
+    for video in videoInfo:
+        videoId = video[1]
+        startTime = video[2]
+        endTime = video[3]
+        s3_Path = 'clippingVideo/%s_%s-%s.mp4' % (videoId, startTime, endTime)
+        s3.Object(bucket.name, s3_Path).delete()
+        s3_thumbnail_Path = 'thumbnails/%s_%s-%s.png' % (videoId, startTime, endTime)
+        s3.Object(bucket.name, s3_thumbnail_Path).delete()
+
+def final_delete(finalzero_video):
+    print("final_delete start")
+    for video in finalzero_video:
+        videoId = video[0]
+        modelTag = video[1]
+        startTime = video[2]
+        endTime = video[3]
+        video_number = video[4]
+
+        s3_model_Path = '%s/%s_%s_%s-%s_%s.mp4' % (modelTag, modelTag, videoId, startTime, endTime, video_number)
+        s3.Object(bucket.name, s3_model_Path).delete()
+        s3_model_thumb_Path = '%s/thumbnails/%s_%s_%s-%s_%s.png' % (modelTag, modelTag, videoId, startTime, endTime, video_number)
+        s3.Object(bucket.name, s3_model_thumb_Path).delete()
+    print("final_delete finish")
+
 
 
 def db_update(video_id, keyword, start_time, end_time, model_tag):
