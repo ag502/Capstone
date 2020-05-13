@@ -80,6 +80,34 @@ def file_delete(delete_list):
         modelTag, modelTag, videoId, startTime, endTime, video_number)
         s3.Object(bucket.name, s3_model_thumb_Path).delete()
 
+def folder_download(final_one_video):
+    for video in final_one_video:
+        videoId = video[0]
+        modelTag = video[1]
+        startTime = video[2]
+        endTime = video[3]
+        video_number = video[4]
+
+        download_path = os.path.expanduser("~") + "/videoDownloads/"
+        file_name = '%s_%s_%s-%s_%s.mp4' % (modelTag, videoId, startTime, endTime, video_number)
+        s3_model_Path = '%s/%s_%s_%s-%s_%s.mp4' % (modelTag, modelTag, videoId, startTime, endTime, video_number)
+
+        s3.Object(bucket.name, s3_model_Path).download_file('%s.mp4' % (download_path+file_name))
+
+def file_download(download_list):
+    for video in download_list:
+        modelTag = video[0]
+        videoId = video[2]
+        startTime = video[3]
+        endTime = video[4]
+        video_number = video[5]
+
+        download_path = os.path.expanduser("~") + "/videoDownloads/"
+        file_name = '%s_%s_%s-%s_%s.mp4' % (modelTag, videoId, startTime, endTime, video_number)
+        s3_model_Path = '%s/%s_%s_%s-%s_%s.mp4' % (modelTag, modelTag, videoId, startTime, endTime, video_number)
+
+        s3.Object(bucket.name, s3_model_Path).download_file('%s.mp4' % (download_path+file_name))
+
 
 
 # 'C:/Users/jaehee/capstone/Material_Ui_Capstone/public/clippingVideo/'

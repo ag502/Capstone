@@ -43,6 +43,31 @@ class DataDelete(APIView):
         return HttpResponse("delete")
 
 
+class DataDownload(APIView):
+    @staticmethod
+    def post(request):
+        download_list = [video.split(',') for video in request.data['videoInfo']]
+        download_list_zip = [field for field in zip(*download_list)]
+
+        # 폴더 다운로드
+        if len(download_list_zip) == 5:
+            queryset = VideoData.objects.filter(model_tag__in=download_list_zip[0], keyword__in=download_list_zip[1],
+                                                videoId__in=download_list_zip[2], startTime__in=download_list_zip[3],
+                                                endTime__in=download_list_zip[4], final_save=True)
+            final_one_video = []
+            for video in queryset:
+                final_one_video.append(
+                    [video.videoId, video.model_tag, video.startTime, video.endTime, video.video_number])
+            data_manager.folder_download(final_one_video)
+        # 파일 다운로드
+        else:
+            data_manager.file_download(download_list)
+
+
+
+        return HttpResponse("download")
+
+
 class DataManagement(APIView):
     def get(self, request, model, video_info=None):
         video_data = None
