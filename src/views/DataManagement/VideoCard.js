@@ -63,9 +63,9 @@ const VideoCard = ({ videoInfo, checkedVideoHandler, selectedVideo }) => {
               )}
               checked={selectedVideo.includes(
                 `${model},${keyword},${videoId},${startTime},${endTime},${videoNum}`
-              )}
-            />
-            <Avatar variant="rounded" src={`/frames/${videoTitle}.png`}>
+              )}  // src={`/frames/${videoTitle}.png`}
+            /> 
+            <Avatar variant="rounded" src={`https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/${model}/thumbnails/${model}_${videoId}_${startTime}-${endTime}_${videoNum}.png`}>
               N
             </Avatar>
             <div className={classes.videoID}>

@@ -52,6 +52,35 @@ def data_delete(delete_list):
     return HttpResponse("delete_data!!!")
 
 
+def folder_delete(final_one_video):
+    for video in final_one_video:
+        videoId = video[0]
+        modelTag = video[1]
+        startTime = video[2]
+        endTime = video[3]
+        video_number = video[4]
+
+        s3_model_Path = '%s/%s_%s_%s-%s_%s.mp4' % (modelTag, modelTag, videoId, startTime, endTime, video_number)
+        s3.Object(bucket.name, s3_model_Path).delete()
+        s3_model_thumb_Path = '%s/thumbnails/%s_%s_%s-%s_%s.png' % (
+        modelTag, modelTag, videoId, startTime, endTime, video_number)
+        s3.Object(bucket.name, s3_model_thumb_Path).delete()
+
+def file_delete(delete_list):
+    for video in delete_list:
+        modelTag = video[0]
+        videoId = video[2]
+        startTime = video[3]
+        endTime = video[4]
+        video_number = video[5]
+
+        s3_model_Path = '%s/%s_%s_%s-%s_%s.mp4' % (modelTag, modelTag, videoId, startTime, endTime, video_number)
+        s3.Object(bucket.name, s3_model_Path).delete()
+        s3_model_thumb_Path = '%s/thumbnails/%s_%s_%s-%s_%s.png' % (
+        modelTag, modelTag, videoId, startTime, endTime, video_number)
+        s3.Object(bucket.name, s3_model_thumb_Path).delete()
+
+
 
 # 'C:/Users/jaehee/capstone/Material_Ui_Capstone/public/clippingVideo/'
 # 'C:/Users/jaehee/capstone/Material_Ui_Capstone/public/thumbnails/'

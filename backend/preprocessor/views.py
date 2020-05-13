@@ -110,12 +110,10 @@ class PreprocessorDelete(APIView):  # 원본 영상을 삭제
         video_data_queryset = VideoData.objects.filter(videoId__in=video_info_zip[1], startTime__in=video_info_zip[2], endTime__in=video_info_zip[3],
                                                        keyword__in=video_info_zip[4], final_save=False)
 
-        print(video_data_queryset)
         finalzero_video = []
         for video in video_data_queryset:
             print(video.model_tag)
             finalzero_video.append([video.videoId, video.model_tag, video.startTime, video.endTime, video.video_number])
-        print(finalzero_video)
         video_data_queryset.delete()
 
 

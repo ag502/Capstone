@@ -10,7 +10,7 @@ mock.onGet('/api/models').reply(200, {
       {
         id: uuid(),
         name: 'Emotion Detection',
-        avatar: '/images/models/emotions.png',
+        avatar: '/images/models/EmotionDetection.png',
         link: 'Testing-Model/EmotionDetection'
       },
       {
@@ -22,7 +22,7 @@ mock.onGet('/api/models').reply(200, {
       {
         id: uuid(),
         name: 'Face API',
-        avatar: '/images/models/faceApi.png',
+        avatar: '/images/models/FaceAPI.png',
         link: 'Testing-Model/FaceAPI'
       }
     ]
