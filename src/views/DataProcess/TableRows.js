@@ -23,10 +23,17 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
+const TableRows = ({
+  videoInfo,
+  selectedClippedV,
+  handleSelectOne,
+  index,
+  handleSelectOneT,
+  selectedVT
+}) => {
   // redux 저장 키 형태
   const key = `${videoInfo.videoId},${videoInfo.startTime},${videoInfo.endTime},${videoInfo.keyword}`;
-  const [model, setModel] = useState('null');
+  const [model, setModel] = useState('');
   const dispatch = useDispatch();
   const clippedVideoLoading = useSelector(
     state => state.clippingVideo.clipping[key]
@@ -43,10 +50,15 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
   };
 
   const modelChangeHandler = event => {
+    handleSelectOneT(event, `${index},${key}`, event.target.value, 1);
     setModel(event.target.value);
   };
 
   const preprocessorClickHandler = () => {
+    if (!model) {
+      return;
+    }
+
     const modelTrimmingVideo = {};
     modelTrimmingVideo[key] = [model, 'RUN'];
     dispatch(addPreproList(modelTrimmingVideo));
@@ -126,9 +138,10 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
     >
       <TableCell padding="checkbox">
         <Checkbox
-          checked={selectedClippedV.indexOf(`${index},${key}`) !== -1}
+          // checked={selectedClippedV.indexOf(`${index},${key}`) !== -1}
+          checked={[`${index},${key}`] in selectedVT}
           color="primary"
-          onChange={event => handleSelectOne(event, `${index},${key}`)}
+          onChange={event => handleSelectOneT(event, `${index},${key}`, model)}
           value={selectedClippedV.indexOf(videoInfo.videoId) !== -1}
         />
       </TableCell>
@@ -165,12 +178,21 @@ const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
           onChange={modelChangeHandler}
           displayEmpty
         >
-          <MenuItem value="null">
-            <em>NULL</em>
+          <MenuItem value="" disabled>
+            Model
           </MenuItem>
-          <MenuItem value="EmotionDetection">Emotion Detection</MenuItem>
-          <MenuItem value="Shadowing">Shadowing</MenuItem>
-          <MenuItem value="FaceAPI">Face API</MenuItem>
+          <MenuItem
+            disabled={videoInfo.EmotionDetection}
+            value="EmotionDetection"
+          >
+            Emotion Detection
+          </MenuItem>
+          <MenuItem disabled={videoInfo.Shadowing} value="Shadowing">
+            Shadowing
+          </MenuItem>
+          <MenuItem disabled={videoInfo.FaceAPI} value="FaceAPI">
+            Face API
+          </MenuItem>
         </Select>
       </TableCell>
       <TableCell align="center">{Buttons()}</TableCell>

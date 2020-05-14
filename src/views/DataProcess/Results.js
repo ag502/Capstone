@@ -74,6 +74,8 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
     state => state.videoPlay
   );
 
+  const [selectedVT, setSelectedVT] = useState({});
+
   const handleSelectAll = event => {
     const selectedClippedVs = event.target.checked
       ? clippedVideos
@@ -87,26 +89,44 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
   };
 
   const handleSelectOne = (event, id) => {
-    const selectedIndex = selectedClippedV.indexOf(id);
-    let newSelectedCustomers = [];
-
-    if (selectedIndex === -1) {
-      newSelectedCustomers = newSelectedCustomers.concat(selectedClippedV, id);
-    } else if (selectedIndex === 0) {
-      newSelectedCustomers = newSelectedCustomers.concat(
-        selectedClippedV.slice(1)
-      );
-    } else if (selectedIndex === selectedClippedV.length - 1) {
-      newSelectedCustomers = newSelectedCustomers.concat(
-        selectedClippedV.slice(0, -1)
-      );
-    } else if (selectedIndex > 0) {
-      newSelectedCustomers = newSelectedCustomers.concat(
-        selectedClippedV.slice(0, selectedIndex),
-        selectedClippedV.slice(selectedIndex + 1)
-      );
+    if (selectedClippedV.includes(id)) {
+      setSelectedClippedV(prevState => prevState.filter(video => video !== id));
+    } else {
+      setSelectedClippedV(prevState => [...prevState, id]);
     }
-    setSelectedClippedV(newSelectedCustomers);
+  };
+
+  const handleSelectAllT = event => {
+    const selectedClippedVs = event.target.checked
+      ? clippedVideos
+          .slice(page * rowsPerPage, (1 + page) * rowsPerPage)
+          .reduce(
+            (acc, video, idx) => ({
+              ...acc,
+              [`${idx},${video.videoId},${video.startTime},${video.endTime},${video.keyword}`]: ''
+            }),
+            {}
+          )
+      : {};
+    setSelectedVT(selectedClippedVs);
+  };
+
+  const handleSelectOneT = (event, id, model, changeModel = 0) => {
+    if (id in selectedVT) {
+      if (changeModel === 0) {
+        const newSelected = Object.keys(selectedVT).reduce((acc, videoId) => {
+          if (videoId !== id) {
+            return { ...acc, [videoId]: selectedVT[videoId] };
+          }
+          return acc;
+        }, {});
+        setSelectedVT(newSelected);
+      } else if (changeModel === 1) {
+        setSelectedVT(prevState => ({ ...prevState, [id]: model }));
+      }
+    } else if (!(id in selectedVT) && changeModel !== 1) {
+      setSelectedVT(prevState => ({ ...prevState, [id]: model }));
+    }
   };
 
   const chagePageHandler = (event, page) => {
@@ -118,16 +138,6 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
   };
 
   const deleteVideoHandler = event => {
-    const [
-      idx,
-      videoID,
-      startTime,
-      endTime,
-      keyword
-    ] = selectedClippedV[0].split(',');
-
-    console.log(videoID, startTime, endTime, keyword);
-
     axios
       .post('http://127.0.0.1:8000/preprocessor_delete/', {
         videoInfo: selectedClippedV
@@ -207,7 +217,12 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
                     <TableCell padding="checkbox">
                       <Checkbox
                         checked={
-                          selectedClippedV.length ===
+                          // selectedClippedV.length ===
+                          // clippedVideos.slice(
+                          //   page * rowsPerPage,
+                          //   (1 + page) * rowsPerPage
+                          // ).length
+                          Object.keys(selectedVT).length ===
                           clippedVideos.slice(
                             page * rowsPerPage,
                             (1 + page) * rowsPerPage
@@ -218,7 +233,8 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
                           selectedClippedV.length > 0 &&
                           selectedClippedV.length < clippedVideos.length
                         }
-                        onChange={handleSelectAll}
+                        // onChange={handleSelectAll}
+                        onChange={handleSelectAllT}
                       />
                     </TableCell>
                     <TableCell padding="checkbox" />
@@ -240,6 +256,8 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
                         classes={classes}
                         videoInfo={video}
                         selectedClippedV={selectedClippedV}
+                        selectedVT={selectedVT}
+                        handleSelectOneT={handleSelectOneT}
                         handleSelectOne={handleSelectOne}
                       />
                     ))}
