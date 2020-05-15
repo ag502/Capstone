@@ -109,17 +109,17 @@ class PreprocessorDelete(APIView):  # 원본 영상을 삭제
 
         video_data_queryset = VideoData.objects.filter(videoId__in=video_info_zip[1], startTime__in=video_info_zip[2], endTime__in=video_info_zip[3],
                                                        keyword__in=video_info_zip[4], final_save=False)
-
-        finalzero_video = []
-        for video in video_data_queryset:
-            print(video.model_tag)
-            finalzero_video.append([video.videoId, video.model_tag, video.startTime, video.endTime, video.video_number])
-        video_data_queryset.delete()
-
-
-        # 원본 영상,썸네일 삭제,final은 0인것도 삭제 ** 추가 s3로 변경 **
-        Preprocess.original_delete(video_info)
-        Preprocess.final_delete(finalzero_video)
+        #
+        # finalzero_video = []
+        # for video in video_data_queryset:
+        #     print(video.model_tag)
+        #     finalzero_video.append([video.videoId, video.model_tag, video.startTime, video.endTime, video.video_number])
+        # video_data_queryset.delete()
+        #
+        #
+        # # 원본 영상,썸네일 삭제,final은 0인것도 삭제 ** 추가 s3로 변경 **
+        # Preprocess.original_delete(video_info)
+        # Preprocess.final_delete(finalzero_video)
 
         return HttpResponse("delete")
 

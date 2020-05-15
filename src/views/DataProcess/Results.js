@@ -16,7 +16,6 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TablePagination,
   TableRow,
   Typography,
   Select,
@@ -26,6 +25,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import { useSelector, useDispatch } from 'react-redux';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import TableEditBar from 'src/views/DataProcess/TableEditBar';
+import { addPreproList } from '../../actions';
 import VideoPlayerPopUp from '../../components/Video/VideoPlayerPopup';
 import TableRows from './TableRows';
 
@@ -73,6 +73,7 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
   const { isPlay, title, selectedVideoID } = useSelector(
     state => state.videoPlay
   );
+  const dispatch = useDispatch();
 
   const [selectedVT, setSelectedVT] = useState({});
 
@@ -140,40 +141,48 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
   const deleteVideoHandler = event => {
     axios
       .post('http://127.0.0.1:8000/preprocessor_delete/', {
-        videoInfo: selectedClippedV
+        // videoInfo: selectedClippedV
+        videoInfo: Object.keys(selectedVT)
       })
       .then(res => {
-        const _clippedVideos = [...clippedVideos]
-          .slice(page * rowsPerPage, (1 + page) * rowsPerPage)
-          .filter(
+        setClippedVideos(prevState =>
+          prevState.filter(
             (video, idx) =>
-              !selectedClippedV.includes(
-                `${idx},${video.videoId},${video.startTime},${video.endTime},${video.keyword}`
+              !(
+                [
+                  `${idx % rowsPerPage},${video.videoId},${video.startTime},${
+                    video.endTime
+                  },${video.keyword}`
+                ] in selectedVT
               )
-          );
-        setSelectedClippedV([]);
-        if (page === 0) {
-          setClippedVideos([
-            ..._clippedVideos,
-            ...clippedVideos.slice((1 + page) * rowsPerPage)
-          ]);
-        } else if (page === Math.ceil(clippedVideos.length / rowsPerPage)) {
-          setClippedVideos([
-            ...clippedVideos.slice(0, page * rowsPerPage),
-            ..._clippedVideos
-          ]);
-        } else {
-          setClippedVideos([
-            ...clippedVideos.slice(0, page * rowsPerPage),
-            ..._clippedVideos,
-            ...clippedVideos.slice((1 + page) * rowsPerPage)
-          ]);
-        }
+          )
+        );
+        setSelectedVT({});
       });
   };
 
   const viewVideoHandler = () => {
     console.log(selectedClippedV);
+  };
+
+  const preprocessorClickHandler = () => {
+    const promise = Object.keys(selectedVT).map(id => {
+      const [idx, videoId, startTime, endTime, keyword] = id.split(',');
+      dispatch(addPreproList({ [id]: [selectedVT[id], 'RUN'] }));
+      return axios
+        .post('http://127.0.0.1:8000/preprocessor_save/', {
+          videoId: `${videoId}`,
+          keyword: `${keyword}`,
+          startTime: `${startTime}`,
+          endTime: `${endTime}`,
+          model_tag: `${selectedVT[id]}`
+        })
+        .then(res =>
+          dispatch(addPreproList({ [id]: [selectedVT[id], 'FINISH'] }))
+        );
+    });
+
+    axios.all(promise).then(res => console.log(res));
   };
 
   return (
@@ -276,7 +285,9 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
         </CardActions>
       </Card>
       <TableEditBar
-        selected={selectedClippedV}
+        // selected={selectedClippedV}
+        selected={selectedVT}
+        onApplyModel={preprocessorClickHandler}
         onDelete={deleteVideoHandler}
         onView={viewVideoHandler}
       />

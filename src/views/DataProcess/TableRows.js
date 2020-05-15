@@ -81,7 +81,6 @@ const TableRows = ({
   const Buttons = () => {
     let component = null;
 
-    console.log(trimmedVideoLoading);
     if (
       clippedVideoLoading === 'SUCCESS' ||
       videoInfo.clip_complete === 'success'
