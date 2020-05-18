@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef} from 'react';
-import * as faceapi from 'face-api.js';
+import * as faceapi from 'face-api.js/dist/face-api.min.js';
+// import * as faceapi from 'face-api.min.js'
 import Page from 'src/components/Page';
 import { useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
@@ -38,12 +39,19 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: '428px',
     margin: '0 0 0 0'
   },
+  canv:{
+    zIndex:1000,
+    position:"absolute",
+    left : "30%"
+  }
 }));
 
 function TestingModel() {
   const classes = useStyles();
+  const [value, setValue] = useState(0);
   const videoRef = useRef();
   const constraints = { video: true }
+  let timeout = null
 
   async function loadModel() {
     try {
@@ -64,31 +72,57 @@ function TestingModel() {
 
     if (video) {
       video.addEventListener('play', () => {
-      video.style.transform = "rotateY(180deg)"
-      video.style.webkitTransform="rotateY(180deg)"
+      // video.style.transform = "rotateY(180deg)"
+      // video.style.webkitTransform="rotateY(180deg)"
       const canvas = faceapi.createCanvasFromMedia(video);
+      canvas.className=classes["canv"]
       document.getElementById('cont').append(canvas)
       const displaySize = { width: video.width, height: video.height }
       faceapi.matchDimensions(canvas, displaySize)
-      setInterval(async () => {
-      const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
-      const resizedDetections = faceapi.resizeResults(detections, displaySize)
-      canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
-      faceapi.draw.drawDetections(canvas, resizedDetections)
-      faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
-      if (detections[0]) {
-        let _X = -detections[0].detection.box._x;
-        let _Y = -detections[0].detection.box._y;
-        canvas.style.transform=`translate(${_X}px,${_Y}px)`
-      }
+      timeout =setInterval(async () => {
+        if (value === 0) {
+          const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
+          const resizedDetections = faceapi.resizeResults(detections, displaySize)
+          canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+          faceapi.draw.drawDetections(canvas, resizedDetections)
+          faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
+        } else {
+          console.log(faceapi.draw)
+        }
+      // const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
+      // const resizedDetections = faceapi.resizeResults(detections, displaySize)
+      // canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+      // faceapi.draw.drawDetections(canvas, resizedDetections)
+      // faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
       }, 100);
       });
     }
   }
 
+  function vidOff() {
+
+      let stream = videoRef.current.srcObject;
+      let tracks = stream.getTracks();
+
+      tracks.forEach(function (track) {
+          track.stop();
+      });
+
+      videoRef.current.srcObject =null;
+  }
+
+  function handleChange(event, newValue) {
+     setValue(newValue);
+  }
+
   useEffect(() => {
     loadModel();
-  });
+
+    return ()=>{
+      clearInterval(timeout)
+      vidOff() 
+    }
+  }, [value]);
   return (
     <Page
       className={classes.root}
@@ -104,7 +138,7 @@ function TestingModel() {
         justify="space-between"
       >
         <Container className={classes.modelContainer}>
-          <Tabs className={classes.tabs}>
+          <Tabs className={classes.tabs} value={value} onChange={handleChange}>
             <Tab
               label="emotion recognition"
             />
@@ -117,21 +151,24 @@ function TestingModel() {
         <Container
           width="100vw"
           height="100vh"
-          id="cont"
           align-items="center"
           justify-content="center"
           display="flex"
-          // position="absolute"
         >
-          <video 
-            id="video"
-            ref={videoRef}
-            width="400"
-            height="400"
-            autoPlay={true}
-            muted
-            >
-          </video>
+          <div id="cont" style={{position:"relative"}}>
+            <video 
+              id="video"
+              ref={videoRef}
+              width="500"
+              height="500"
+              autoPlay={true}
+              muted
+              style={{position:"absolute", left : "30%"}}
+              >
+            </video>
+          </div>
+          {/* <video onplay="onPlay(this)" id="inputVideo" autoPlay muted></video> */}
+          {/* <canvas id="overlay" /> */}
         </Container>
       </Grid>
     </Page>

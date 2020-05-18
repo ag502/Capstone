@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import * as faceapi from 'face-api.js';
+// import * as faceapi from 'face-api.js';
+import * as faceapi from 'face-api.js/dist/face-api.min.js';
+
+// import * as faceapi from './face-api.min.js';
 import { 
   CardContent, CardMedia,
   colors,
@@ -7,6 +10,8 @@ import {
 } from '@material-ui/core';
 
 const Face = ({ modelName, videoInfo }) => {
+  // console.log(faceapi);
+  console.log(faceapi);
   const videoRef = useRef();
   async function loadModel(model) {
     try {
@@ -51,7 +56,7 @@ const Face = ({ modelName, videoInfo }) => {
 
   useEffect(() => {
     loadModel(modelName);
-  });
+  },[]);
 
   return (
     <CardMedia >
