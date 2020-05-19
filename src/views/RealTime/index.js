@@ -39,11 +39,6 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: '428px',
     margin: '0 0 0 0'
   },
-  canv:{
-    zIndex:1000,
-    position:"absolute",
-    left : "30%"
-  }
 }));
 
 function TestingModel() {
@@ -51,53 +46,106 @@ function TestingModel() {
   const [value, setValue] = useState(0);
   const videoRef = useRef();
   const constraints = { video: true }
-  let timeout = null
-
+  // let time = null
+  let expressionTime;
+  let ageTime;
   async function loadModel() {
     try {
       await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
       await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
       await faceapi.nets.faceExpressionNet.loadFromUri('/models');
       await faceapi.nets.ageGenderNet.loadFromUri('/models')
-      startVideo();
     } catch (error) {
       console.log(error);
     }
   }
 
-  function startVideo() {
+  function emotionVideo() {
     const video = videoRef.current;
     navigator.mediaDevices.getUserMedia(constraints).then(
     (stream) => { video.srcObject = stream })
-
+    
     if (video) {
       video.addEventListener('play', () => {
-      // video.style.transform = "rotateY(180deg)"
-      // video.style.webkitTransform="rotateY(180deg)"
-      const canvas = faceapi.createCanvasFromMedia(video);
-      canvas.className=classes["canv"]
-      document.getElementById('cont').append(canvas)
+        if (expressionTime) {
+        clearInterval(expressionTime);
+        }
+        const canvas = document.getElementById("overlay")
+        const displaySize = { width: video.width, height: video.height }
+        faceapi.matchDimensions(canvas, displaySize)
+        expressionTime = setInterval(async () => {
+          console.log(value)
+          const expressionDetections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
+          const expressionResizedDetections = faceapi.resizeResults(expressionDetections, displaySize)
+          canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+          faceapi.draw.drawDetections(canvas, expressionResizedDetections)
+          faceapi.draw.drawFaceExpressions(canvas, expressionResizedDetections)
+        }, 100);
+      })
+    }
+  }
+
+  function ageVideo() {
+    const video = videoRef.current;
+    navigator.mediaDevices.getUserMedia(constraints).then(
+    (stream) => { video.srcObject = stream })
+    if (video) {
+      video.addEventListener('play', () => {
+        if (ageTime) {
+        clearInterval(ageTime);
+        }
+      const canvas = document.getElementById("overlay")
       const displaySize = { width: video.width, height: video.height }
       faceapi.matchDimensions(canvas, displaySize)
-      timeout =setInterval(async () => {
-        if (value === 0) {
-          const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
+      ageTime = setInterval(async () => {
+        console.log(value)
+          const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withAgeAndGender();
           const resizedDetections = faceapi.resizeResults(detections, displaySize)
           canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
           faceapi.draw.drawDetections(canvas, resizedDetections)
-          faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
-        } else {
-          console.log(faceapi.draw)
-        }
-      // const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
-      // const resizedDetections = faceapi.resizeResults(detections, displaySize)
-      // canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
-      // faceapi.draw.drawDetections(canvas, resizedDetections)
-      // faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
-      }, 100);
-      });
+          resizedDetections.forEach( detection => {
+            const box = detection.detection.box
+            const drawBox = new faceapi.draw.DrawBox(box, { label: Math.round(detection.age) + " year old " + detection.gender })
+            drawBox.draw(canvas)
+          })
+        }, 100);
+      })
     }
   }
+        // ageTime = setInterval(async () => {
+        //   const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withAgeAndGender();
+        //   const resizedDetections = faceapi.resizeResults(detections, displaySize)
+        //   canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+        //   faceapi.draw.drawDetections(canvas, resizedDetections)
+        //   resizedDetections.forEach( detection => {
+        //     const box = detection.detection.box
+        //     const drawBox = new faceapi.draw.DrawBox(box, { label: Math.round(detection.age) + " year old " + detection.gender })
+        //     drawBox.draw(canvas)
+        //   })
+        // }, 100);
+      
+      // time = setInterval(async () => {
+      //   if (value === 0) {
+      //     const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
+      //     const resizedDetections = faceapi.resizeResults(detections, displaySize)
+      //     canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+      //     faceapi.draw.drawDetections(canvas, resizedDetections)
+      //     faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
+        // } else {
+        //   const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withAgeAndGender();
+        //   const resizedDetections = faceapi.resizeResults(detections, displaySize)
+        //   canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+        //   faceapi.draw.drawDetections(canvas, resizedDetections)
+        //   resizedDetections.forEach( detection => {
+        //     const box = detection.detection.box
+        //     const drawBox = new faceapi.draw.DrawBox(box, { label: Math.round(detection.age) + " year old " + detection.gender })
+        //     drawBox.draw(canvas)
+        //   })
+        // }
+      // }, 100);
+      // });
+    // }
+  // }
 
   function vidOff() {
 
@@ -114,15 +162,20 @@ function TestingModel() {
   function handleChange(event, newValue) {
      setValue(newValue);
   }
-
+  loadModel();
   useEffect(() => {
-    loadModel();
-
-    return ()=>{
-      clearInterval(timeout)
+    if (value === 0) {
+      emotionVideo();
+    } else {
+      ageVideo();
+    }
+    return () => {
+      clearInterval(expressionTime)
+      clearInterval(ageTime)
       vidOff() 
     }
   }, [value]);
+
   return (
     <Page
       className={classes.root}
@@ -166,6 +219,9 @@ function TestingModel() {
               style={{position:"absolute", left : "30%"}}
               >
             </video>
+            <canvas
+              id="overlay"
+              style={{zIndex:1000, position:"absolute", left : "30%"}} />
           </div>
           {/* <video onplay="onPlay(this)" id="inputVideo" autoPlay muted></video> */}
           {/* <canvas id="overlay" /> */}
