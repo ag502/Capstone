@@ -13,11 +13,11 @@ bucket = s3.Bucket(AWS_STORAGE_BUCKET_NAME)
 
 path = "https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/clippingVideo/"
 
-# "C:/Users/jaehee/capstone/Material_Ui_Capstone/backend/preprocessor/frames/"
+frames_dir ="C:/Users/jaehee/capstone/Material_Ui_Capstone/backend/preprocessor/frames/"
 # "C:/Users/LG/Desktop/Material_Ui_Capstone/public/frames/"
 # "/Users/zigje9/Desktop/jenesis/public/frames/"
 
-frames_dir = "C:/Users/LG/Desktop/Capstone/public/frames/"
+# frames_dir = "C:/Users/LG/Desktop/Capstone/public/frames/"
 
 # 프레임 생성
 def createframes(videoId, startTime, endTime):
@@ -58,20 +58,20 @@ def time_clip(model_tag,videoId,time_section,start_time,end_time):
         os.remove('%s_%d-%d.mp4' % (videoId, start_time, end_time))
 
     #s3에 영상 올리기
-    # for num in range(i):
-    #     s3_Path = '%s/%s_%s_%d-%d_%d.mp4' % (model_tag,model_tag,videoId, start_time, end_time,num)
-    #     s3.Object(bucket.name, s3_Path).upload_file('%s_%s_%d-%d_%d.mp4' % (model_tag,videoId, start_time, end_time,num))
-    #     s3_thumbnail_Path = '%s/thumbnails/%s_%s_%d-%d_%d.png' % (model_tag,model_tag, videoId, start_time, end_time, num)
-    #     s3.Object(bucket.name, s3_thumbnail_Path).upload_file(
-    #         '%s_%s_%d-%d_%d.png' % (model_tag, videoId, start_time, end_time, num))
+    for num in range(i):
+        s3_Path = '%s/%s_%s_%d-%d_%d.mp4' % (model_tag,model_tag,videoId, start_time, end_time,num)
+        s3.Object(bucket.name, s3_Path).upload_file('%s_%s_%d-%d_%d.mp4' % (model_tag,videoId, start_time, end_time,num))
+        s3_thumbnail_Path = '%s/thumbnails/%s_%s_%d-%d_%d.png' % (model_tag,model_tag, videoId, start_time, end_time, num)
+        s3.Object(bucket.name, s3_thumbnail_Path).upload_file(
+            '%s_%s_%d-%d_%d.png' % (model_tag, videoId, start_time, end_time, num))
 
     #frame 폴더 파일 삭제
     frame_list = makelist()
     for frame in frame_list:
         os.remove('%s' % frame)
-    # for num in range(i):
-    #     os.remove('%s_%s_%d-%d_%d.mp4' % (model_tag, videoId, start_time, end_time, num))
-    #     os.remove('%s_%s_%d-%d_%d.png' % (model_tag, videoId, start_time, end_time, num))
+    for num in range(i):
+        os.remove('%s_%s_%d-%d_%d.mp4' % (model_tag, videoId, start_time, end_time, num))
+        os.remove('%s_%s_%d-%d_%d.png' % (model_tag, videoId, start_time, end_time, num))
 
     return numbers
 

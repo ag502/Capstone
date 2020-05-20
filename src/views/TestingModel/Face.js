@@ -37,7 +37,13 @@ const Face = ({ modelName, videoInfo }) => {
       faceapi.matchDimensions(canvas, displaySize);
       stop = setInterval(async () => {
         let detections = null;
+        if (video.ended) {
+          clearInterval(stop)
+          canvas.width = 0
+          canvas.height = 0
+        }
         if (model === "EmotionDetection") {
+          console.log(video.ended)
           detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceExpressions();
           const resizedDetections = faceapi.resizeResults(detections, displaySize);
           canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
@@ -45,7 +51,7 @@ const Face = ({ modelName, videoInfo }) => {
           faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
         } else {
           detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withAgeAndGender();
-          console.log("hi")
+          console.log(video.ended)
           const resizedDetections = faceapi.resizeResults(detections, displaySize)
           canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
           faceapi.draw.drawDetections(canvas, resizedDetections)
@@ -75,20 +81,20 @@ const Face = ({ modelName, videoInfo }) => {
 
   return (
     <CardMedia >
-    <div style={{position:"relative", width:"100%", height:"350px"}}>
+      <div style={{position:"relative", height:"350px"}}>
         <video
-            id="video"
-            ref={videoRef}
-            width='100%'
-            height='100%'
-            controls
-            crossOrigin='Anonymous'
-            style={{position:"absolute"}}
-            preload="auto"
-          />
-          <canvas
-              id="overlay"
-              style={{zIndex:1000, position:"absolute", width:"100%", height:"85%"}} />
+          id="video"
+          ref={videoRef}
+          width='643'
+          height='350'
+          controls
+          crossOrigin='Anonymous'
+          style={{position:"absolute"}}
+          preload="auto"
+        />
+        <canvas
+          id="overlay"
+          style={{zIndex:1000, position:"absolute"}} />
       </div>
     </CardMedia>
   );

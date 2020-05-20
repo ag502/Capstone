@@ -166,17 +166,17 @@ function TestingModel() {
             <video 
               id="video"
               ref={videoRef}
-              width="500"
-              height="500"
+              width="600"
+              height="450"
               autoPlay={true}
               muted
-              style={{position:"absolute", left : "30%"}}
+              style={{position:"absolute", left : "25%"}}
               onPlay={value === 0 ? emotionVideo : value === 1 ? ageVideo : null}
               >
             </video>
             <canvas
               id="overlay"
-              style={{zIndex:1000, position:"absolute", left : "30%"}} />
+              style={{zIndex:1000, position:"absolute", left : "25%"}} />
           </div>
           {/* <video onplay="onPlay(this)" id="inputVideo" autoPlay muted></video> */}
           {/* <canvas id="overlay" /> */}
