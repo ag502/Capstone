@@ -119,14 +119,14 @@ function TestingModel() {
     navigator.mediaDevices.getUserMedia(constraints).then(
     (stream) => { video.srcObject = stream })
     return () => {
+      if (video) {
+        vidOff()
+      }
       if (value === 0) {
       clearInterval(expressionTime)
-      vidOff()
     } else if(value === 1) {
       clearInterval(ageTime)
-      vidOff()
     }
-    // clearInterval(expressionTime)
     }
   }, [value]);
 
