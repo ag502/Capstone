@@ -11,6 +11,7 @@ import {
 
 const Face = ({ modelName, videoInfo }) => {
   const videoRef = useRef();
+  let stop;
   async function loadModel(model) {
     try {
       if (model === "EmotionDetection") {
@@ -22,7 +23,6 @@ const Face = ({ modelName, videoInfo }) => {
         await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
         await faceapi.nets.ageGenderNet.loadFromUri('/models');
       }
-      startVideo(model);
     } catch (error) {
       console.log(error);
     }
@@ -35,16 +35,17 @@ const Face = ({ modelName, videoInfo }) => {
       const canvas = document.getElementById("overlay");
       const displaySize = { width: video.width, height: video.height }
       faceapi.matchDimensions(canvas, displaySize);
-      setInterval(async () => {
+      stop = setInterval(async () => {
         let detections = null;
         if (model === "EmotionDetection") {
-          detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
+          detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceExpressions();
           const resizedDetections = faceapi.resizeResults(detections, displaySize);
           canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
           faceapi.draw.drawDetections(canvas, resizedDetections);
           faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
         } else {
-          detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withAgeAndGender();
+          detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withAgeAndGender();
+          console.log("hi")
           const resizedDetections = faceapi.resizeResults(detections, displaySize)
           canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
           faceapi.draw.drawDetections(canvas, resizedDetections)
@@ -55,17 +56,26 @@ const Face = ({ modelName, videoInfo }) => {
           })
         }
         
-      }, 100);
+      }, 1);
     });
   }
 
-  loadModel(modelName);
   useEffect(() => {
-    
+    loadModel(modelName);
   },[]);
+
+  
+  useEffect(() => {
+    startVideo(modelName);
+    return () => {
+      clearInterval(stop)
+    }
+  },[videoInfo]);
+  
 
   return (
     <CardMedia >
+    <div style={{position:"relative", width:"100%", height:"350px"}}>
         <video
             id="video"
             ref={videoRef}
@@ -73,11 +83,13 @@ const Face = ({ modelName, videoInfo }) => {
             height='100%'
             controls
             crossOrigin='Anonymous'
-            // style={{position:"absolute"}}
+            style={{position:"absolute"}}
+            preload="auto"
           />
           <canvas
               id="overlay"
-              style={{zIndex:1000, position:"absolute"}} />
+              style={{zIndex:1000, position:"absolute", width:"100%", height:"85%"}} />
+      </div>
     </CardMedia>
   );
 }
