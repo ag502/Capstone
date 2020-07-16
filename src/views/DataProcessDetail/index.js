@@ -44,6 +44,9 @@ const DataProcessDetail = () => {
   useEffect(() => {
     axios
       .post('http://localhost:8000/preprocessor/', {
+        // videoID,
+        // startTime,
+        // endTime
         videoInfo: videoInfosArr
       })
       .then(res => {
@@ -51,21 +54,9 @@ const DataProcessDetail = () => {
         setVideoPerModel(res.data);
       });
     window.addEventListener('scroll', scrollEventHandler);
+
     return () => window.removeEventListener('scroll', scrollEventHandler);
   }, []);
-
-  const finalSaveHandler = (modelTag, selectedVideo) => {
-    const newModelPerVideo = videoPerModel.model[modelTag].filter(
-      ({ model_tag, videoId, video_number, startTime, endTime }) =>
-        !selectedVideo.includes(
-          `${model_tag},${videoId},${startTime},${endTime},${video_number}`
-        )
-    );
-
-    setVideoPerModel(prevState => ({
-      model: { ...prevState.model, [modelTag]: [...newModelPerVideo] }
-    }));
-  };
 
   return (
     <Page className={classes.root}>
@@ -78,8 +69,7 @@ const DataProcessDetail = () => {
                   mode="TEST"
                   isPIP={isPIP}
                   // videoID={`${playVideoName[0]}/${playVideoName[1]}.mp4`}
-                  // videoID={`${playVideoInfo[0]}_${playVideoInfo[1]}`}
-                  videoID={`${playVideoInfo[0]}/${playVideoInfo[0]}_${playVideoInfo[1]}`}
+                  videoID={`${playVideoInfo[0]}_${playVideoInfo[1]}`}
                 />
               </Grid>
               <Grid item>
@@ -114,6 +104,11 @@ const DataProcessDetail = () => {
           </Grid>
           <Grid container direction="column" alignContent="center">
             <Grid item>
+              <div style={{ height: '176px', backgroundColor: 'white' }}>
+                Pannel
+              </div>
+            </Grid>
+            <Grid item>
               <div className={classes.expanderContainer}>
                 {videoPerModel.model &&
                   Object.keys(videoPerModel.model).map(tag => (
@@ -122,7 +117,6 @@ const DataProcessDetail = () => {
                       modelTag={tag}
                       videos={videoPerModel.model[tag]}
                       setPlayVideoName={setPlayVideoInfo}
-                      finalSaveHandler={finalSaveHandler}
                     />
                   ))}
               </div>

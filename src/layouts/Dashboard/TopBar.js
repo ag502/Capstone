@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useRef, useEffect } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router';
@@ -40,7 +39,6 @@ import {
   searchVideosChanID,
   searchVideosID
 } from 'src/utils/axios';
-// import axios from 'axios';
 import NotificationsPopover from 'src/components/NotificationsPopover';
 import PricingModal from 'src/components/PricingModal';
 import { setVideoData, logout, setLoadError } from 'src/actions';
@@ -248,24 +246,6 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
     setOpenSearchPopover(false);
   };
 
-  // useEffect(() => {
-  //   let mounted = true;
-  //
-  //   const fetchNotifications = () => {
-  //     axios.get('#').then((response) => {
-  //       if (mounted) {
-  //         setNotifications(response.data.notifications);
-  //       }
-  //     });
-  //   };
-  //
-  //   fetchNotifications();
-  //
-  //   return () => {
-  //     mounted = false;
-  //   };
-  // }, []);
-
   let inputMessage = 'Input your Key Word';
 
   if (searchType === 2) {
@@ -339,50 +319,6 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
               </Paper>
             </ClickAwayListener>
           </Popper>
-          {/* <Button
-            className={classes.trialButton}
-            onClick={handlePricingModalOpen}
-            variant="contained"
-          >
-            <LockIcon className={classes.trialIcon} />
-            Trial expired
-          </Button> */}
-        </Hidden>
-        {/* <IconButton */}
-        {/*  className={classes.chatButton} */}
-        {/*  color="inherit" */}
-        {/*  onClick={handleChatBarOpen} */}
-        {/* > */}
-        {/*  <Badge */}
-        {/*    badgeContent={6} */}
-        {/*    color="secondary" */}
-        {/*  > */}
-        {/*    <PeopleIcon /> */}
-        {/*  </Badge> */}
-        {/* </IconButton> */}
-        <Hidden mdDown>
-          {/* <IconButton */}
-          {/*  className={classes.notificationsButton} */}
-          {/*  color="inherit" */}
-          {/*  onClick={handleNotificationsOpen} */}
-          {/*  ref={notificationsRef} */}
-          {/* > */}
-          {/*  <Badge */}
-          {/*    badgeContent={notifications.length} */}
-          {/*    classes={{ badge: classes.notificationsBadge }} */}
-          {/*    variant="dot" */}
-          {/*  > */}
-          {/*    <NotificationsIcon /> */}
-          {/*  </Badge> */}
-          {/* </IconButton> */}
-          <Button
-            className={classes.logoutButton}
-            color="inherit"
-            onClick={handleLogout}
-          >
-            <InputIcon className={classes.logoutIcon} />
-            Sign out
-          </Button>
         </Hidden>
       </Toolbar>
       <NotificationsPopover
@@ -391,7 +327,6 @@ function TopBar({ onOpenNavBarMobile, className, ...rest }) {
         onClose={handleNotificationsClose}
         open={openNotifications}
       />
-      {/* <PricingModal onClose={handlePricingModalClose} open={pricingModalOpen} /> */}
       <ChatBar onClose={handleChatBarClose} open={openChatBar} />
     </AppBar>
   );

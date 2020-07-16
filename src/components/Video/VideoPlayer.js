@@ -11,8 +11,7 @@ function VideoPlayer({ videoID, onDuration, mode, isPIP }) {
     } else if (mode === 'CLIPPEDVIDEO') {
       url = `/clippingVideo/${videoID}.mp4`;
     } else if (mode === 'TEST') {
-      // url = `/frames/${videoID}.mp4`;
-      url = `https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/${videoID}.mp4`;
+      url = `/frames/${videoID}.mp4`;
     } else if (mode === 'STORAGE') {
       url = `https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/${videoID}`;
     }

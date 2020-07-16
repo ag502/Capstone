@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -22,10 +21,9 @@ import {
   MenuItem
 } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import TableEditBar from 'src/views/DataProcess/TableEditBar';
-import { addPreproList } from '../../actions';
 import VideoPlayerPopUp from '../../components/Video/VideoPlayerPopup';
 import TableRows from './TableRows';
 
@@ -73,9 +71,6 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
   const { isPlay, title, selectedVideoID } = useSelector(
     state => state.videoPlay
   );
-  const dispatch = useDispatch();
-
-  const [selectedVT, setSelectedVT] = useState({});
 
   const handleSelectAll = event => {
     const selectedClippedVs = event.target.checked
@@ -90,44 +85,26 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
   };
 
   const handleSelectOne = (event, id) => {
-    if (selectedClippedV.includes(id)) {
-      setSelectedClippedV(prevState => prevState.filter(video => video !== id));
-    } else {
-      setSelectedClippedV(prevState => [...prevState, id]);
-    }
-  };
+    const selectedIndex = selectedClippedV.indexOf(id);
+    let newSelectedCustomers = [];
 
-  const handleSelectAllT = event => {
-    const selectedClippedVs = event.target.checked
-      ? clippedVideos
-          .slice(page * rowsPerPage, (1 + page) * rowsPerPage)
-          .reduce(
-            (acc, video, idx) => ({
-              ...acc,
-              [`${idx},${video.videoId},${video.startTime},${video.endTime},${video.keyword}`]: ''
-            }),
-            {}
-          )
-      : {};
-    setSelectedVT(selectedClippedVs);
-  };
-
-  const handleSelectOneT = (event, id, model, changeModel = 0) => {
-    if (id in selectedVT) {
-      if (changeModel === 0) {
-        const newSelected = Object.keys(selectedVT).reduce((acc, videoId) => {
-          if (videoId !== id) {
-            return { ...acc, [videoId]: selectedVT[videoId] };
-          }
-          return acc;
-        }, {});
-        setSelectedVT(newSelected);
-      } else if (changeModel === 1) {
-        setSelectedVT(prevState => ({ ...prevState, [id]: model }));
-      }
-    } else if (!(id in selectedVT) && changeModel !== 1) {
-      setSelectedVT(prevState => ({ ...prevState, [id]: model }));
+    if (selectedIndex === -1) {
+      newSelectedCustomers = newSelectedCustomers.concat(selectedClippedV, id);
+    } else if (selectedIndex === 0) {
+      newSelectedCustomers = newSelectedCustomers.concat(
+        selectedClippedV.slice(1)
+      );
+    } else if (selectedIndex === selectedClippedV.length - 1) {
+      newSelectedCustomers = newSelectedCustomers.concat(
+        selectedClippedV.slice(0, -1)
+      );
+    } else if (selectedIndex > 0) {
+      newSelectedCustomers = newSelectedCustomers.concat(
+        selectedClippedV.slice(0, selectedIndex),
+        selectedClippedV.slice(selectedIndex + 1)
+      );
     }
+    setSelectedClippedV(newSelectedCustomers);
   };
 
   const chagePageHandler = (event, page) => {
@@ -139,50 +116,55 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
   };
 
   const deleteVideoHandler = event => {
+    const [
+      idx,
+      videoID,
+      startTime,
+      endTime,
+      keyword
+    ] = selectedClippedV[0].split(',');
+
+    console.log(videoID, startTime, endTime, keyword);
+
     axios
       .post('http://127.0.0.1:8000/preprocessor_delete/', {
-        // videoInfo: selectedClippedV
-        videoInfo: Object.keys(selectedVT)
+        videoId: videoID,
+        keyword,
+        startTime,
+        endTime
       })
       .then(res => {
-        setClippedVideos(prevState =>
-          prevState.filter(
+        const _clippedVideos = [...clippedVideos]
+          .slice(page * rowsPerPage, (1 + page) * rowsPerPage)
+          .filter(
             (video, idx) =>
-              !(
-                [
-                  `${idx % rowsPerPage},${video.videoId},${video.startTime},${
-                    video.endTime
-                  },${video.keyword}`
-                ] in selectedVT
+              !selectedClippedV.includes(
+                `${idx},${video.videoId},${video.startTime},${video.endTime},${video.keyword}`
               )
-          )
-        );
-        setSelectedVT({});
+          );
+        setSelectedClippedV([]);
+        if (page === 0) {
+          setClippedVideos([
+            ..._clippedVideos,
+            ...clippedVideos.slice((1 + page) * rowsPerPage)
+          ]);
+        } else if (page === Math.ceil(clippedVideos.length / rowsPerPage)) {
+          setClippedVideos([
+            ...clippedVideos.slice(0, page * rowsPerPage),
+            ..._clippedVideos
+          ]);
+        } else {
+          setClippedVideos([
+            ...clippedVideos.slice(0, page * rowsPerPage),
+            ..._clippedVideos,
+            ...clippedVideos.slice((1 + page) * rowsPerPage)
+          ]);
+        }
       });
   };
 
   const viewVideoHandler = () => {
     console.log(selectedClippedV);
-  };
-
-  const preprocessorClickHandler = () => {
-    const promise = Object.keys(selectedVT).map(id => {
-      const [idx, videoId, startTime, endTime, keyword] = id.split(',');
-      dispatch(addPreproList({ [id]: [selectedVT[id], 'RUN'] }));
-      return axios
-        .post('http://127.0.0.1:8000/preprocessor_save/', {
-          videoId: `${videoId}`,
-          keyword: `${keyword}`,
-          startTime: `${startTime}`,
-          endTime: `${endTime}`,
-          model_tag: `${selectedVT[id]}`
-        })
-        .then(res =>
-          dispatch(addPreproList({ [id]: [selectedVT[id], 'FINISH'] }))
-        );
-    });
-
-    axios.all(promise).then(res => console.log(res));
   };
 
   return (
@@ -226,12 +208,7 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
                     <TableCell padding="checkbox">
                       <Checkbox
                         checked={
-                          // selectedClippedV.length ===
-                          // clippedVideos.slice(
-                          //   page * rowsPerPage,
-                          //   (1 + page) * rowsPerPage
-                          // ).length
-                          Object.keys(selectedVT).length ===
+                          selectedClippedV.length ===
                           clippedVideos.slice(
                             page * rowsPerPage,
                             (1 + page) * rowsPerPage
@@ -242,8 +219,7 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
                           selectedClippedV.length > 0 &&
                           selectedClippedV.length < clippedVideos.length
                         }
-                        // onChange={handleSelectAll}
-                        onChange={handleSelectAllT}
+                        onChange={handleSelectAll}
                       />
                     </TableCell>
                     <TableCell padding="checkbox" />
@@ -265,8 +241,6 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
                         classes={classes}
                         videoInfo={video}
                         selectedClippedV={selectedClippedV}
-                        selectedVT={selectedVT}
-                        handleSelectOneT={handleSelectOneT}
                         handleSelectOne={handleSelectOne}
                       />
                     ))}
@@ -285,9 +259,7 @@ function Results({ className, clippedVideos, setClippedVideos, ...rest }) {
         </CardActions>
       </Card>
       <TableEditBar
-        // selected={selectedClippedV}
-        selected={selectedVT}
-        onApplyModel={preprocessorClickHandler}
+        selected={selectedClippedV}
         onDelete={deleteVideoHandler}
         onView={viewVideoHandler}
       />

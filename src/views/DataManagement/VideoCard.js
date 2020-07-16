@@ -1,13 +1,8 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import {
-  Card,
-  CardContent,
-  Typography,
-  Avatar,
-  Checkbox
-} from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
+import { Card, CardContent, Typography, Avatar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
+import VideoPlayerPopup from '../../components/Video/VideoPlayerPopup';
 import { playVideo } from '../../actions/videoAction';
 
 const useStyles = makeStyles(theme => ({
@@ -32,7 +27,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const VideoCard = ({ videoInfo, checkedVideoHandler, selectedVideo }) => {
+const VideoCard = ({ videoInfo }) => {
   const {
     videoId,
     keyword,
@@ -45,6 +40,7 @@ const VideoCard = ({ videoInfo, checkedVideoHandler, selectedVideo }) => {
 
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { isPlay, title } = useSelector(state => state.videoPlay);
 
   const videoTitle = `${model}_${videoId}_${startTime}-${endTime}_${videoNum}`;
 
@@ -54,18 +50,16 @@ const VideoCard = ({ videoInfo, checkedVideoHandler, selectedVideo }) => {
 
   return (
     <>
+      <VideoPlayerPopup
+        isPlay={isPlay}
+        mode="TEST"
+        videoID={videoTitle}
+        title={title}
+      />
       <Card className={classes.root}>
         <CardContent className={classes.content}>
           <div className={classes.videoIdContainer}>
-            <Checkbox
-              onChange={checkedVideoHandler(
-                `${model},${keyword},${videoId},${startTime},${endTime},${videoNum}`
-              )}
-              checked={selectedVideo.includes(
-                `${model},${keyword},${videoId},${startTime},${endTime},${videoNum}`
-              )}  // src={`/frames/${videoTitle}.png`}
-            /> 
-            <Avatar variant="rounded" src={`https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/${model}/thumbnails/${model}_${videoId}_${startTime}-${endTime}_${videoNum}.png`}>
+            <Avatar variant="rounded" src={`/frames/${videoTitle}.png`}>
               N
             </Avatar>
             <div className={classes.videoID}>

@@ -1,7 +1,6 @@
 /* eslint-disable react/no-multi-comp */
 import React, { useEffect, useState } from 'react';
 import { useLocation, matchPath } from 'react-router';
-import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';

@@ -5,8 +5,6 @@ import { Container } from '@material-ui/core';
 import { useLocation } from 'react-router-dom';
 import { renderRoutes } from 'react-router-config';
 import Header from './Header';
-import Home from './Pages/Home';
-import VideoGroup from './Pages/VideoGroup/index';
 
 const useStyles = makeStyles(theme => ({
   root: {

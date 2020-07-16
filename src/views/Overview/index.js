@@ -1,13 +1,8 @@
 import React, { useEffect, Suspense, lazy } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setVideoData, setMoreVideoData, setLoadError } from 'src/actions';
-import {
-  searchVideosKeyword,
-  searchVideosChanID,
-  searchVideosID
-} from 'src/utils/axios';
-
+import { setVideoData, setMoreVideoData } from 'src/actions';
 import Videos from '../../components/Video/Videos';
+
 
 function Overview() {
   const {

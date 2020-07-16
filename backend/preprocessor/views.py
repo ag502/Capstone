@@ -44,8 +44,7 @@ class Preprocessor(APIView):
         print(video_field)
 
         video_data = VideoData.objects.filter(videoId__in=video_field[1], startTime__in=video_field[2],
-                                              endTime__in=video_field[3], keyword__in=video_field[4],
-                                              final_save=False)
+                                              endTime__in=video_field[3], keyword__in=video_field[4])
         model_tag = video_data.values('model_tag').distinct()
 
         sending_dict = {}
@@ -96,44 +95,17 @@ class PreprocessorDelete(APIView):  # 원본 영상을 삭제
     def post(request):
         clip_info = request.data
         print(request.data)
+        video_id = str((clip_info['videoId']))
+        key_word = str((clip_info['keyword']))
+        start_time = int(clip_info['startTime'])
+        end_time = int(clip_info['endTime'])
 
         # 원본 DB 삭제
-        video_info = [video.split(',') for video in clip_info['videoInfo']]
-        video_info_zip = [field for field in zip(*video_info)]
-
-
-        #[(idx1, idx2...), (videoId1, videoId2, ...), (startTime1,...), (endTime1, ...), (keyword1, ..)]
-        queryset = VideoInfo.objects.filter(videoId__in=video_info_zip[1], keyword__in=video_info_zip[4],
-                                   startTime__in=video_info_zip[2], endTime__in=video_info_zip[3])
+        queryset = VideoInfo.objects.all()
+        queryset = queryset.filter(videoId=video_id, keyword=key_word, startTime=start_time, endTime=end_time)
         queryset.delete()
 
-        video_data_queryset = VideoData.objects.filter(videoId__in=video_info_zip[1], startTime__in=video_info_zip[2], endTime__in=video_info_zip[3],
-                                                       keyword__in=video_info_zip[4], final_save=False)
-        #
-        # finalzero_video = []
-        # for video in video_data_queryset:
-        #     print(video.model_tag)
-        #     finalzero_video.append([video.videoId, video.model_tag, video.startTime, video.endTime, video.video_number])
-        # video_data_queryset.delete()
-        #
-        #
-        # # 원본 영상,썸네일 삭제,final은 0인것도 삭제 ** 추가 s3로 변경 **
-        # Preprocess.original_delete(video_info)
-        # Preprocess.final_delete(finalzero_video)
+        # 원본 영상,썸네일 삭제 ** 추가 s3로 변경 **
+        # Preprocess.original_delete(video_id, start_time, end_time)
 
         return HttpResponse("delete")
-
-
-class PreprocessorFinalSave(APIView):
-    def post(self, request):
-        processed_video = [video.split(',') for video in request.data['videoInfo']]
-        processed_video_zip = [video for video in zip(*processed_video)]
-
-        # [(model_tag), (videoId1,..), (startTime1, ..), (endTime1, ..), (videoNumber1,..)]
-        queryset = VideoData.objects.filter(model_tag__in=processed_video_zip[0], videoId__in=processed_video_zip[1],
-                                            startTime__in=processed_video_zip[2], endTime__in=processed_video_zip[3],
-                                            video_number__in=processed_video_zip[4])
-        queryset.update(final_save=True)
-
-        return HttpResponse('Final_Save')
-

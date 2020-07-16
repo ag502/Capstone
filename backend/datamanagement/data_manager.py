@@ -44,7 +44,7 @@ def data_delete(delete_list):
                                          )
                  )
         '''
-        
+         
         후에 s3 에 있는 전처리 완료된 영상을 삭제
         
         '''
@@ -52,65 +52,8 @@ def data_delete(delete_list):
     return HttpResponse("delete_data!!!")
 
 
-def folder_delete(final_one_video):
-    for video in final_one_video:
-        videoId = video[0]
-        modelTag = video[1]
-        startTime = video[2]
-        endTime = video[3]
-        video_number = video[4]
 
-        s3_model_Path = '%s/%s_%s_%s-%s_%s.mp4' % (modelTag, modelTag, videoId, startTime, endTime, video_number)
-        s3.Object(bucket.name, s3_model_Path).delete()
-        s3_model_thumb_Path = '%s/thumbnails/%s_%s_%s-%s_%s.png' % (
-        modelTag, modelTag, videoId, startTime, endTime, video_number)
-        s3.Object(bucket.name, s3_model_thumb_Path).delete()
-
-def file_delete(delete_list):
-    for video in delete_list:
-        modelTag = video[0]
-        videoId = video[2]
-        startTime = video[3]
-        endTime = video[4]
-        video_number = video[5]
-
-        s3_model_Path = '%s/%s_%s_%s-%s_%s.mp4' % (modelTag, modelTag, videoId, startTime, endTime, video_number)
-        s3.Object(bucket.name, s3_model_Path).delete()
-        s3_model_thumb_Path = '%s/thumbnails/%s_%s_%s-%s_%s.png' % (
-        modelTag, modelTag, videoId, startTime, endTime, video_number)
-        s3.Object(bucket.name, s3_model_thumb_Path).delete()
-
-def folder_download(final_one_video):
-    for video in final_one_video:
-        videoId = video[0]
-        modelTag = video[1]
-        startTime = video[2]
-        endTime = video[3]
-        video_number = video[4]
-
-        download_path = os.path.expanduser("~") + "/videoDownloads/"
-        file_name = '%s_%s_%s-%s_%s.mp4' % (modelTag, videoId, startTime, endTime, video_number)
-        s3_model_Path = '%s/%s_%s_%s-%s_%s.mp4' % (modelTag, modelTag, videoId, startTime, endTime, video_number)
-
-        s3.Object(bucket.name, s3_model_Path).download_file('%s.mp4' % (download_path+file_name))
-
-def file_download(download_list):
-    for video in download_list:
-        modelTag = video[0]
-        videoId = video[2]
-        startTime = video[3]
-        endTime = video[4]
-        video_number = video[5]
-
-        download_path = os.path.expanduser("~") + "/videoDownloads/"
-        file_name = '%s_%s_%s-%s_%s.mp4' % (modelTag, videoId, startTime, endTime, video_number)
-        s3_model_Path = '%s/%s_%s_%s-%s_%s.mp4' % (modelTag, modelTag, videoId, startTime, endTime, video_number)
-
-        s3.Object(bucket.name, s3_model_Path).download_file('%s.mp4' % (download_path+file_name))
-
-
-
-# 'C:/Users/jaehee/capstone/Material_Ui_Capstone/public/clippingVideo/'
+# 'C:/Users/jaehee/capstone/Material_Ui_Capstone/publi c/clippingVideo/'
 # 'C:/Users/jaehee/capstone/Material_Ui_Capstone/public/thumbnails/'
 
 # '/Users/zigje9/Desktop/jenesis/public/clippingVideo/'

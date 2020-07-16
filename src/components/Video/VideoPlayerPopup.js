@@ -73,8 +73,6 @@ function VideoPopWindow({ isPlay, videoID, title, keyword, searchType, mode }) {
   const [alertOpen, setAlertOpen] = useState(false);
   const classes = useStyles();
 
-  console.log(videoID);
-
   const closeClickHandler = () => {
     dispatch(closeVideo());
     setValue([0, 0]);
@@ -129,6 +127,7 @@ function VideoPopWindow({ isPlay, videoID, title, keyword, searchType, mode }) {
 
   const trimmerChangeHandler = (event, newValue) => {
     setValue(newValue);
+    console.log(value);
   };
 
   return (

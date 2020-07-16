@@ -6,5 +6,4 @@ urlpatterns = [
     path('preprocessor/', views.Preprocessor.as_view()),
     path('preprocessor_save/', views.PreprocessorSave.as_view()),
     path('preprocessor_delete/', views.PreprocessorDelete.as_view()),
-    path('preprocessor_final_save/', views.PreprocessorFinalSave.as_view())
     ]

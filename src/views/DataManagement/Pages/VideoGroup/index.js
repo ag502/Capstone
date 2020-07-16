@@ -3,14 +3,9 @@ import { useParams } from 'react-router-dom';
 import { GridList, GridListTile } from '@material-ui/core';
 import axios from 'axios';
 import VideoFolderCard from './VideoFolderCard';
-import SearchFilter from '../../Filter';
-import EditBar from '../../Editbar';
-import AlertDialog from '../../AlertDialog';
 
 const VideoGroup = () => {
   const [videoList, setVideoList] = useState([]);
-  const [selectedFolder, setSelectedFolder] = useState([]);
-  const [open, setOpen] = useState({ isOpen: false, type: 'None' });
   const { model } = useParams();
 
   useEffect(() => {
@@ -26,60 +21,14 @@ const VideoGroup = () => {
     fetchData();
   }, []);
 
-  const checkFolderHandler = folderName => () => {
-    if (selectedFolder.includes(folderName)) {
-      setSelectedFolder(prevState =>
-        prevState.filter(folder => folder !== folderName)
-      );
-    } else {
-      setSelectedFolder(prevState => [...prevState, folderName]);
-    }
-  };
-
-  const deleteFolderHandler = async () => {
-    try {
-      const result = axios.post('http://localhost:8000/datamanagement/', {
-        videoInfo: selectedFolder
-      });
-      setVideoList(prevState =>
-        prevState.filter(
-          ({ videoId, keyword, startTime, endTime }) =>
-            !selectedFolder.includes(
-              `${model},${keyword},${videoId},${startTime},${endTime}`
-            )
-        )
-      );
-      setSelectedFolder([]);
-      setOpen({ isOpen: false, type: 'None' });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
-    <>
-      <SearchFilter model={model} setVideoList={setVideoList} />
-      <GridList cellHeight="auto" cols={4}>
-        {videoList.map((video, idx) => (
-          <GridListTile key={idx}>
-            <VideoFolderCard
-              videoInfo={video}
-              model={model}
-              checkFolderHandler={checkFolderHandler}
-              selectedFolder={selectedFolder}
-            />
-          </GridListTile>
-        ))}
-      </GridList>
-      <EditBar selected={selectedFolder} setOpen={setOpen} />
-      <AlertDialog
-        open={open.isOpen}
-        type={open.type}
-        setOpen={setOpen}
-        selectedNumber={selectedFolder.length}
-        deleteFolderHandler={deleteFolderHandler}
-      />
-    </>
+    <GridList cellHeight="auto" cols={4} style={{ width: '100%' }}>
+      {videoList.map(video => (
+        <GridListTile>
+          <VideoFolderCard videoInfo={video} />
+        </GridListTile>
+      ))}
+    </GridList>
   );
 };
 

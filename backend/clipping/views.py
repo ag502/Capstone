@@ -28,17 +28,17 @@ class ClipVideoDownloader(APIView):
         start_time = int(clip_info['startTime'])
         end_time = int(clip_info['endTime'])
 
-        output_dir ='C:/Users/jaehee/capstone/Material_Ui_Capstone/public/clippingVideo/'
-        thumbnail_dir ='C:/Users/jaehee/capstone/Material_Ui_Capstone/public/thumbnails/'
+        # 'C:/Users/jaehee/capstone/Material_Ui_Capstone/public/clippingVideo/'
+        # 'C:/Users/jaehee/capstone/Material_Ui_Capstone/public/thumbnails/'
 
         # '/Users/zigje9/Desktop/jenesis/public/clippingVideo/'
         # '/Users/zigje9/Desktop/jenesis/public/thumbnails/'
 
-        # 'C:/Users/LG/Desktop/Capstone/public/clippingVideo/'
-        # 'C:/Users/LG/Desktop/Capstone/public/thumbnails/'
+        # 'C:/Users/LG/Desktop/Material_Ui_Capstone/public/clippingVideo/'
+        # 'C:/Users/LG/Desktop/Material_Ui_Capstone/public/thumbnails/'
 
-        # output_dir = 'C:/Users/LG/Desktop/Capstone/public/clippingVideo/'  # 영상 저장경로, 후에 s3로 변경
-        # thumbnail_dir = 'C:/Users/LG/Desktop/Capstone/public/thumbnails/'
+        output_dir = 'C:/Users/jaehee/capstone/Material_Ui_Capstone/public/clippingVideo/'  # 영상 저장경로, 후에 s3로 변경
+        thumbnail_dir = 'C:/Users/jaehee/capstone/Material_Ui_Capstone/public/thumbnails/'
 
         response_status = 200
         queryset = VideoInfo.objects.all()

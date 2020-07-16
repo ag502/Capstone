@@ -4,13 +4,7 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { Link as RouterLink } from 'react-router-dom';
 import { Drawer, Grid, Typography, Button, Hidden } from '@material-ui/core';
-import {
-  LiveTv,
-  Check,
-  Close,
-  DeleteOutline,
-  MovieFilterOutlined
-} from '@material-ui/icons';
+import { LiveTv, DeleteOutline } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -29,17 +23,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function TableEditBar({
-  selected,
-  className,
-  onDelete,
-  onView,
-  onApplyModel,
-  ...rest
-}) {
+function TableEditBar({ selected, className, onDelete, onView, ...rest }) {
   const classes = useStyles();
-  const open = Object.keys(selected).length > 0;
-  const requestVideoUrl = Object.keys(selected).join('+');
+  const open = selected.length > 0;
+  const requestVideoUrl = selected.join('+');
 
   return (
     <Drawer
@@ -59,17 +46,12 @@ function TableEditBar({
           </Hidden>
           <Grid item md={6} xs={12}>
             <div className={classes.actions}>
-              <Button onClick={onApplyModel}>
-                <MovieFilterOutlined className={classes.buttonIcon} />
-                Apply Model
-              </Button>
               <Button
                 onClick={onView}
                 component={RouterLink}
                 to={`/data-process/${requestVideoUrl}`}
               >
                 <LiveTv className={classes.buttonIcon} />
-                View
               </Button>
               <Button onClick={onDelete}>
                 <DeleteOutline className={classes.buttonIcon} />

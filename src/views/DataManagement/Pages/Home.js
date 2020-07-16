@@ -44,7 +44,7 @@ const Home = () => {
               <CardActionArea>
                 <img
                   className={classes.cardImg}
-                  src={`/images/models/${model}.png`}
+                  src="/images/models/faceApi.png"
                   alt={model}
                 />
                 <Divider />

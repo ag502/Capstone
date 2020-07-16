@@ -15,11 +15,6 @@ import CookiesNotification from './components/CookiesNotification';
 import ScrollReset from './components/ScrollReset';
 import StylesProvider from './components/StylesProvider';
 import DirectionToggle from './components/DirectionToggle';
-import './mixins/chartjs';
-import './mixins/moment';
-import './mixins/validate';
-import './mixins/prismjs';
-import './mock';
 import './assets/scss/main.scss';
 
 const history = createBrowserHistory();

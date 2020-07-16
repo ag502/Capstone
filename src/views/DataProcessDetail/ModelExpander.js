@@ -11,7 +11,6 @@ import {
   Divider,
   Button
 } from '@material-ui/core';
-import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import { pink } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -43,12 +42,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ModelExpander = ({
-  modelTag,
-  videos,
-  setPlayVideoName,
-  finalSaveHandler
-}) => {
+const ModelExpander = ({ modelTag, videos, setPlayVideoName }) => {
   const [expanded, setExpanded] = useState(false);
   const [checkedVideo, setCheckedVideo] = useState([]);
   const classes = useStyles();
@@ -74,18 +68,6 @@ const ModelExpander = ({
     }
   };
 
-  const onSaveClick = async () => {
-    try {
-      const result = await axios.post(
-        'http://127.0.0.1:8000/preprocessor_final_save/',
-        { videoInfo: checkedVideo }
-      );
-      finalSaveHandler(modelTag, checkedVideo);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <div>
       <ExpansionPanel
@@ -108,8 +90,8 @@ const ModelExpander = ({
                     className={classes.gridListTile}
                   >
                     <img
-                      src={`https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/${modelTag}/thumbnails/${modelTag}_${videoName}.png`}
-                      // src={`/frames/${modelTag}_${videoName}.png`}
+                      // src={`https://aws-s3-capstone.s3.ap-northeast-2.amazonaws.com/${modelTag}/thumbnails/${modelTag}_${videoName}.png`}
+                      src={`/frames/${modelTag}_${videoName}.png`}
                       alt={videoName}
                       style={{ width: '100%' }}
                       onClick={thumbnailClickHandler(
@@ -123,12 +105,8 @@ const ModelExpander = ({
                       actionIcon={
                         <Checkbox
                           className={classes.checkbox}
-                          onClick={selectVideoHandler(
-                            `${modelTag},${video.videoId},${video.startTime},${video.endTime},${video.video_number}`
-                          )}
-                          checked={checkedVideo.includes(
-                            `${modelTag},${video.videoId},${video.startTime},${video.endTime},${video.video_number}`
-                          )}
+                          onClick={selectVideoHandler(videoName)}
+                          checked={checkedVideo.includes(videoName)}
                         />
                       }
                     />
@@ -141,7 +119,7 @@ const ModelExpander = ({
         <Divider />
         {checkedVideo.length ? (
           <ExpansionPanelActions>
-            <Button onClick={onSaveClick}>SAVE</Button>
+            <Button>Delete</Button>
           </ExpansionPanelActions>
         ) : null}
       </ExpansionPanel>

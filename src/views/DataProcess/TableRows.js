@@ -23,17 +23,10 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const TableRows = ({
-  videoInfo,
-  selectedClippedV,
-  handleSelectOne,
-  index,
-  handleSelectOneT,
-  selectedVT
-}) => {
+const TableRows = ({ videoInfo, selectedClippedV, handleSelectOne, index }) => {
   // redux 저장 키 형태
   const key = `${videoInfo.videoId},${videoInfo.startTime},${videoInfo.endTime},${videoInfo.keyword}`;
-  const [model, setModel] = useState('');
+  const [model, setModel] = useState('null');
   const dispatch = useDispatch();
   const clippedVideoLoading = useSelector(
     state => state.clippingVideo.clipping[key]
@@ -50,15 +43,10 @@ const TableRows = ({
   };
 
   const modelChangeHandler = event => {
-    handleSelectOneT(event, `${index},${key}`, event.target.value, 1);
     setModel(event.target.value);
   };
 
   const preprocessorClickHandler = () => {
-    if (!model) {
-      return;
-    }
-
     const modelTrimmingVideo = {};
     modelTrimmingVideo[key] = [model, 'RUN'];
     dispatch(addPreproList(modelTrimmingVideo));
@@ -81,6 +69,7 @@ const TableRows = ({
   const Buttons = () => {
     let component = null;
 
+    console.log(trimmedVideoLoading);
     if (
       clippedVideoLoading === 'SUCCESS' ||
       videoInfo.clip_complete === 'success'
@@ -137,10 +126,9 @@ const TableRows = ({
     >
       <TableCell padding="checkbox">
         <Checkbox
-          // checked={selectedClippedV.indexOf(`${index},${key}`) !== -1}
-          checked={[`${index},${key}`] in selectedVT}
+          checked={selectedClippedV.indexOf(`${index},${key}`) !== -1}
           color="primary"
-          onChange={event => handleSelectOneT(event, `${index},${key}`, model)}
+          onChange={event => handleSelectOne(event, `${index},${key}`)}
           value={selectedClippedV.indexOf(videoInfo.videoId) !== -1}
         />
       </TableCell>
@@ -177,24 +165,15 @@ const TableRows = ({
           onChange={modelChangeHandler}
           displayEmpty
         >
-          <MenuItem value="" disabled>
-            Model
+          <MenuItem value="null">
+            <em>NULL</em>
           </MenuItem>
-          <MenuItem
-            disabled={videoInfo.EmotionDetection}
-            value="EmotionDetection"
-          >
-            Emotion Detection
-          </MenuItem>
-          <MenuItem disabled={videoInfo.Shadowing} value="Shadowing">
-            Shadowing
-          </MenuItem>
-          <MenuItem disabled={videoInfo.FaceAPI} value="FaceAPI">
-            Face API
-          </MenuItem>
+          <MenuItem value="EmotionDetection">Emotion Detection</MenuItem>
+          <MenuItem value="Shadowing">Shadowing</MenuItem>
+          <MenuItem value="FaceAPI">Face API</MenuItem>
         </Select>
       </TableCell>
-      <TableCell align="center">{Buttons()}</TableCell>
+      {/* <TableCell align="center">{Buttons()}</TableCell> */}
     </TableRow>
   );
 };
