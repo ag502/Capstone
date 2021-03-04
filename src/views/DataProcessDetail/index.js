@@ -44,9 +44,6 @@ const DataProcessDetail = () => {
   useEffect(() => {
     axios
       .post('http://localhost:8000/preprocessor/', {
-        // videoID,
-        // startTime,
-        // endTime
         videoInfo: videoInfosArr
       })
       .then(res => {
@@ -68,7 +65,6 @@ const DataProcessDetail = () => {
                 <VideoPlayer
                   mode="TEST"
                   isPIP={isPIP}
-                  // videoID={`${playVideoName[0]}/${playVideoName[1]}.mp4`}
                   videoID={`${playVideoInfo[0]}_${playVideoInfo[1]}`}
                 />
               </Grid>

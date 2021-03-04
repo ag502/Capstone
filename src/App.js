@@ -10,8 +10,6 @@ import 'react-perfect-scrollbar/dist/css/styles.css';
 import { theme, themeWithRtl } from './theme';
 import { configureStore } from './store';
 import routes from './routes';
-import GoogleAnalytics from './components/GoogleAnalytics';
-import CookiesNotification from './components/CookiesNotification';
 import ScrollReset from './components/ScrollReset';
 import StylesProvider from './components/StylesProvider';
 import DirectionToggle from './components/DirectionToggle';
@@ -34,8 +32,6 @@ function App() {
           <MuiPickersUtilsProvider utils={MomentUtils}>
             <Router history={history}>
               <ScrollReset />
-              <GoogleAnalytics />
-              <CookiesNotification />
               <DirectionToggle
                 direction={direction}
                 onToggle={handleDirecitonToggle}

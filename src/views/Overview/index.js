@@ -17,7 +17,6 @@ function Overview() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('Overview mount');
     if (!keyword) {
       try {
         dispatch(setVideoData('한달살기'));
