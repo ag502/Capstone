@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
@@ -7,41 +7,26 @@ import { useDispatch } from 'react-redux';
 import { makeStyles, withStyles } from '@material-ui/styles';
 import {
   AppBar,
-  Badge,
-  Button,
-  IconButton,
-  Toolbar,
-  Hidden,
-  Input,
+  ClickAwayListener,
   colors,
-  Popper,
-  Paper,
+  Hidden,
+  IconButton,
+  Input,
+  InputBase,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  ClickAwayListener,
-  Fade,
-  InputBase,
+  MenuItem,
+  Paper,
+  Popper,
   Select,
-  InputLabel,
-  FormControl,
-  MenuItem
+  Toolbar
 } from '@material-ui/core';
-import LockIcon from '@material-ui/icons/LockOutlined';
-import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
-import PeopleIcon from '@material-ui/icons/PeopleOutline';
-import InputIcon from '@material-ui/icons/Input';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import {
-  searchVideosKeyword,
-  searchVideosChanID,
-  searchVideosID
-} from 'src/utils/axios';
 import NotificationsPopover from 'src/components/NotificationsPopover';
-import PricingModal from 'src/components/PricingModal';
-import { setVideoData, logout, setLoadError } from 'src/actions';
+import { setLoadError, setVideoData } from 'src/actions';
 import ChatBar from './ChatBar';
 
 const useStyles = makeStyles(theme => ({

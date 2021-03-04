@@ -1,14 +1,41 @@
 import axios from 'axios';
 
-const instance = axios.create();
+const axiosInstance = axios.create({
+  baseURL: 'https://www.googleapis.com/youtube/v3',
+});
 
-const defaultInfo = {
-  baseURL: 'https://www.googleapis.com/youtube/v3/',
-  apiKey: 'AIzaSyDOA7d2cH7InnpkA2sDJ_hGJesmNrH_AWc'
-};
-axios.interceptors.response.use(res => {
-  console.log(res);
-  return res;
+const defaultParams = {
+  key: 'AIzaSyB367CrfHLcSf5BZ2rpomd71JRrU5IiTps',
+  part: "snippet",
+  maxResult: "20"
+}
+
+
+axiosInstance.interceptors.request.use(function (config) {
+  console.log("-----------Request-----------")
+  console.log(config)
+  console.log("-----------Request-----------")
+
+  return config;
+}, function (error) {
+  console.log("-----------Request-----------")
+  console.log(error.response)
+  console.log("-----------Request-----------")
+  return Promise.reject(error);
+});
+
+axios.interceptors.response.use(function (response) {
+  console.log("-----------Response-----------")
+  console.log(response)
+  console.log("-----------Response-----------")
+
+  return response;
+}, function (error) {
+  console.log("-----------Response-----------")
+  console.log(error.response)
+  console.log("-----------Response-----------")
+
+  return Promise.reject(error);
 });
 
 const processVideoData = (data, keyword) => {
@@ -31,29 +58,48 @@ const processVideoData = (data, keyword) => {
 };
 
 export const searchVideosKeyword = (keyword, page = '') => {
-  console.log(`Send request to Youtube ${keyword}`);
-  return axios
+  return axiosInstance
     .get(
-      `${defaultInfo.baseURL}search?key=${defaultInfo.apiKey}&part=snippet&q=${keyword}&maxResults=20&pageToken=${page}&type=video`
-    )
-    .then(res => processVideoData(res, keyword));
+      "/search"
+    , {
+        params: {
+          ...defaultParams,
+          q: keyword,
+          maxResult: "20",
+          type: "video",
+          pageToken: page
+        }
+      })
+    .then(res => processVideoData(res, keyword))
+    .catch(error => console.log(error.response))
 };
 
 export const searchVideosChanID = (id, page = '') => {
-  console.log(`Send request to Youtube ${id}`);
-  return axios
+  return axiosInstance
     .get(
-      `${defaultInfo.baseURL}search?key=${defaultInfo.apiKey}&part=snippet&channelId=${id}&maxResults=20&pageToken=${page}&type=video`
+      `search`, {
+        params: {
+          ...defaultParams,
+          channelId: id,
+          type: "video",
+          pageToken: page,
+        }
+      }
     )
     .then(res => processVideoData(res, id));
 };
 
 export const searchVideosID = (id, page = '') => {
-  console.log(`Send request to Youtube ${id}`);
-  return axios
+  return axiosInstance
     .get(
-      `${defaultInfo.baseURL}videos?key=${defaultInfo.apiKey}&part=snippet&id=${id}&maxResults=20&pageToken=${page}`
-    )
+      "/videos"
+    , {
+        params: {
+          ...defaultParams,
+          id,
+          pageToken: page
+        }
+      })
     .then(res => processVideoData(res, id));
 };
 
@@ -63,4 +109,4 @@ export const getClippedVideos = () =>
 export const getProcessedVideos = () =>
   axios.get('http://localhost:8000/preprocessor/');
 
-export default instance;
+export default axiosInstance;
